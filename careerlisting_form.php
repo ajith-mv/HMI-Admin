@@ -113,8 +113,8 @@ include "common/dpselect-functions.php"; ?>
                   <div class="form-group">
                     <label class="col-md-3 control-label">Color Code </label>
                     <div class="col-md-6">
-                      <input type="text" class="form-control" name="color" id="color" 
-                      value="<?php echo $res_ed['job_type']; ?>" readonly />
+                      <input type="text" class="form-control" name="color" id="color"
+                        value="<?php echo $res_ed['job_type']; ?>" />
                     </div>
                   </div>
 
@@ -194,6 +194,12 @@ include "common/dpselect-functions.php"; ?>
             var color = $(this).val();
             $('#color').val(color);
 
+          })
+
+          $(document).on('keyup', '#color', function (e) {
+
+            var color = $(this).val();
+            $('#job_type').val(color);
           })
 
         });
