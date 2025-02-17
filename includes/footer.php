@@ -587,6 +587,7 @@
 
 			if ($frm === 'frmnewsevents') {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 				if (tinyMCE) {
 					var editor1 = tinyMCE.get("elm1");
 					var editor2 = tinyMCE.get("elm2");
@@ -599,17 +600,25 @@
 				// var editor1 = tinyMCE.get("elm1");
 				// var editor2 = tinyMCE.get("elm2");
 >>>>>>> Stashed changes
+=======
+				// if (tinyMCE) {
+				// var editor1 = tinyMCE.get("elm1");
+				// var editor2 = tinyMCE.get("elm2");
+>>>>>>> Stashed changes
 
 				// if (editor1 && editor2) {
 				var shortdescription = tinyMCE.get("elm1").getContent({ format: 'html' });
 				var content = tinyMCE.get("elm2").getContent({ format: 'html' });
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 					} else {
 						console.error("TinyMCE editor instances not found for elm1 and/or elm2.");
 					}
 				}
 =======
+=======
+>>>>>>> Stashed changes
 				alert(shortdescription);
 
 				m_data.append('newsdesc', content);
@@ -619,6 +628,9 @@
 				// 	console.error("TinyMCE editor instances not found for elm1 and/or elm2.");
 				// }
 				// }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 				m_data.append('newsimage', $('input[name=newsimage]')[0].files[0]);
 			}
@@ -632,6 +644,7 @@
 
 				m_data.append('short_desc', shortdescription);
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 				var _URL = window.URL || window.webkitURL;
 				var file, img;
@@ -651,6 +664,8 @@
 					img.src = objectUrl;
 				}
 =======
+=======
+>>>>>>> Stashed changes
 				// var _URL = window.URL || window.webkitURL;
 				// var file, img;
 				// var image = $('input[name=cat_image]')[0].files[0];
@@ -666,6 +681,9 @@
 				// 	}
 				// };
 				// img.src = objectUrl;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 			}
 
