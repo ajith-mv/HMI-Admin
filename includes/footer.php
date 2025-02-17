@@ -589,7 +589,7 @@
 				if (tinyMCE) {
 					var editor1 = tinyMCE.get("elm1");
 					var editor2 = tinyMCE.get("elm2");
-					
+
 					if (editor1 && editor2) {
 						var shortdescription = editor1.getContent({ format: 'html' });
 						var content = editor2.getContent({ format: 'html' });
@@ -600,9 +600,9 @@
 					} else {
 						console.error("TinyMCE editor instances not found for elm1 and/or elm2.");
 					}
-			    }
+				}
 				m_data.append('newsimage', $('input[name=newsimage]')[0].files[0]);
-            }
+			}
 			if ($frm == 'frmnewseventscat') {
 
 				var shortdescription = tinyMCE.get("elm1").getContent({ format: 'html' });
@@ -617,19 +617,19 @@
 				var file, img;
 				var image = $('input[name=cat_image]')[0].files[0];
 				if (image && image.files && image.files.length > 0) {
-				img = new Image();
-				var objectUrl = _URL.createObjectURL(image);
-				img.onload = function () {
-					if (this.width != 767 || this.height != 300) {
-						alert('Image dimension should be 300x300');
-						return false;
-					}
-					else {
-						m_data.append('cat_image', $('input[name=cat_image]')[0].files[0]);
-					}
-				};
-				img.src = objectUrl;
-			    }
+					img = new Image();
+					var objectUrl = _URL.createObjectURL(image);
+					img.onload = function () {
+						if (this.width != 767 || this.height != 300) {
+							alert('Image dimension should be 300x300');
+							return false;
+						}
+						else {
+							m_data.append('cat_image', $('input[name=cat_image]')[0].files[0]);
+						}
+					};
+					img.src = objectUrl;
+				}
 			}
 
 			if ($frm == 'frmgallerycategories') {
@@ -790,14 +790,6 @@
 		toggleActive: true,
 		format: "dd-mm-yyyy",
 		autoclose: true
-	});
-
-</script>
-<script>
-	$(document).ready(function () {
-		tinymce.init({
-			selector: '#elm1, #elm2',
-		});
 	});
 
 </script>
