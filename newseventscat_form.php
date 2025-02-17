@@ -121,7 +121,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
                   </div>
 
                   <div class="form-group">
-                    <label class="col-md-3 control-label" id="parent">Parent Category *</label>
+                    <label class="col-md-3 control-label" id="parent_category">Parent Category *</label>
                     <div class="col-md-9">
                       <select class="form-control typebase" name="subcategory" id="subcategory">
                         <option>Select parent Category</option>
@@ -132,28 +132,9 @@ $parent_category_list = $db->get_rsltset($parent_category);
                              } ?>>
                             <?php echo $parentcategory['name']; ?>
                           </option>
-
-                          <?php
-                          $parentcatid = $parentcategory['catid'];
-
-                          $subcategory = "select * from " . tbl_newscategory . "  where isactive != '2' and subcategory = $parentcatid";
-
-                          $subcategory_list = $db->get_rsltset($subcategory);
-                          ?>
-
-                          <?php
-                            foreach ($subcategory_list as $subcategorys) {
-                            ?>
-                            <option class="subcategory" value="<?php echo $subcategorys['catid']; ?>" <?php if ($subcategorys['catid'] == $res_ed['subcategory']) {
-                                 echo "selected";
-                               } ?>>
-                              &nbsp;&nbsp; ├─<?php echo $subcategorys['name']; ?>
-                            </option>
-                          <?php } 
+                          <?php  
                           }
                           ?>
-                        
-                       
                       </select>
                     </div>
                   </div>
@@ -262,7 +243,17 @@ $parent_category_list = $db->get_rsltset($parent_category);
       <!-- end row -->
 
       <?php include("includes/footer.php"); ?>
-
+      <?php if ($res_ed['types'] == 1): ?>
+    <script>
+        $('#subcategory').show();
+        $('#parent_category').show();
+      </script>
+  <?php else: ?>
+      <script>
+          $('#subcategory').hide();
+          $('#parent_category').hide();
+      </script>
+  <?php endif; ?>
       <script type="text/javascript">
         $(document).ready(function () {
           $(document).on('keyup', '#titlename', function (e) {
@@ -276,11 +267,13 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
             var types = $(this).val();
               if(types == 2){
-                $('.subcategory').css('display','none');
+                $('#subcategory').hide();
+                $('#parent_category').hide();
+              }else{
+                $('#subcategory').show();
+                $('#parent_category').show();
               }
-              else{
-                $('.subcategory').css('display','inline-block');
-              }
+            
           })
 
         });

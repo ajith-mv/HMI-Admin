@@ -616,6 +616,7 @@
 				var _URL = window.URL || window.webkitURL;
 				var file, img;
 				var image = $('input[name=cat_image]')[0].files[0];
+				if (image && image.files && image.files.length > 0) {
 				img = new Image();
 				var objectUrl = _URL.createObjectURL(image);
 				img.onload = function () {
@@ -628,6 +629,7 @@
 					}
 				};
 				img.src = objectUrl;
+			    }
 			}
 
 			if ($frm == 'frmgallerycategories') {
