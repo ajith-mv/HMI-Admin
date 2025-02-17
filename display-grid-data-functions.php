@@ -660,67 +660,80 @@ function getEnquiriesArray_tot($db, $act = null, $whrcon = null, $ordr = null, $
 	if ($_SESSION["shlid"] != 1) {
 		//	$cond_school =" and ".tbl_contact.".shlid='".$_SESSION["shlid"]."' ";
 	}
+		$str_all = "SELECT DATE_FORMAT(" . tbl_contact . ".createdate, '%d-%m-%Y') as date,
+		" . tbl_contact . ".cid, 
+		" . tbl_contact . ".name, 
+		" . tbl_contact . ".email, 
+		" . tbl_contact . ".phone, 
+		" . tbl_contact . ".message 
+		FROM " . tbl_contact; 
 
-	$str_all = "select *  from " . tbl_contact . "," . tbl_schoolsname . "  where " . tbl_contact . ".isactive <> 2 " . $cond_school . " ";
+		if (!empty($whrcon)) {
+		$str_all .= " " . $whrcon; // Ensure proper spacing
+		}
 
-	// if($whrcon != ""){
-	// 	$str_all .= $whrcon;	
-	// 	$str_all .= " group by ".tbl_contact.".cid "; 
-	// }
+		if (!empty($cond_school)) {
+		$str_all .= " AND " . $cond_school;
+		}
 
-	$res = $db->get_rsltset($str_all);
+		// Group and order
+		//$str_all .= " GROUP BY " . tbl_contact . ".cid";
+		if (!empty($ordr)) {
+		$str_all .= " " . $ordr; // Ensure spacing
+		}
 
+		// Pagination
+		if (!empty($stt) && !empty($len)) {
+		$str_all .= " LIMIT " . intval($stt) . ", " . intval($len);
+		}
+
+     	$res = $db->get_rsltset($str_all);
 	return count($res);
 }
 
 function getEnquiriesArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt = null, $len = null)
 {
-	$cond_school = '';
+	$cond_school = "";
+		if ($_SESSION["shlid"] != 1) {
+			// $cond_school = " AND " . tbl_contact . ".shlid='" . $_SESSION["shlid"] . "' ";
+		}
+		// Start query with SELECT
+		$str_all = "SELECT DATE_FORMAT(" . tbl_contact . ".createdate, '%d-%m-%Y') as date,
+					" . tbl_contact . ".cid, 
+					" . tbl_contact . ".name, 
+					" . tbl_contact . ".email, 
+					" . tbl_contact . ".phone, 
+					" . tbl_contact . ".message 
+					FROM " . tbl_contact; 
+				
+		if (!empty($whrcon)) {
+			$str_all .= " " . $whrcon; // Ensure proper spacing
+		}
 
-	if ($_SESSION["shlid"] != 1) {
-		//	$cond_school =" and ".tbl_contact.".shlid='".$_SESSION["shlid"]."' ";
-	}
+		if (!empty($cond_school)) {
+			$str_all .= " AND " . $cond_school;
+		}
 
-	//$str_all = "select " . tbl_contact . ".cid, " . tbl_contact . ".name, " . tbl_contact . ".email, " . tbl_contact . ".phone, " . tbl_contact . ".message, shlname , DATE_FORMAT(" . tbl_contact . ".createdate,'%d-%m-%Y') as date from " . tbl_contact . "," . tbl_schoolsname . "  where " . tbl_contact . ".isactive <> 2 " . $cond_school . " ";
+		// Group and order
+		//$str_all .= " GROUP BY " . tbl_contact . ".cid";
+     	if (!empty($ordr)) {
+			$str_all .= " " . $ordr; // Ensure spacing
+		}
 
+		// Pagination
+		if (!empty($stt) && !empty($len)) {
+			$str_all .= " LIMIT " . intval($stt) . ", " . intval($len);
+		}
 
-	$str_all = "select DATE_FORMAT(" . tbl_contact . ".createdate,'%d-%m-%Y') as date, " . tbl_contact . ".cid, " . tbl_contact . ".name, " . tbl_contact . ".email, " . tbl_contact . ".phone, " . tbl_contact . ".message from " . tbl_contact . "  where " . tbl_contact . ".isactive <> 2 ";
-
-
-
-	// " . tbl_contact . ".*
-
-	// print_r($str_all);
-	// die();
-
-	$rescntchk = $db->get_rsltset($str_all);
-
-
-
-	// if($whrcon != "")
-	// $str_all .= $whrcon;	
-
-	$totalFiltered = $totalData;
-	$str_all .= " group by " . tbl_contact . ".cid ";
-	if (trim($ordr) != "")
-		$str_all .= $ordr;
-
-	if ($stt != "")
-		$str_all .= "limit " . $stt . "," . $len;
-	//echo  $str_all; exit;		
-	$res = $db->get_rsltset($str_all);
-
+		// Debugging: Print the final SQL query (remove in production)
 
 
-	$totalData = count($rescntchk);
-	$totalFiltered = $totalData;  // when there is no search parameter then total number rows = total number filtered rows.
+		$res = $db->get_rsltset($str_all);
+		return $res;
 
-	return $res;
+		
+		
 }
-//Cantact Enquiries end
-
-
-
 // Career Enquiries START
 function getCareerArray_tot($db, $act = null, $whrcon = null, $ordr = null, $stt = null, $len = null)
 {

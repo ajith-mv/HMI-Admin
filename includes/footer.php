@@ -334,7 +334,7 @@
 					url: "display-grid-data.php?finaltab=" + $('#disptblname').val() + frmid + '&autoid=' + autoid, // json datasource				 
 					type: "post",
 					error: function () {
-						$("#tblresult").append('<tbody class="employee-grid-error"><tr><th colspan="4">No data found in the server</th></tr></tbody>');
+						//$("#tblresult").append('<tbody class="employee-grid-error"><tr><th colspan="4">No data found in the server</th></tr></tbody>');
 						unloading();
 					}
 				},

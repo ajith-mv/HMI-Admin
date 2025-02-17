@@ -266,28 +266,26 @@ switch ($_REQUEST['finaltab']) {
 		break;
 
 	case "enquiries":
-
-		$dispFields = array("date", "name", "email", "phone", "message");
-
-		$disporder_ID = "cid";
-
-		$mdme = getMdmeEnquiries($db, '');
-
-		//$wrcon .= " and (name like '%".$requestData['search']['value']."%' or email like '%".$requestData['search']['value']."%' or phone like '%".$requestData['search']['value']."%' or cover_letter like '%".$requestData['search']['value']."%')";	
-
-
-		//$order_clmn = $requestData['order'][0]['column'];
-		//$order_oper = $requestData['order'][0]['dir'];			
-		$ordr = " order by cid desc ";
-
-		$totalData = getEnquiriesArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
-
-
-
-		$res = getEnquiriesArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
-		break;
-
-
+			$dispFields = array("date", "name", "email", "phone", "message");
+			$disporder_ID = "cid";
+			$mdme = getMdmeEnquiries($db, '');
+			$wrcon = " WHERE " . tbl_contact . ".isactive <> 2 ";
+		
+			if (!empty($requestData['search']['value'])) {
+				$searchValue = trim($requestData['search']['value']);
+				$wrcon .= " AND (name LIKE '%$searchValue%' 
+							 OR email LIKE '%$searchValue%' 
+							 OR phone LIKE '%$searchValue%' 
+							 OR message LIKE '%$searchValue%') ";
+			}
+			
+			$ordr = " ORDER BY cid DESC ";
+		
+			$totalData = getEnquiriesArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
+			$res = getEnquiriesArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
+		
+		
+	    break;		
 	case "career":
 
 		$dispFields = array("createddate", "name", "email", "phone", "applyfor", "cover_letter");
@@ -464,7 +462,7 @@ foreach ($res as $r) {
 
 	$delurl = "'" . $_REQUEST['finaltab'] . "_actions.php','Id=$editid&action=del'";
 	$delstat = '<a href="javascript:void(0);" title="delete" data-toggle="tooltip" class="btn btn-danger btn-xs" onClick="javascript:funStats(this,' . $delurl . ')" >
-				<i class="fa fa-times"></i>
+				<i class="fa fa-trash"></i>
 			  </a>';
 
 
