@@ -208,7 +208,7 @@ include "common/dpselect-functions.php";
 
                     <div class="col-md-9">
                       <input placeholder="Date"
-                        value="<?php echo ($res_ed['newsdate'] != '' && $res_ed['newsdate'] != '0000-00-00') ? date('d-m-Y', strtotime($res_ed['newsdate'])) :  date('d-m-Y'); ?>"
+                        value="<?php echo ($res_ed['newsdate'] != '' && $res_ed['newsdate'] != '0000-00-00') ? date('d-m-Y', strtotime($res_ed['newsdate'])) : date('d-m-Y'); ?>"
                         required name="newsdate" id="newsdate" class="form-control datepicker" type="text" readonly>
                       <span class="font-13 text-muted">dd-mm-yyyy</span>
                     </div>
@@ -224,8 +224,7 @@ include "common/dpselect-functions.php";
                   <div class="form-group">
                     <label class="col-md-3 control-label">Description</label>
                     <div class="col-md-9">
-
-                      <textarea id="elm1" name="newsdesc"><?php echo $res_ed['newsdescription']; ?></textarea>
+                      <textarea id="elm2" name="newsdesc"><?php echo $res_ed['newsdescription']; ?></textarea>
                     </div>
 
                   </div>
