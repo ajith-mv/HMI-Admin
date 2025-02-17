@@ -1,0 +1,315 @@
+<?php
+include 'session.php';
+extract($_REQUEST);
+$act = $action;
+
+error_reporting(1);
+
+if ($chkstatus != null)
+	$status = 1;
+else
+	$status = 0;
+
+include 'includes/image_thumb.php';
+
+
+function slugify($text)
+{
+	// replace non letter or digits by -
+	$text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+	// transliterate
+	$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+	// remove unwanted characters
+	$text = preg_replace('~[^-\w]+~', '', $text);
+
+	// trim
+	$text = trim($text, '-');
+
+	// remove duplicated - symbols
+	$text = preg_replace('~-+~', '-', $text);
+
+	// lowercase
+	$text = strtolower($text);
+
+	if (empty($text)) {
+		return 'n-a';
+	}
+
+	return $text;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$created = date('Y-m-d H:i:s');
+
+$getsize = getimagesize_large($db, 'newsevents', 'thumb');
+$sizes = getdynamicimage($db, 'newsevents');
+$imageval = explode('-', $getsize);
+$imgheight = $imageval[1];
+$imgwidth = $imageval[0];
+
+if (file_exists($_FILES['newsimage']['tmp_name']) || is_uploaded_file($_FILES['newsimage']['tmp_name'])) {
+	list($width, $height, $type, $attr) = getimagesize($_FILES["newsimage"]['tmp_name']);
+}
+
+if ($status == '') {
+	$status = 0;
+}
+
+if ($ishome == '') {
+	$ishome = 0;
+}
+
+if ($newsdate == '') {
+	$newsdate = '0000-00-00';
+} else {
+	$newsdate = date('Y-m-d', strtotime($newsdate));
+}
+
+// echo $newsdate; exit;
+switch ($act) {
+	case 'insert':
+
+		if (!empty($titlename)) {
+
+
+			if (isset($_FILES["newsimage"])) {
+
+				$test = explode('.', $_FILES['newsimage']['name']);
+
+				$extension = end($test);
+
+				$test_file = $_FILES['newsimage']['name'];
+
+				$file_wo_extension = substr($test_file, 0, strrpos($test_file, '.'));
+
+				$filename = $file_wo_extension . '-' . rand(100, 999) . '.' . $extension;
+
+				$location = '../uploads/newsevents/' . $filename;
+
+				move_uploaded_file($_FILES['newsimage']['tmp_name'], $location);
+			}
+
+
+			$schools_selected = 1;
+
+			$slug = slugify($titlename);
+
+			$sql = "INSERT INTO " . tbl_newsevents . " (school_id, newstitle, slug, newsimage, newsdate, short_desc, newsdescription, catid,meta_title,meta_desc,ishome, isactive, userid) 
+				VALUES ('$schools_selected', '" . getRealescape($titlename) . "', '$slug', '$filename', '$newsdate', '" . getRealescape($short_desc) . "', '" . getRealescape($newsdesc) . "','$catid','" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','$ishome','$chkstatus', '1')";
+
+
+			$status = $db->insert($sql);
+
+			if ($status === TRUE) {
+
+				if ($status == 1) {
+
+					echo json_encode(array("rslt" => "1")); //success
+
+				} else {
+
+					echo json_encode(array("rslt" => "3")); //same exists
+
+				}
+			} else {
+
+				echo json_encode(array("rslt" => "8", 'msg' => 'Image Size should be ' . $imgwidth . ' & ' . $imgheight . ' or Ratio (' . round($imgheight / $imgwidth) . ': ' . round($imgheight % $imgwidth) . ') size not matched'));  //no values
+
+			}
+
+		} else {
+
+			echo json_encode(array("rslt" => "4"));  //no values
+
+		}
+
+		break;
+
+
+	case 'update':
+
+		$today = date("Y-m-d");
+		if (!empty($titlename)) {
+
+
+
+			$strChk = "select count(newsid) from " . tbl_newsevents . " where newstitle = '" . getRealescape($titlename) . "' and isactive != '2' and newsid != '" . $edit_id . "' ";
+			$reslt = $db->get_a_line($strChk);
+			if ($reslt[0] == 0) {
+
+				$str = "update " . tbl_newsevents . " set newstitle = '" . getRealescape($titlename) . "', ";
+
+
+
+
+				if (isset($_FILES["newsimage"])) {
+					if ($width >= $imgwidth && $height >= $imgheight) {
+						//validate image file allowed (jpg,png,gif)
+						$file_info = getimagesize($_FILES["newsimage"]['tmp_name']);
+						$file_mime = explode('/', $file_info['mime']);
+						if (!in_array($file_mime[1], array('jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'))) {
+							echo json_encode(array("rslt" => "7"));
+							exit();
+						}
+
+						$exten = $_FILES["newsimage"]["type"];
+
+						$obj = new Gthumb();
+						$path = $obj->resize_image($sizes, 'newsevents', $exten, $_FILES['newsimage']);
+						$strph = " ,newsimage='" . $path . "'";
+					} else {
+						echo json_encode(array("rslt" => "8", 'msg' => 'Image Size should be ' . $imgwidth . ' & ' . $imgheight . ' or ratio size not matched'));  //no values
+						exit();
+					}
+				}
+
+				$schools_selected = 1;
+
+				$slug = slugify($titlename);
+
+				$str .= " slug = '" . $slug . "',school_id = '" . $schools_selected . "', newsdescription='" . getRealescape($newsdesc) . "', short_desc='" . getRealescape($short_desc) . "',meta_title='" . getRealescape($meta_title) . "',meta_desc='" . getRealescape($meta_desc) . "',catid='" . $catid . "',ishome='" . $ishome . "', newsdate='" . $newsdate . "',isactive = '" . $status . "' $strph,userid='" . $_SESSION["UserId"] . "' where newsid = '" . $edit_id . "'";
+
+				$db->insert_log("update", "" . tbl_newsevents . "", $edit_id, "news updated", "newsevents", $str);
+				$db->insert($str);
+
+				echo json_encode(array("rslt" => "2"));
+			} else {
+				echo json_encode(array("rslt" => "3")); //same exists
+			}
+		} else {
+			echo json_encode(array("rslt" => "4"));  //no values
+		}
+
+		break;
+
+	case 'moreimage':
+
+		//echo count($_FILES["gallerymoreimage"]["name"]);
+		//echo 'asdasd';
+		//exit;
+
+		$a = 1;
+
+		for ($i = 0; $i < count($_FILES["gallerymoreimage"]["name"]); $i++) {
+			if ($_FILES["gallerymoreimage"]["name"][$i] != '') {
+				$_FILES["gallerymoreimage"]["name"][$i] . "<br>";
+				$extension = $_FILES["gallerymoreimage"]["type"][$i];
+
+
+
+				$obj = new Gthumb();
+				$path = $obj->resize_image_bulk($sizes, 'newsevents', $extension, $_FILES['gallerymoreimage'], $i);
+
+				if ($path != '') {
+					$str = "INSERT INTO  " . tbl_moreimg . "(newsid,imgname,imgorder,isactive,userid) values
+								('" . $edit_id . "','" . $path . "','" . $a . "',1,'" . $_SESSION["UserId"] . "') ";
+
+
+					$rslt = $db->insert($str);
+					$log = $db->insert_log("insert", "" . tbl_moreimg . "", "", "News Image Added Newly", "news", $str);
+				}
+			}
+		}
+		echo json_encode(array("rslt" => "1")); //success
+
+		break;
+
+
+
+	case "moreimageupdate":
+
+		$var = explode(',', $productimgid);
+
+
+
+		foreach ($var as $i) {
+			//	 $str = "INSERT INTO  ".tbl_gallery_img."(galleryid,imgname,imgorder,isactive,userid,createdDate) values
+			if ($_REQUEST["imagestatus" . $i] != "") {
+				$getimg = $db->get_a_line("select * from " . tbl_moreimg . " where moreimgid='" . $_REQUEST['image' . $i . 'id'] . "'");
+				$getsiz = $db->get_rsltset("select  foldername from " . tbl_imageconfig . " where Isactive = 1 and imageconfigModule = 'newsevents'");
+
+
+
+				foreach ($getsiz as $sizval) {
+
+					unlink("../uploads/" . $sizval['foldername'] . "/" . $getimg['imgname']);
+					unlink("../uploads/" . $getimg['imgname']);
+				}
+
+				$sql1 = " imgname='',";
+				$log = $db->insert_log("deleted", "" . tbl_moreimg . "", "", "News Image deleted", "news", $str);
+
+				$delQry = "delete from " . tbl_moreimg . " where moreimgid=" . $_REQUEST['image' . $i . 'id'];
+
+				//echo $delQry;	exit();
+
+				$db->insert("delete from " . tbl_moreimg . " where moreimgid='" . $_REQUEST['image' . $i . 'id'] . "'");
+
+			} else {
+				$sql1 = " imgname='" . $_REQUEST['productim' . $i] . "',";
+				if ($_REQUEST['status' . $i] == '')
+					$statuss = '0';
+				else
+					$statuss = $_REQUEST['status' . $i];
+
+				$str1 = $db->insert("update " . tbl_moreimg . " set imgorder='" . $_REQUEST['image1order' . $i] . "',imagetitle='" . $_REQUEST['image1title' . $i] . "',$sql1 Isactive='" . $statuss . "' where moreimgid='" . $_REQUEST['image' . $i . 'id'] . "'");
+
+			}
+		}
+
+		$log = $db->insert_log("insert", "" . tbl_moreimg . "", "", "Updated", "news", $str);
+		echo json_encode(array("rslt" => "2")); //success
+		break;
+
+
+	case 'del':
+
+		$edit_id = base64_decode($Id);
+
+		$today = date("Y-m-d");
+
+		$str = "update " . tbl_newsevents . " set isactive = '2',userid='" . $_SESSION["UserId"] . "' where newsid = '" . $edit_id . "'";
+
+
+		$db->insert($str);
+		echo json_encode(array("rslt" => "5")); //deletion
+
+
+		break;
+
+	case 'changestatus':
+		$edit_id = base64_decode($Id);
+		$today = date("Y-m-d");
+		$status = $actval;
+
+		$str = "update " . tbl_newsevents . " set isactive = '" . $status . "',userid='" . $_SESSION["UserId"] . "' where newsid = '" . $edit_id . "'";
+		//echo $str; exit;
+		$db->insert_log("status", "" . tbl_newsevents . "", $edit_id, "news Status", "news", $str);
+		$db->insert($str);
+
+		echo json_encode(array("rslt" => "6")); //status update success
+
+		break;
+
+
+
+
+}
+
+
+
+?>
