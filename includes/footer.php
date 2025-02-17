@@ -585,18 +585,24 @@
 				m_data.append('user_photo', $('input[name=user_photo]')[0].files[0]);
 			}
 
-			if ($frm == 'frmnewsevents') {
+			if ($frm === 'frmnewsevents') {
+				if (tinyMCE) {
+					var editor1 = tinyMCE.get("elm1");
+					var editor2 = tinyMCE.get("elm2");
+					
+					if (editor1 && editor2) {
+						var shortdescription = editor1.getContent({ format: 'html' });
+						var content = editor2.getContent({ format: 'html' });
 
-				var shortdescription = tinyMCE.get("elm1").getContent({ format: 'html' });
+						m_data.append('newsdesc', content);
+						m_data.append('short_desc', shortdescription);
 
-				var content = tinyMCE.get("elm2").getContent({ format: 'html' });
-
-				m_data.append('newsdesc', content);
-				m_data.append('short_desc', shortdescription);
+					} else {
+						console.error("TinyMCE editor instances not found for elm1 and/or elm2.");
+					}
+			    }
 				m_data.append('newsimage', $('input[name=newsimage]')[0].files[0]);
-
-			}
-
+            }
 			if ($frm == 'frmnewseventscat') {
 
 				var shortdescription = tinyMCE.get("elm1").getContent({ format: 'html' });
@@ -785,13 +791,11 @@
 	});
 
 </script>
-
-<!-- <script>
+<script>
 	$(document).ready(function () {
-
 		tinymce.init({
-			selector: 'textarea#elm2'
+			selector: '#elm1, #elm2',
 		});
 	});
 
-</script> -->
+</script>

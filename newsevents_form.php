@@ -208,7 +208,7 @@ include "common/dpselect-functions.php";
 
                     <div class="col-md-9">
                       <input placeholder="Date"
-                        value="<?php echo ($res_ed['newsdate'] != '' && $res_ed['newsdate'] != '0000-00-00') ? date('d-m-Y', strtotime($res_ed['newsdate'])) : ''; ?>"
+                        value="<?php echo ($res_ed['newsdate'] != '' && $res_ed['newsdate'] != '0000-00-00') ? date('d-m-Y', strtotime($res_ed['newsdate'])) :  date('d-m-Y'); ?>"
                         required name="newsdate" id="newsdate" class="form-control datepicker" type="text" readonly>
                       <span class="font-13 text-muted">dd-mm-yyyy</span>
                     </div>
