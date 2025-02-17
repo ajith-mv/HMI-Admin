@@ -55,7 +55,7 @@ if ($id != "") {
   $btn = 'Save';
 }
 
-$parent_category = "select * from " . tbl_careerlisting . "  where isactive != '2' ";
+$parent_category = "select * from " . tbl_careerlisting . "  where isactive != '2' and isactive = '1' ";
 $parent_category_list = $db->get_rsltset(sqlqry: $parent_category);
 
 $category = "select * from " . tbl_newscategory . "  where isactive != '2' and subcategory = '0' ";
