@@ -103,7 +103,7 @@ include "common/dpselect-functions.php"; ?>
 
 
                   <div class="form-group">
-                    <label class="col-md-3 control-label">Color Code </label>
+                    <label class="col-md-3 control-label">Color </label>
                     <div class="col-md-6">
                       <input type="color" class="form-control" required name="job_type" id="job_type"
                         value="<?php echo $res_ed['job_type']; ?>" />
@@ -201,6 +201,10 @@ include "common/dpselect-functions.php"; ?>
             var color = $(this).val();
             $('#job_type').val(color);
           })
+
+          $("#job_type").on("input", function () {
+            $("#color").val($(this).val());
+          });
 
         });
       </script>
