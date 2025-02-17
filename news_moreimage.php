@@ -210,7 +210,8 @@ $countgetimages = $db->get_rsltset("select count(*) from  ".tbl_moreimg." where 
 jQuery(document).ready(function(){	
  
  	$("#gallerymoreimage").filer({	
-	filesLimit : 5,	
+    limit: 6,
+    maxSize: 5,
 		showThumbs: true,		
 		extensions: ['jpg', 'jpeg', 'png', 'gif', 'webp','jfif'],
 		
@@ -267,7 +268,13 @@ jQuery(document).ready(function(){
 					list: '.jFiler-items-list',
 					item: '.jFiler-item',
 					remove: '.jFiler-item-trash-action'
-				}
+				},
+        onSelect: function(files) {
+            if ($("#gallerymoreimage")[0].files.length > 6) {
+                alert("You can only upload up to 6 files!");
+                $("#gallerymoreimage").val(""); 
+            }
+        }
 		}
 	});
 });
