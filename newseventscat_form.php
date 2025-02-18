@@ -282,6 +282,17 @@ $parent_category_list = $db->get_rsltset($parent_category);
               }
           })
 
+          $(document).on('change', '#subcategory', function (e) {
+            
+              var types = $(this).val();
+              if(types == 0){
+                $('#home').show();
+              }else{
+                $('#home').hide();
+              }
+
+          })
+
         });
       </script>
 
