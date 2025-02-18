@@ -230,13 +230,10 @@ switch ($_REQUEST['finaltab']) {
 		$disporder_ID = "id";
 		// $mdme = getMdmeStaffListing($db,''); 
 
-		$wrcon .= " and ( job_type like '%" . $requestData['search']['value'] . "%' or qualifications like '%" . $requestData['search']['value'] . "%')";
+		$wrcon .= " and ( job_type like '%" . $requestData['search']['value'] . "%' or title like '%" . $requestData['search']['value'] . "%')";
 
 
 		$ordr = " order by id desc ";
-
-
-
 
 		$totalData = getCareerlistingArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
 		$res = getCareerlistingArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
@@ -266,26 +263,26 @@ switch ($_REQUEST['finaltab']) {
 		break;
 
 	case "enquiries":
-			$dispFields = array("date", "name", "email", "phone", "message");
-			$disporder_ID = "cid";
-			$mdme = getMdmeEnquiries($db, '');
-			$wrcon = " WHERE " . tbl_contact . ".isactive <> 2 ";
-		
-			if (!empty($requestData['search']['value'])) {
-				$searchValue = trim($requestData['search']['value']);
-				$wrcon .= " AND (name LIKE '%$searchValue%' 
+		$dispFields = array("date", "name", "email", "phone", "message");
+		$disporder_ID = "cid";
+		$mdme = getMdmeEnquiries($db, '');
+		$wrcon = " WHERE " . tbl_contact . ".isactive <> 2 ";
+
+		if (!empty($requestData['search']['value'])) {
+			$searchValue = trim($requestData['search']['value']);
+			$wrcon .= " AND (name LIKE '%$searchValue%' 
 							 OR email LIKE '%$searchValue%' 
 							 OR phone LIKE '%$searchValue%' 
 							 OR message LIKE '%$searchValue%') ";
-			}
-			
-			$ordr = " ORDER BY cid DESC ";
-		
-			$totalData = getEnquiriesArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
-			$res = getEnquiriesArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
-		
-		
-	    break;		
+		}
+
+		$ordr = " ORDER BY cid DESC ";
+
+		$totalData = getEnquiriesArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
+		$res = getEnquiriesArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
+
+
+		break;
 	case "career":
 
 		$dispFields = array("createddate", "name", "email", "phone", "applyfor", "cover_letter");
