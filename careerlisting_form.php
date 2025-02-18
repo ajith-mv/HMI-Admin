@@ -97,7 +97,7 @@ include "common/dpselect-functions.php"; ?>
                     <label class="col-md-3 control-label">Color Name </label>
                     <div class="col-md-6">
                       <input type="text" class="form-control" required name="job_title" id="job_title"
-                        value="<?php echo $res_ed['title']; ?>" />
+                        value="<?php echo $res_ed['title']; ?>" min="3" max="15" />
                     </div>
                   </div>
 
@@ -113,7 +113,7 @@ include "common/dpselect-functions.php"; ?>
                   <div class="form-group">
                     <label class="col-md-3 control-label">Color Code </label>
                     <div class="col-md-6">
-                      <input type="text" class="form-control" name="color" id="color"
+                      <input type="text" class="form-control" name="color" id="color" min="7" max="7"
                         value="<?php echo $res_ed['job_type']; ?>" />
                     </div>
                   </div>
