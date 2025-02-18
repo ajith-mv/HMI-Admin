@@ -224,7 +224,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
                       <button class="btn btn-default waves-effect m-l-5" type="reset"
                         onClick="javascript:funCancel('frmnewseventscat','jvalidate','news events cat','newscategories_mng.php');">Cancel</button>
                       <button class="btn btn-primary waves-effect waves-light" id="submit-form" type="button"
-                        onClick="javascript:funSubmtWithImg('frmnewseventscat','newseventscat_actions.php','jvalidate','news events cat','newscategories_mng.php');"><span
+                        onClick="javascript:funSubmtWithImg('frmnewseventscat','newseventscat_actions.php','jvalidate','Category','newscategories_mng.php');"><span
                           id="spSubmit"><i class="fa fa-save"></i> <?php echo $btn; ?></span></button>
                     </div>
                   </div>

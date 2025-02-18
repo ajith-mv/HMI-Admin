@@ -277,9 +277,9 @@ include "common/dpselect-functions.php";
                     <div class="col-sm-offset-3 col-sm-9 m-t-15">
 
                       <button class="btn btn-default waves-effect m-l-5" type="reset"
-                        onClick="javascript:funCancel('frmgallerycategories','jvalidate','gallery cat','gallerycategories_mng.php');">Cancel</button>
+                        onClick="javascript:funCancel('frmgallerycategories','jvalidate','Products','gallerycategories_mng.php');">Cancel</button>
                       <button class="btn btn-primary waves-effect waves-light" id="submit-form" type="button"
-                        onClick="javascript:funSubmtWithImg('frmgallerycategories','gallerycat_actions.php','jvalidate','gallery cat','gallerycategories_mng.php');"><span
+                        onClick="javascript:funSubmtWithImg('frmgallerycategories','gallerycat_actions.php','jvalidate','Products','gallerycategories_mng.php');"><span
                           id="spSubmit"><i class="fa fa-save"></i> <?php echo $btn; ?></span></button>
                     </div>
                   </div>
