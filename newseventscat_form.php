@@ -198,6 +198,8 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
                   </div>
 
+                  <?php if($res_ed['subcategory'] == 0) { ?>
+
                   <div class="form-group">
                     <label class="col-md-3 control-label">Show on Home</label>
                     <div class="col-md-9">
@@ -208,6 +210,8 @@ $parent_category_list = $db->get_rsltset($parent_category);
                       </div>
                     </div>
                   </div>
+
+                  <?php } ?>
 
                   <div class="form-group">
                     <label class="col-md-3 control-label">Status</label>
