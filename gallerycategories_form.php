@@ -225,7 +225,7 @@ include "common/dpselect-functions.php";
                   <div class="form-group">
                     <label class="col-md-3 control-label">Hardware Color *</label>
                     <div class="col-md-9">
-                      <select class="form-control" name="hardware_color" id="hardware_color">
+                      <select class="form-control select2" name="hardware_color" id="hardware_color">
                         <option>Select Hardware Color</option>
                         <?php foreach ($parent_category_list as $color) { ?>
                           <option value="<?php echo $color['id']; ?>" <?php if ($color['id'] == $res_ed['hardware_color']) {
