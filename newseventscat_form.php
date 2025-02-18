@@ -200,7 +200,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
                   <?php if($res_ed['subcategory'] == 0) { ?>
 
-                  <div class="form-group">
+                  <div class="form-group" id="home">
                     <label class="col-md-3 control-label">Show on Home</label>
                     <div class="col-md-9">
                       <div class="pad-tb-7">
@@ -273,11 +273,13 @@ $parent_category_list = $db->get_rsltset($parent_category);
               if(types == 2){
                 $('#subcategory').hide();
                 $('#parent_category').hide();
+                $('#home').hide();
               }else{
                 $('#subcategory').show();
                 $('#parent_category').show();
+                $('#home').show();
+
               }
-            
           })
 
         });
