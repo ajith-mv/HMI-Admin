@@ -158,7 +158,7 @@ switch ($act) {
 
 				}
 
-				$str .= ",description='" . getRealescape($gallerycatdesc) . "',slug='" . getRealescape($slug) . "',category='" . getRealescape($category) . "',color='" . implode(', ', $color) . "',specfic='" . getRealescape($specfic) . "',
+				$str .= ",description='" . getRealescape($gallerycatdesc) . "',slug='" . getRealescape($slug) . "',category='" . getRealescape($category) . "',color='" . (empty($color) ? 'NULL' : implode(', ', $color)) . "',specfic='" . getRealescape($specfic) . "',
 					body_shape='" . getRealescape($body_shape) . "',hardware_color='" . getRealescape($hardware_color) . "',
 					meta_title='" . getRealescape($meta_title) . "',meta_desc='" . getRealescape($meta_desc) . "',modifydate='" . $today . "',isactive = '" . $status . "',userid='" . $_SESSION["UserId"] . "' where catid = '" . $edit_id . "'";
 

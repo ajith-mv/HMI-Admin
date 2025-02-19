@@ -1,11 +1,7 @@
 <?php
-// echo 23;
-// die();
 include 'session.php';
 extract($_REQUEST);
 $act = $action;
-
-error_reporting(1);
 
 if ($chkstatus != null)
 	$status = 1;
@@ -50,11 +46,6 @@ if ($status == '') {
 	$status = 0;
 }
 
-if ($newsdate == '') {
-	$newsdate = '0000-00-00';
-} else {
-	$newsdate = date('Y-m-d', strtotime($newsdate));
-}
 
 // echo $newsdate; exit;
 switch ($act) {
@@ -148,9 +139,6 @@ switch ($act) {
 
 		break;
 
-
-
-
 	case 'del':
 
 		$edit_id = base64_decode($Id);
@@ -159,10 +147,8 @@ switch ($act) {
 
 		$str = "update " . tbl_gallerycategory . " set isactive = '2',userid='" . $_SESSION["UserId"] . "' , modifydate='" . $today . "' where catid = '" . $edit_id . "'";
 
-
 		$db->insert($str);
 		echo json_encode(array("rslt" => "5")); //deletion
-
 
 		break;
 
