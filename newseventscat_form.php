@@ -153,7 +153,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
                       <div class="col-md-8">
                         <input class="form-control product_images <?php if ($act != 'update') { ?>required<?php } ?>"
-                          id="cat_image" name="cat_image" type="file" fi-type="">
+                          id="cat_image" name="cat_image" type="file" fi-type="" required>
                         <span class="help-block"> Allowed Extension ( jpg, png, gif ) <br />
                           Image Size Should be <?php echo $imgwidth . ' * ' . $imgheight; ?></span>
                       </div>
@@ -260,6 +260,8 @@ $parent_category_list = $db->get_rsltset($parent_category);
   <?php endif; ?>
       <script type="text/javascript">
         $(document).ready(function () {
+          $('#cat_image').parsley();
+
           $(document).on('keyup', '#titlename', function (e) {
             var newstitle = $(this).val();
             var url_slug = newstitle.replace(/\s+/g, '-').toLowerCase();
@@ -283,7 +285,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
           })
 
           $(document).on('change', '#subcategory', function (e) {
-            
+
               var types = $(this).val();
               if(types == 0){
                 $('#home').show();
@@ -295,9 +297,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
         });
       </script>
-
     </div>
-    <!-- end container -->
   </div>
 </body>
 
