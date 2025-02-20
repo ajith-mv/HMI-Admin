@@ -502,8 +502,8 @@ function getNoticeArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt
 
 
 	/*
-																																																																														   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																														   */
+																																																																																							   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																							   */
 
 
 
@@ -559,8 +559,8 @@ function getStaffArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt 
 	//echo $str_all;		exit;
 
 	/*
-																																																																														   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																														   */
+																																																																																							   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																							   */
 
 	$rescntchk = $db->get_rsltset($str_all);
 
@@ -626,8 +626,8 @@ function getAnnouncementArray_Ajx($db, $act = null, $whrcon = null, $ordr = null
 
 
 	/*
-																																																																														   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																														   */
+																																																																																							   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																							   */
 
 	$rescntchk = $db->get_rsltset($str_all);
 
@@ -672,20 +672,22 @@ function getEnquiriesArray_tot($db, $act = null, $whrcon = null, $ordr = null, $
 		$str_all .= " " . $whrcon; // Ensure proper spacing
 	}
 
-	if (!empty($cond_school)) {
-		$str_all .= " AND " . $cond_school;
-	}
+	// 	if (!empty($cond_school)) {
+// 		$str_all .= " AND " . $cond_school;
+// 	}
 
-	// Group and order
-	//$str_all .= " GROUP BY " . tbl_contact . ".cid";
 	if (!empty($ordr)) {
 		$str_all .= " " . $ordr; // Ensure spacing
 	}
 
-	// Pagination
-	if (!empty($stt) && !empty($len)) {
-		$str_all .= " LIMIT " . intval($stt) . ", " . intval($len);
-	}
+	// 	if (!empty($stt) && !empty($len)) {
+// 		$str_all .= " LIMIT " . intval($stt) . ", " . intval($len);
+// 	}
+
+	// 	print_r($str_all);
+// 	die();
+
+
 
 	$res = $db->get_rsltset($str_all);
 	return count($res);
@@ -721,9 +723,8 @@ function getEnquiriesArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $
 	}
 
 	// Pagination
-	if (!empty($stt) && !empty($len)) {
-		$str_all .= " LIMIT " . intval($stt) . ", " . intval($len);
-	}
+	if ($stt != "")
+		$str_all .= "limit " . $stt . "," . $len;
 
 	// Debugging: Print the final SQL query (remove in production)
 
@@ -969,16 +970,15 @@ function getCareerlistingArray_tot($db, $act = null, $whrcon = null, $ordr = nul
 		$str_all .= " " . $ordr; // Ensure spacing
 	}
 
-	if (!empty($stt) && !empty($len)) {
-		$str_all .= " LIMIT " . intval($stt) . ", " . intval($len);
-	}
+	if ($stt != "")
+		//$str_all .= "limit " . $stt . "," . $len;
 
-	// print_r($str_all);
-	// die();
+		// print_r($str_all);
+		// die();
 
-	// $res = $db->get_a_line($str_all);
+		// $res = $db->get_a_line($str_all);
 
-	$res = $db->get_rsltset($str_all);
+		$res = $db->get_rsltset($str_all);
 
 	return count($res);
 }

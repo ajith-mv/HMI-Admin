@@ -228,7 +228,7 @@ switch ($_REQUEST['finaltab']) {
 	case "careerlisting":
 		$dispFields = array("title", "job_type");
 		$disporder_ID = "id";
-		// $mdme = getMdmeStaffListing($db,''); 
+		// $mdme = getMdmecareerListing($db, '');
 
 		$wrcon .= " and ( job_type like '%" . $requestData['search']['value'] . "%' or title like '%" . $requestData['search']['value'] . "%')";
 
@@ -279,6 +279,12 @@ switch ($_REQUEST['finaltab']) {
 		$ordr = " ORDER BY cid DESC ";
 
 		$totalData = getEnquiriesArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
+
+
+		// 		print_r($totalData);
+// 		die();
+
+
 		$res = getEnquiriesArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
 
 

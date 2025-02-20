@@ -603,59 +603,7 @@
 				m_data.append('newscatdesc', content);
 
 				m_data.append('short_desc', shortdescription);
-
-				var _URL = window.URL || window.webkitURL;
-				var file, img;
-				var image = $('input[name=cat_image]')[0].files[0];
-				var img = new Image();
-				var objectUrl = URL.createObjectURL(image);
-				img.onload = function () {
-					console.log(img.width + 'x' + img.height);
-					if (img.width < 767 || img.height < 460) {
-						return;
-					} else {
-						if (img.width > 767 || img.height > 460) {
-							resizeImage(img, 767, 460, function (resizedImage) {
-								var finalImageName = 'final_image_name.jpg';
-								var finalImageFile = new File([resizedImage], finalImageName, { type: 'image/jpeg' });
-								m_data.append('cat_image', finalImageFile);
-							});
-						} else {
-							var finalImageName = 'final_image_name.jpg';
-							var finalImageFile = new File([image], finalImageName, { type: image.type });
-							m_data.append('cat_image', finalImageFile);
-						}
-					}
-				};
-				img.src = objectUrl;
-
-				function resizeImage(img, maxWidth, maxHeight, callback) {
-					var canvas = document.createElement('canvas');
-					var ctx = canvas.getContext('2d');
-
-					var width = img.width;
-					var height = img.height;
-
-					if (width > height) {
-						if (width > maxWidth) {
-							height *= maxWidth / width;
-							width = maxWidth;
-						}
-					} else {
-						if (height > maxHeight) {
-							width *= maxHeight / height;
-							height = maxHeight;
-						}
-					}
-					canvas.width = width;
-					canvas.height = height;
-					ctx.drawImage(img, 0, 0, width, height);
-
-					canvas.toBlob(function (blob) {
-						callback(blob);
-					}, 'image/jpeg', 0.9);
-				}
-
+				m_data.append('cat_image', $('input[name=cat_image]')[0].files[0]);
 			}
 
 			if ($frm == 'frmgallerycategories') {
