@@ -96,7 +96,11 @@ switch ($act) {
 
 			$subcategory = $subcategory ?? 0;
 
-			$newsdate = date('Y-m-d', strtotime($newsdate));
+			// $newsdate = date('Y-m-d', strtotime($newsdate));
+
+			$currentDateTime = new DateTime();
+
+			$newsdate = $currentDateTime->format('Y-m-d H:i:s');
 
 			$sql = "INSERT INTO " . tbl_newscategory . " (name, urlslug, types, subcategory, cat_image, short_desc, description,meta_title,meta_desc, ishome, isactive, userid, createddate) 
 				VALUES ('" . getRealescape($titlename) . "','" . getRealescape($urlslug) . "','" . getRealescape($types) . "','" . getRealescape($subcategory) . "','" . getRealescape($filename) . "','" . getRealescape($short_desc) . "','" . getRealescape($newscatdesc) . "','" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','" . getRealescape($ishome) . "','$chkstatus', '1','$newsdate')";
