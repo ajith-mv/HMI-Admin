@@ -94,7 +94,7 @@ switch ($act) {
 			// }
 
 			if (isset($_FILES['newsimage']) && (file_exists($_FILES['newsimage']['tmp_name']) || is_uploaded_file($_FILES['newsimage']['tmp_name']))) {
-				$uploadDir = '../uploads/category/';
+				$uploadDir = '../uploads/newsevents/';
 				$originalPath = $uploadDir . basename($_FILES['newsimage']['name']);
 				$resizedPath = $uploadDir . 'resized-' . basename($_FILES['newsimage']['name']);
 
