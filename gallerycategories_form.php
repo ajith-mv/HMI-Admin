@@ -214,14 +214,14 @@ include "common/dpselect-functions.php";
                     </div>
                   </div>
 
-
+                  <!-- 
                   <div class="form-group">
                     <label class="col-md-3 control-label">Body Shape *</label>
                     <div class="col-md-9">
                       <input type="text" class="form-control" name="body_shape" id="body_shape"
-                        value="<?php echo $res_ed['body_shape']; ?>" />
+                        value="<?php // echo $res_ed['body_shape']; ?>" />
                     </div>
-                  </div>
+                  </div> -->
 
 
                   <div class="form-group">

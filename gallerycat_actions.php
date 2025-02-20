@@ -117,7 +117,7 @@ switch ($act) {
 			'" . getRealescape($filename) . "',
 			'" . getRealescape($category) . "',
 			'" . (empty($color) ? 'NULL' : implode(', ', $color)) . "',
-			'" . (empty($color) ? 'NULL' : getRealescape($gallerycatdesc)) . "',
+			'" . (empty($gallerycatdesc) ? 'NULL' : getRealescape($gallerycatdesc)) . "',
 			'" . (empty($specfic) ? 'NULL' : getRealescape($specfic)) . "',
 			'" . (empty($body_shape) ? 'NULL' : getRealescape($body_shape)) . "',
 			'" . (empty($hardware_color) ? 'NULL' : getRealescape($hardware_color)) . "',
@@ -207,9 +207,10 @@ switch ($act) {
 					}
 				}
 
-
-				$str .= ",description='" . getRealescape($gallerycatdesc) . "',slug='" . getRealescape($slug) . "',category='" . getRealescape($category) . "',color='" . (empty($color) ? 'NULL' : implode(', ', $color)) . "',specfic='" . getRealescape($specfic) . "',
-					body_shape='" . getRealescape($body_shape) . "',hardware_color='" . getRealescape($hardware_color) . "',
+				$str .= ",description='" . (empty($gallerycatdesc) ? 'NULL' : getRealescape($gallerycatdesc)) . "',slug='" . getRealescape($slug) . "',category='" . getRealescape($category) . "',
+				    color='" . (empty($color) ? 'NULL' : implode(', ', $color)) . "',specfic='" . getRealescape($specfic) . "',
+					body_shape='" . (empty($body_shape) ? 'NULL' : getRealescape($body_shape)) . "',
+					hardware_color='" . (empty($hardware_color) ? 'NULL' : getRealescape($hardware_color)) . "',
 					meta_title='" . getRealescape($meta_title) . "',meta_desc='" . getRealescape($meta_desc) . "',modifydate='" . $today . "',isactive = '" . $status . "',userid='" . $_SESSION["UserId"] . "' where catid = '" . $edit_id . "'";
 
 				$db->insert_log("update", "" . tbl_gallerycategory . "", $edit_id, "gallery cat updated", "gallerycat", $str);
