@@ -3,7 +3,7 @@ include 'session.php';
 extract($_REQUEST);
 $act = $action;
 
-error_reporting(1);
+error_reporting(E_ALL);
 
 if ($chkstatus != null)
 	$status = 1;
@@ -12,6 +12,9 @@ else
 
 include 'includes/image_thumb.php';
 
+include 'imgsize.php';
+
+$filename = '';
 
 function slugify($text)
 {
@@ -42,21 +45,12 @@ function slugify($text)
 
 $created = date('Y-m-d H:i:s');
 
-if (file_exists($_FILES['cat_image']['tmp_name']) || is_uploaded_file($_FILES['cat_image']['tmp_name'])) {
-	list($width, $height, $type, $attr) = getimagesize($_FILES["cat_image"]['tmp_name']);
-}
 
 if ($status == '') {
 	$status = 0;
 }
 
-if ($newsdate == '') {
-	$newsdate = '0000-00-00';
-} else {
-	$newsdate = date('Y-m-d', strtotime($newsdate));
-}
 
-// echo $newsdate; exit;
 switch ($act) {
 	case 'insert':
 
@@ -66,26 +60,43 @@ switch ($act) {
 				$ishome = 0;
 			}
 
-			if (isset($_FILES["cat_image"])) {
+			// if (isset($_FILES["cat_image"])) {
 
-				$test = explode('.', $_FILES['cat_image']['name']);
+			// 	$test = explode('.', $_FILES['cat_image']['name']);
 
-				$extension = end($test);
+			// 	$extension = end($test);
 
-				$test_file = $_FILES['cat_image']['name'];
+			// 	$test_file = $_FILES['cat_image']['name'];
 
-				$file_wo_extension = substr($test_file, 0, strrpos($test_file, '.'));
+			// 	$file_wo_extension = substr($test_file, 0, strrpos($test_file, '.'));
 
-				$filename = $file_wo_extension . '-' . rand(100, 999) . '.' . $extension;
+			// 	$filename = $file_wo_extension . '-' . rand(100, 999) . '.' . $extension;
 
-				$location = '../uploads/category/' . $filename;
+			// 	$location = '../uploads/category/' . $filename;
 
-				move_uploaded_file($_FILES['cat_image']['tmp_name'], $location);
+			// 	move_uploaded_file($_FILES['cat_image']['tmp_name'], $location);
+			// }
+
+			if (isset($_FILES['cat_image']) && (file_exists($_FILES['cat_image']['tmp_name']) || is_uploaded_file($_FILES['cat_image']['tmp_name']))) {
+				$uploadDir = '../uploads/category/';
+				$originalPath = $uploadDir . basename($_FILES['cat_image']['name']);
+				$resizedPath = $uploadDir . 'resized-' . basename($_FILES['cat_image']['name']);
+
+				if (move_uploaded_file($_FILES['cat_image']['tmp_name'], $originalPath)) {
+					$maxWidth = 767;
+					$maxHeight = 460;
+					$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+				} else {
+					echo json_encode(["rslt" => "error", "msg" => "Image upload failed."]);
+					exit;
+				}
 			}
 
 			$urlslug = slugify($url_slug);
 
 			$subcategory = $subcategory ?? 0;
+
+			$newsdate = date('Y-m-d', strtotime($newsdate));
 
 			$sql = "INSERT INTO " . tbl_newscategory . " (name, urlslug, types, subcategory, cat_image, short_desc, description,meta_title,meta_desc, ishome, isactive, userid, createddate) 
 				VALUES ('" . getRealescape($titlename) . "','" . getRealescape($urlslug) . "','" . getRealescape($types) . "','" . getRealescape($subcategory) . "','" . getRealescape($filename) . "','" . getRealescape($short_desc) . "','" . getRealescape($newscatdesc) . "','" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','" . getRealescape($ishome) . "','$chkstatus', '1','$newsdate')";
@@ -132,30 +143,34 @@ switch ($act) {
 			if ($reslt[0] == 0) {
 
 				$str = "update " . tbl_newscategory . " set name = '" . getRealescape($titlename) . "', ";
+				$strph = '';
 
-				if (isset($_FILES["cat_image"])) {
+				// if (isset($_FILES["cat_image"])) {
 
-					$test = explode('.', $_FILES['cat_image']['name']);
+				if (isset($_FILES['cat_image']) && (file_exists($_FILES['cat_image']['tmp_name']) || is_uploaded_file($_FILES['cat_image']['tmp_name']))) {
+					$uploadDir = '../uploads/category/';
+					$originalPath = $uploadDir . basename($_FILES['cat_image']['name']);
+					$resizedPath = $uploadDir . 'resized-' . basename($_FILES['cat_image']['name']);
 
-					$extension = end($test);
+					if (move_uploaded_file($_FILES['cat_image']['tmp_name'], $originalPath)) {
+						$maxWidth = 767;
+						$maxHeight = 460;
+						$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
 
-					$test_file = $_FILES['cat_image']['name'];
+						$strph = ",cat_image='" . getRealescape($filename) . "'";
 
-					$file_wo_extension = substr($test_file, 0, strrpos($test_file, '.'));
-
-					$filename = $file_wo_extension . '-' . rand(100, 999) . '.' . $extension;
-
-					$location = '../uploads/category/' . $filename;
-
-					move_uploaded_file($_FILES['cat_image']['tmp_name'], $location);
-
-					$strph = ",cat_image='" . getRealescape($filename) . "'";
+					} else {
+						echo json_encode(["rslt" => "error", "msg" => "Image upload failed."]);
+						exit;
+					}
 				}
+				// }
+				// }
 
 				$urlslug = slugify($url_slug);
 
 				$str .= "types='" . getRealescape($types) . "', urlslug='" . getRealescape($urlslug) . "',subcategory='" . getRealescape($subcategory) . "',short_desc='" . getRealescape($short_desc) . "',meta_title='" . getRealescape($meta_title) . "',meta_desc='" . getRealescape($meta_desc) . "',ishome='" . getRealescape($ishome) . "',
-				description='" . getRealescape($newscatdesc) . "', modifydate='" . $today . "',isactive = '" . $status . "' $strph,userid='" . $_SESSION["UserId"] . "' where catid = '" . $edit_id . "'";
+						description='" . getRealescape($newscatdesc) . "', modifydate='" . $today . "',isactive = '" . $status . "' $strph,userid='" . $_SESSION["UserId"] . "' where catid = '" . $edit_id . "'";
 
 				$db->insert_log("update", "" . tbl_newscategory . "", $edit_id, "news cat updated", "newseventscat", $str);
 				$db->insert($str);
@@ -201,9 +216,6 @@ switch ($act) {
 		echo json_encode(array("rslt" => "6")); //status update success
 
 		break;
-
-
-
 
 }
 

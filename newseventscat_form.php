@@ -153,9 +153,10 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
                       <div class="col-md-8">
                         <input class="form-control product_images <?php if ($act != 'update') { ?>required<?php } ?>"
-                          id="cat_image" name="cat_image" type="file" fi-type="" required>
+                        onchange="dimensions()" id="cat_image" name="cat_image" type="file" fi-type="">
                         <span class="help-block"> Allowed Extension ( jpg, png, gif ) <br />
                           Image Size Should be <?php echo $imgwidth . ' * ' . $imgheight; ?></span>
+                          <b id="img_error" style="color:red;display:none;">Image size should be at least 767x460 pixels.</b>
                       </div>
                       <div class="col-md-4">
                         <?php if (!empty($res_ed['cat_image']) && ($act == 'update')) { ?>
@@ -258,6 +259,42 @@ $parent_category_list = $db->get_rsltset($parent_category);
           $('#parent_category').hide();
       </script>
   <?php endif; ?>
+  <script>  
+      function dimensions() {
+    $('#img_error').hide();
+    $("button").attr('disabled', false); // Enable button initially
+    var fileInput = $('input[name=cat_image]')[0];
+    if (!fileInput.files.length) {
+        alert("Please select an image.");
+        return;
+    }
+
+    var file = fileInput.files[0];
+    var img = new Image();
+    var objectUrl = URL.createObjectURL(file);
+
+    img.onload = function () {
+        console.log("Image Loaded: " + img.width + "x" + img.height);
+
+        if (img.width < 767 || img.height < 460) {
+            $('#img_error').show();
+            $("button").attr('disabled', true); // Disable submit button
+        } else {
+            $("button").attr('disabled', false); // Enable submit button
+        }
+
+        URL.revokeObjectURL(objectUrl); // Cleanup memory
+    };
+
+    img.onerror = function () {
+        alert("Invalid image file.");
+        $("button").attr('disabled', true);
+    };
+
+    img.src = objectUrl; // Set the image source
+}
+
+  </script>
       <script type="text/javascript">
         $(document).ready(function () {
           $('#cat_image').parsley();
@@ -294,7 +331,6 @@ $parent_category_list = $db->get_rsltset($parent_category);
               }
 
           })
-
         });
       </script>
     </div>

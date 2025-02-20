@@ -12,6 +12,8 @@ else
 
 include 'includes/image_thumb.php';
 
+include 'imgsize.php';
+
 
 function slugify($text)
 {
@@ -39,18 +41,6 @@ function slugify($text)
 
 	return $text;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 $created = date('Y-m-d H:i:s');
@@ -86,21 +76,36 @@ switch ($act) {
 		if (!empty($titlename)) {
 
 
-			if (isset($_FILES["newsimage"])) {
+			// if (isset($_FILES["newsimage"])) {
 
-				$test = explode('.', $_FILES['newsimage']['name']);
+			// 	$test = explode('.', $_FILES['newsimage']['name']);
 
-				$extension = end($test);
+			// 	$extension = end($test);
 
-				$test_file = $_FILES['newsimage']['name'];
+			// 	$test_file = $_FILES['newsimage']['name'];
 
-				$file_wo_extension = substr($test_file, 0, strrpos($test_file, '.'));
+			// 	$file_wo_extension = substr($test_file, 0, strrpos($test_file, '.'));
 
-				$filename = $file_wo_extension . '-' . rand(100, 999) . '.' . $extension;
+			// 	$filename = $file_wo_extension . '-' . rand(100, 999) . '.' . $extension;
 
-				$location = '../uploads/newsevents/' . $filename;
+			// 	$location = '../uploads/newsevents/' . $filename;
 
-				move_uploaded_file($_FILES['newsimage']['tmp_name'], $location);
+			// 	move_uploaded_file($_FILES['newsimage']['tmp_name'], $location);
+			// }
+
+			if (isset($_FILES['newsimage']) && (file_exists($_FILES['newsimage']['tmp_name']) || is_uploaded_file($_FILES['newsimage']['tmp_name']))) {
+				$uploadDir = '../uploads/category/';
+				$originalPath = $uploadDir . basename($_FILES['newsimage']['name']);
+				$resizedPath = $uploadDir . 'resized-' . basename($_FILES['newsimage']['name']);
+
+				if (move_uploaded_file($_FILES['newsimage']['tmp_name'], $originalPath)) {
+					$maxWidth = 450;
+					$maxHeight = 350;
+					$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+				} else {
+					echo json_encode(["rslt" => "error", "msg" => "Image upload failed."]);
+					exit;
+				}
 			}
 
 
@@ -153,29 +158,45 @@ switch ($act) {
 
 				$str = "update " . tbl_newsevents . " set newstitle = '" . getRealescape($titlename) . "', ";
 
+				// if (isset($_FILES["newsimage"])) {
+				// 	if ($width >= $imgwidth && $height >= $imgheight) {
+				// 		//validate image file allowed (jpg,png,gif)
+				// 		$file_info = getimagesize($_FILES["newsimage"]['tmp_name']);
+				// 		$file_mime = explode('/', $file_info['mime']);
+				// 		if (!in_array($file_mime[1], array('jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'))) {
+				// 			echo json_encode(array("rslt" => "7"));
+				// 			exit();
+				// 		}
 
+				// 		$exten = $_FILES["newsimage"]["type"];
 
+				// 		$obj = new Gthumb();
+				// 		$path = $obj->resize_image($sizes, 'newsevents', $exten, $_FILES['newsimage']);
+				// 		$strph = " ,newsimage='" . $path . "'";
+				// 	} else {
+				// 		echo json_encode(array("rslt" => "8", 'msg' => 'Image Size should be ' . $imgwidth . ' & ' . $imgheight . ' or ratio size not matched'));  //no values
+				// 		exit();
+				// 	}
+				// }
 
-				if (isset($_FILES["newsimage"])) {
-					if ($width >= $imgwidth && $height >= $imgheight) {
-						//validate image file allowed (jpg,png,gif)
-						$file_info = getimagesize($_FILES["newsimage"]['tmp_name']);
-						$file_mime = explode('/', $file_info['mime']);
-						if (!in_array($file_mime[1], array('jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'))) {
-							echo json_encode(array("rslt" => "7"));
-							exit();
-						}
+				if (isset($_FILES['newsimage']) && (file_exists($_FILES['newsimage']['tmp_name']) || is_uploaded_file($_FILES['newsimage']['tmp_name']))) {
+					$uploadDir = '../uploads/newsevents/';
+					$originalPath = $uploadDir . basename($_FILES['newsimage']['name']);
+					$resizedPath = $uploadDir . 'resized-' . basename($_FILES['newsimage']['name']);
 
-						$exten = $_FILES["newsimage"]["type"];
+					if (move_uploaded_file($_FILES['newsimage']['tmp_name'], $originalPath)) {
+						$maxWidth = 450;
+						$maxHeight = 350;
+						$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
 
-						$obj = new Gthumb();
-						$path = $obj->resize_image($sizes, 'newsevents', $exten, $_FILES['newsimage']);
-						$strph = " ,newsimage='" . $path . "'";
+						$strph = " ,newsimage='" . $filename . "'";
+
 					} else {
-						echo json_encode(array("rslt" => "8", 'msg' => 'Image Size should be ' . $imgwidth . ' & ' . $imgheight . ' or ratio size not matched'));  //no values
-						exit();
+						echo json_encode(["rslt" => "error", "msg" => "Image upload failed."]);
+						exit;
 					}
 				}
+
 
 				$schools_selected = 1;
 

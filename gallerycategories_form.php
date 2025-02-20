@@ -134,9 +134,11 @@ include "common/dpselect-functions.php";
 
                       <div class="col-md-8">
                         <input class="form-control product_images <?php if ($act != 'update') { ?>required<?php } ?>"
-                          id="image" name="image" type="file" fi-type="">
+                          id="image" name="image" onchange="dimensions()" type="file" fi-type="">
                         <span class="help-block"> Allowed Extension ( jpg, png, gif ) <br />
                           Image Size Should be <?php echo $imgwidth . ' * ' . $imgheight; ?></span>
+                        <b id="img_error" style="color:red;display:none;">Image size should be at least 767x460
+                          pixels.</b>
                       </div>
                       <div class="col-md-4">
                         <?php if (!empty($res_ed['image']) && ($act == 'update')) { ?>
@@ -319,7 +321,42 @@ include "common/dpselect-functions.php";
 
         });
       </script>
+      <script>
+        function dimensions() {
+          $('#img_error').hide();
+          $("button").attr('disabled', false); // Enable button initially
+          var fileInput = $('input[name=image]')[0];
+          if (!fileInput.files.length) {
+            alert("Please select an image.");
+            return;
+          }
 
+          var file = fileInput.files[0];
+          var img = new Image();
+          var objectUrl = URL.createObjectURL(file);
+
+          img.onload = function () {
+            console.log("Image Loaded: " + img.width + "x" + img.height);
+
+            if (img.width < 700 || img.height < 600) {
+              $('#img_error').show();
+              $("button").attr('disabled', true); // Disable submit button
+            } else {
+              $("button").attr('disabled', false); // Enable submit button
+            }
+
+            URL.revokeObjectURL(objectUrl); // Cleanup memory
+          };
+
+          img.onerror = function () {
+            alert("Invalid image file.");
+            $("button").attr('disabled', true);
+          };
+
+          img.src = objectUrl; // Set the image source
+        }
+
+      </script>
     </div>
     <!-- end container -->
   </div>

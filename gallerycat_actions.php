@@ -14,6 +14,10 @@ else
 
 include 'includes/image_thumb.php';
 
+include 'imgsize.php';
+
+$filename = '';
+
 
 function slugify($text)
 {
@@ -42,6 +46,18 @@ function slugify($text)
 	return $text;
 }
 
+// if (file_exists($_FILES['image']['tmp_name']) || is_uploaded_file($_FILES['image']['tmp_name'])) {
+// 	list($width, $height, $type, $attr) = getimagesize($_FILES["image"]['tmp_name']);
+
+// 	// $imgwidth = 767;
+
+// 	// $imgheight = 460;
+
+// 	$targetPath = '../uploads/gallery/';
+
+// 	$filename = resizeImage($type, $targetPath, $imgwidth, $imgheight);
+
+// }
 
 
 $created = date('Y-m-d H:i:s');
@@ -57,22 +73,38 @@ switch ($act) {
 
 		if (!empty($titlename)) {
 
-			if (isset($_FILES["image"])) {
+			// if (isset($_FILES["image"])) {
 
-				$test = explode('.', $_FILES['image']['name']);
+			// 	$test = explode('.', $_FILES['image']['name']);
 
-				$extension = end($test);
+			// 	$extension = end($test);
 
-				$test_file = $_FILES['image']['name'];
+			// 	$test_file = $_FILES['image']['name'];
 
-				$file_wo_extension = substr($test_file, 0, strrpos($test_file, '.'));
+			// 	$file_wo_extension = substr($test_file, 0, strrpos($test_file, '.'));
 
-				$filename = $file_wo_extension . '-' . rand(100, 999) . '.' . $extension;
+			// 	$filename = $file_wo_extension . '-' . rand(100, 999) . '.' . $extension;
 
-				$location = '../uploads/gallery/' . $filename;
+			// 	$location = '../uploads/gallery/' . $filename;
 
-				move_uploaded_file($_FILES['image']['tmp_name'], $location);
+			// 	move_uploaded_file($_FILES['image']['tmp_name'], $location);
+			// }
+
+			if (isset($_FILES['image']) && (file_exists($_FILES['image']['tmp_name']) || is_uploaded_file($_FILES['image']['tmp_name']))) {
+				$uploadDir = '../uploads/gallery/';
+				$originalPath = $uploadDir . basename($_FILES['image']['name']);
+				$resizedPath = $uploadDir . 'resized-' . basename($_FILES['image']['name']);
+
+				if (move_uploaded_file($_FILES['image']['tmp_name'], $originalPath)) {
+					$maxWidth = 700;
+					$maxHeight = 600;
+					$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+				} else {
+					echo json_encode(["rslt" => "error", "msg" => "Image upload failed."]);
+					exit;
+				}
 			}
+
 
 			$slug = slugify($url_slug);
 
@@ -140,23 +172,41 @@ switch ($act) {
 
 				if (isset($_FILES["image"])) {
 
-					$test = explode('.', $_FILES['image']['name']);
+					// $test = explode('.', $_FILES['image']['name']);
 
-					$extension = end($test);
+					// $extension = end($test);
 
-					$test_file = $_FILES['image']['name'];
+					// $test_file = $_FILES['image']['name'];
 
-					$file_wo_extension = substr($test_file, 0, strrpos($test_file, '.'));
+					// $file_wo_extension = substr($test_file, 0, strrpos($test_file, '.'));
 
-					$filename = $file_wo_extension . '-' . rand(100, 999) . '.' . $extension;
+					// $filename = $file_wo_extension . '-' . rand(100, 999) . '.' . $extension;
 
-					$location = '../uploads/gallery/' . $filename;
+					// $location = '../uploads/gallery/' . $filename;
 
-					move_uploaded_file($_FILES['image']['tmp_name'], $location);
+					// move_uploaded_file($_FILES['image']['tmp_name'], $location);
 
 					$str .= ",image='" . getRealescape($filename) . "'";
 
 				}
+
+				if (isset($_FILES['image']) && (file_exists($_FILES['image']['tmp_name']) || is_uploaded_file($_FILES['image']['tmp_name']))) {
+					$uploadDir = '../uploads/gallery/';
+					$originalPath = $uploadDir . basename($_FILES['image']['name']);
+					$resizedPath = $uploadDir . 'resized-' . basename($_FILES['image']['name']);
+
+					if (move_uploaded_file($_FILES['image']['tmp_name'], $originalPath)) {
+						$maxWidth = 450;
+						$maxHeight = 350;
+						$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+
+						$str .= ",image='" . getRealescape($filename) . "'";
+					} else {
+						echo json_encode(["rslt" => "error", "msg" => "Image upload failed."]);
+						exit;
+					}
+				}
+
 
 				$str .= ",description='" . getRealescape($gallerycatdesc) . "',slug='" . getRealescape($slug) . "',category='" . getRealescape($category) . "',color='" . (empty($color) ? 'NULL' : implode(', ', $color)) . "',specfic='" . getRealescape($specfic) . "',
 					body_shape='" . getRealescape($body_shape) . "',hardware_color='" . getRealescape($hardware_color) . "',
