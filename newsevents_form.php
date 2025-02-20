@@ -190,7 +190,7 @@ include "common/dpselect-functions.php";
                       <div class="col-md-8">
                         <input class="form-control product_images <?php if ($act != 'update') { ?>required<?php } ?>"
                           id="newsimage" name="newsimage" type="file" onchange="dimensions()" fi-type="">
-                        <span class="help-block"> Allowed Extension ( jpg, png, gif ) <br />
+                        <span class="help-block"> Allowed Extension ( jpg, png, gif, webp ) <br />
                           Image Size Should be <?php echo $imgwidth . ' * ' . $imgheight; ?></span>
                         <b id="img_error" style="color:red;display:none;">Image size should be at least 450 x 350
                           pixels.</b>
