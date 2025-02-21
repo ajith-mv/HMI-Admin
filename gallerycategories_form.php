@@ -182,25 +182,6 @@ include "common/dpselect-functions.php";
                     </div>
                   </div>
 
-                  <div class="form-group" id="gift" style="display:none;">
-                    <label class="col-md-3 control-label">Image *</label>
-                    <div class="col-md-9 nopad">
-
-                      <div class="col-md-8">
-                        <input class="form-control product_images <?php if ($act != 'update') { ?>required<?php } ?>"
-                          id="image" name="image" onchange="catdimensions()" type="file" fi-type="">
-                        <span class="help-block"> Allowed Extension ( jpg, png, gif, webp ) <br />
-                          Image Size Should be <?php echo $imgwidth . ' * ' . $imgheight; ?></span>
-                        <b id="img_error" style="color:red;display:none;"></b>
-                      </div>
-                      <div class="col-md-4">
-                        <?php if (!empty($res_ed['image']) && ($act == 'update')) { ?>
-                          <img src="../uploads/gallery/<?php echo $res_ed['image']; ?>" width="50px" align="absmiddle" />
-                        <?php } ?>
-                      </div>
-                    </div>
-                  </div>
-
                   <div class="form-group">
                     <label class="col-md-3 control-label">Select Color *</label>
                     <div class="col-md-9">
@@ -337,12 +318,6 @@ include "common/dpselect-functions.php";
             $('#metatitle').val(newstitle);
           })
 
-          $(document).on('change', '#category', function (e) {
-
-
-          });
-
-
         });
       </script>
       <script>
@@ -387,50 +362,6 @@ include "common/dpselect-functions.php";
 
           img.src = objectUrl; // Set the image source
         }
-
-        function catdimensions() {
-          $('#img_error').hide();
-          $("button").attr('disabled', false);
-          var fileInput = $('input[name=image]')[0];
-          if (!fileInput.files.length) {
-            alert("Please select an image.");
-            return;
-          }
-
-          var file = fileInput.files[0];
-          var img = new Image();
-          var objectUrl = URL.createObjectURL(file);
-
-          img.onload = function () {
-            console.log("Image Loaded: " + img.width + "x" + img.height);
-            if (img.width < 1000 || img.height < 1500) {
-              var message = "Image size should be at least 1000x1500 pixels.";
-              $('#img_error').html(message);
-              $('#img_error').show();
-              $("button").attr('disabled', true);
-            } else {
-              if ((img.width === 1000 && img.height === 1500) || (img.width === 2000 && img.height === 3000) || (img.width === 3000 && img.height === 4500)) {
-                $("button").attr('disabled', false);
-              } else {
-                var message = "Image size should be 1000x1500 perspective size.";
-                $('#img_error').html(message);
-                $('#img_error').show();
-                $("button").attr('disabled', true);
-              }
-            }
-
-            URL.revokeObjectURL(objectUrl);
-          };
-
-          img.onerror = function () {
-            alert("Invalid image file.");
-            $("button").attr('disabled', true);
-          };
-
-          img.src = objectUrl;
-        }
-
-
       </script>
     </div>
     <!-- end container -->
