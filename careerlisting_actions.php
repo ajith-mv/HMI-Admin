@@ -52,7 +52,7 @@ switch ($act) {
 
 		$slug = slugify($job_title);
 
-		$checkSql = "SELECT COUNT(*) FROM " . tbl_careerlisting . " WHERE title = '" . getRealescape($job_title) . "'";
+		$checkSql = "SELECT COUNT(*) FROM " . tbl_careerlisting . " WHERE title = '" . getRealescape($job_title) . "' AND isactive = 1";
 		$reslt = $db->get_a_line($checkSql);
 
 		if ($reslt[0] > 0) {

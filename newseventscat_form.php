@@ -125,7 +125,8 @@ $parent_category_list = $db->get_rsltset($parent_category);
                     <div class="col-md-9">
                       <select class="form-control typebase" name="subcategory" id="subcategory">
                         <option>Select parent Category</option>
-                        <?php foreach ($parent_category_list as $parentcategory) { ?>
+                        <?php foreach ($parent_category_list as $parentcategory) { 
+                          if ($res_ed['catid'] != $parentcategory['catid']) { ?>
 
                           <option class="categorys" value="<?php echo $parentcategory['catid']; ?>" <?php if ($parentcategory['catid'] == $res_ed['subcategory']) {
                                echo "selected";
@@ -133,6 +134,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
                             <?php echo $parentcategory['name']; ?>
                           </option>
                           <?php  
+                          }
                           }
                           ?>
                       </select>
