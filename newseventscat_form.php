@@ -8,8 +8,8 @@ include_once "includes/pagepermission.php";
 
 $getsize = getimagesize_large($db, 'newscategory', 'thumb');
 $imageval = explode('-', $getsize);
-$imgheight = 460;
-$imgwidth = 767;
+// $imgheight = 460;
+// $imgwidth = 767;
 
 
 //check permission - START
@@ -275,16 +275,21 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
     img.onload = function () {
         console.log("Image Loaded: " + img.width + "x" + img.height);
-        if (img.width < 767 || img.height < 460) {
-            var message = "Image size should be at least 767x460 pixels.";
+        if ((img.width < 655 && img.height < 1080) || (img.width < 767 && img.height < 460)) {
+            var message = "Image size should be at least Category 767x460 Subcategory 655x1080 pixels.";
             $('#img_error').html(message);
             $('#img_error').show();
             $("button").attr('disabled', true);
         } else {
-          if ((img.width === 767 && img.height === 460) || (img.width === 1534 && img.height === 920) || (img.width === 2301 && img.height === 1380)) {
+          if ((img.width === 655 && img.height === 1080) || 
+              (img.width === 767 && img.height === 460) || 
+              (img.width === 1310 && img.height === 2160) || 
+              (img.width === 1534 && img.height === 920) || 
+              (img.width === 1965 && img.height === 3240) || 
+              (img.width === 2301 && img.height === 1380)) {
             $("button").attr('disabled', false);
           }else{
-            var message = "Image size should be 767x460 perspective size.";
+            var message = "Image size should be Category 767x460 Subcategory 655x1080 perspective size.";
             $('#img_error').html(message);
             $('#img_error').show();
             $("button").attr('disabled', true);

@@ -163,7 +163,7 @@ include "common/dpselect-functions.php";
                     </div>
                   </div>
 
-                  <div class="form-group" id="nongift">
+                  <div class="form-group">
                     <label class="col-md-3 control-label">Image *</label>
                     <div class="col-md-9 nopad">
 
@@ -326,7 +326,7 @@ include "common/dpselect-functions.php";
           $("button").attr('disabled', false);
           var fileInput = $('input[name=image]')[0];
           if (!fileInput.files.length) {
-            alert("Please select an image.");
+            // alert("Please select an image.");
             return;
           }
 
@@ -336,16 +336,22 @@ include "common/dpselect-functions.php";
 
           img.onload = function () {
             console.log("Image Loaded: " + img.width + "x" + img.height);
-            if (img.width < 1000 || img.height < 1500) {
-              var message = "Image size should be at least 1000x1500 pixels.";
+            if ((img.width < 700 || img.height < 600) || (img.width < 1000 || img.height < 1500)) {
+              var message = "Image size should be at least 700x600 or 1000x1500  pixels.";
               $('#img_error').html(message);
               $('#img_error').show();
+
               $("button").attr('disabled', true);
             } else {
-              if ((img.width === 1000 && img.height === 1500) || (img.width === 2000 && img.height === 3000) || (img.width === 3000 && img.height === 4500)) {
+              if ((img.width === 700 && img.height === 600) ||
+                (img.width === 1000 && img.height === 1500) ||
+                (img.width === 1400 && img.height === 1200) ||
+                (img.width === 2000 && img.height === 3000) ||
+                (img.width === 2100 && img.height === 1800) ||
+                (img.width === 3000 && img.height === 4500)) {
                 $("button").attr('disabled', false);
               } else {
-                var message = "Image size should be 1000x1500 perspective size.";
+                var message = "Image size should be 700x600 or 1000x1500 perspective size.";
                 $('#img_error').html(message);
                 $('#img_error').show();
                 $("button").attr('disabled', true);
