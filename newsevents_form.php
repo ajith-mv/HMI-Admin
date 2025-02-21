@@ -8,8 +8,8 @@ include_once "includes/pagepermission.php";
 
 $getsize = getimagesize_large($db, 'newsevents', 'thumb');
 $imageval = explode('-', $getsize);
-$imgheight = $imageval[1];
-$imgwidth = $imageval[0];
+$imgheight = 465;
+$imgwidth = 1000;
 
 //check permission - START
 if (!($res_modm_prm)) {
@@ -70,7 +70,6 @@ if ($id != "") {
 include "common/dpselect-functions.php";
 
 ?>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
 
 <body>
   <!-- Navigation Bar-->
@@ -189,11 +188,10 @@ include "common/dpselect-functions.php";
 
                       <div class="col-md-8">
                         <input class="form-control product_images <?php if ($act != 'update') { ?>required<?php } ?>"
-                          id="newsimage" name="newsimage" type="file" onchange="dimensions()" fi-type="">
+                          onchange="dimensions()" id="newsimage" name="newsimage" type="file" fi-type="">
                         <span class="help-block"> Allowed Extension ( jpg, png, gif, webp ) <br />
                           Image Size Should be <?php echo $imgwidth . ' * ' . $imgheight; ?></span>
-                        <b id="img_error" style="color:red;display:none;">Image size should be at least 450 x 350
-                          pixels.</b>
+                        <b id="img_error" style="color:red;display:none;"></b>
                       </div>
                       <div class="col-md-4">
                         <?php if (!empty($res_ed['newsimage']) && ($act == 'update')) { ?>
@@ -258,15 +256,6 @@ include "common/dpselect-functions.php";
                     </div>
                   </div>
 
-                  <!-- <div class="form-group">
-                    <label class="col-md-3 control-label">Show on Home</label>
-                    <div class="col-md-9">
-                      <div class="pad-tb-7">
-                        <input type="checkbox" data-plugin="switchery" value="1" name="ishome" id="ishome" <?php echo $ishome; ?> data-color="#00b19d" data-size="small" />
-                      </div>
-                    </div>
-                  </div> -->
-
                   <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-9 m-t-15">
 
@@ -290,9 +279,48 @@ include "common/dpselect-functions.php";
         <!-- end col -->
       </div>
       <!-- end row -->
-
       <?php include("includes/footer.php"); ?>
-      <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+      <script>
+        function dimensions() {
+          $('#img_error').hide();
+          $("button").attr('disabled', false);
+          var fileInput = $('input[name=newsimage]')[0];
+          if (!fileInput.files.length) {
+            alert("Please select an image.");
+            return;
+          }
+          var file = fileInput.files[0];
+          var img = new Image();
+          var objectUrl = URL.createObjectURL(file);
+          img.onload = function () {
+            console.log("Image Loaded: " + img.width + "x" + img.height);
+            if (img.width < 1000 || img.height < 465) {
+              var message = "Image size should be at least 1000x465 pixels.";
+              $('#img_error').html(message);
+              $('#img_error').show();
+              $("button").attr('disabled', true);
+            } else {
+              if ((img.width === 1000 && img.height === 465) || (img.width === 2000 && img.height === 930) || (img.width === 3000 && img.height === 1395)) {
+                $("button").attr('disabled', false);
+              } else {
+                var message = "Image size should be 1000x465 perspective size.";
+                $('#img_error').html(message);
+                $('#img_error').show();
+                $("button").attr('disabled', true);
+              }
+              URL.revokeObjectURL(objectUrl);
+            };
+
+            img.onerror = function () {
+              alert("Invalid image file.");
+              $("button").attr('disabled', true);
+            };
+
+            img.src = objectUrl;
+          }
+
+        }
+      </script>
       <script type="text/javascript">
         $(document).ready(function () {
           $(document).on('keyup', '#titlename', function (e) {
@@ -303,42 +331,6 @@ include "common/dpselect-functions.php";
           })
 
         });
-      </script>
-      <script>
-        function dimensions() {
-          $('#img_error').hide();
-          $("button").attr('disabled', false); // Enable button initially
-          var fileInput = $('input[name=newsimage]')[0];
-          if (!fileInput.files.length) {
-            alert("Please select an image.");
-            return;
-          }
-
-          var file = fileInput.files[0];
-          var img = new Image();
-          var objectUrl = URL.createObjectURL(file);
-
-          img.onload = function () {
-            console.log("Image Loaded: " + img.width + "x" + img.height);
-
-            if (img.width < 450 || img.height < 350) {
-              $('#img_error').show();
-              $("button").attr('disabled', true); // Disable submit button
-            } else {
-              $("button").attr('disabled', false); // Enable submit button
-            }
-
-            URL.revokeObjectURL(objectUrl); // Cleanup memory
-          };
-
-          img.onerror = function () {
-            alert("Invalid image file.");
-            $("button").attr('disabled', true);
-          };
-
-          img.src = objectUrl; // Set the image source
-        }
-
       </script>
     </div>
     <!-- end container -->

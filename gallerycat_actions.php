@@ -108,7 +108,15 @@ switch ($act) {
 
 			$slug = slugify($url_slug);
 
-			$sql = "INSERT INTO " . tbl_gallerycategory . " 
+			$checkSql = "SELECT COUNT(*) FROM " . tbl_gallerycategory . " WHERE slug = '" . getRealescape($slug) . "'";
+			$reslt = $db->get_a_line($checkSql);
+
+			if ($reslt[0] > 0) {
+				echo json_encode(array("rslt" => "8", 'msg' => 'Name already exists.'));  //no values
+
+			} else {
+
+				$sql = "INSERT INTO " . tbl_gallerycategory . " 
 			(name, slug, image, category, color, description, specfic, body_shape, hardware_color, meta_title, meta_desc, 
 			isactive, userid, createddate) 
 		VALUES 
@@ -127,23 +135,24 @@ switch ($act) {
 			'1', 
 			NOW())";
 
-			$status = $db->insert($sql);
+				$status = $db->insert($sql);
 
-			if ($status === TRUE) {
+				if ($status === TRUE) {
 
-				if ($status == 1) {
+					if ($status == 1) {
 
-					echo json_encode(array("rslt" => "1")); //success
+						echo json_encode(array("rslt" => "1")); //success
 
+					} else {
+
+						echo json_encode(array("rslt" => "3")); //same exists
+
+					}
 				} else {
 
-					echo json_encode(array("rslt" => "3")); //same exists
+					echo json_encode(array("rslt" => "8", 'msg' => 'Category Name Required.'));  //no values
 
 				}
-			} else {
-
-				echo json_encode(array("rslt" => "8", 'msg' => 'Category Name Required.'));  //no values
-
 			}
 
 		} else {
@@ -218,7 +227,7 @@ switch ($act) {
 
 				echo json_encode(array("rslt" => "2"));
 			} else {
-				echo json_encode(array("rslt" => "3")); //same exists
+				echo json_encode(array("rslt" => "2")); //same exists
 			}
 		} else {
 			echo json_encode(array("rslt" => "4"));  //no values

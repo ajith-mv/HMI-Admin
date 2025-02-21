@@ -23,6 +23,9 @@ if ($id != "") {
     <?php
   }
   //check edit permission - END	
+  $imgwidth = 700;
+  $imgheight = 600;
+
 
   $operation = "Edit";
   $act = "update";
@@ -137,8 +140,7 @@ include "common/dpselect-functions.php";
                           id="image" name="image" onchange="dimensions()" type="file" fi-type="">
                         <span class="help-block"> Allowed Extension ( jpg, png, gif, webp ) <br />
                           Image Size Should be <?php echo $imgwidth . ' * ' . $imgheight; ?></span>
-                        <b id="img_error" style="color:red;display:none;">Image size should be at least 767x460
-                          pixels.</b>
+                        <b id="img_error" style="color:red;display:none;"></b>
                       </div>
                       <div class="col-md-4">
                         <?php if (!empty($res_ed['image']) && ($act == 'update')) { ?>
@@ -174,7 +176,7 @@ include "common/dpselect-functions.php";
                             <option value="<?php echo $subcategorys['catid']; ?>" <?php if ($subcategorys['catid'] == $res_ed['category']) {
                                  echo "selected";
                                } ?>>
-                              &nbsp;&nbsp; ├─<?php echo $subcategorys['name']; ?>
+                              &nbsp;&nbsp; â”œâ”€<?php echo $subcategorys['name']; ?>
                             </option>
                           <?php }
                         } ?>
@@ -324,7 +326,7 @@ include "common/dpselect-functions.php";
       <script>
         function dimensions() {
           $('#img_error').hide();
-          $("button").attr('disabled', false); // Enable button initially
+          $("button").attr('disabled', false);
           var fileInput = $('input[name=image]')[0];
           if (!fileInput.files.length) {
             alert("Please select an image.");
@@ -337,15 +339,23 @@ include "common/dpselect-functions.php";
 
           img.onload = function () {
             console.log("Image Loaded: " + img.width + "x" + img.height);
-
-            if (img.width < 700 || img.height < 600) {
+            if (img.width < 1000 || img.height < 1500) {
+              var message = "Image size should be at least 1000x1500 pixels.";
+              $('#img_error').html(message);
               $('#img_error').show();
-              $("button").attr('disabled', true); // Disable submit button
+              $("button").attr('disabled', true);
             } else {
-              $("button").attr('disabled', false); // Enable submit button
+              if ((img.width === 1000 && img.height === 1500) || (img.width === 2000 && img.height === 3000) || (img.width === 3000 && img.height === 4500)) {
+                $("button").attr('disabled', false);
+              } else {
+                var message = "Image size should be 1000x1500 perspective size.";
+                $('#img_error').html(message);
+                $('#img_error').show();
+                $("button").attr('disabled', true);
+              }
             }
 
-            URL.revokeObjectURL(objectUrl); // Cleanup memory
+            URL.revokeObjectURL(objectUrl);
           };
 
           img.onerror = function () {

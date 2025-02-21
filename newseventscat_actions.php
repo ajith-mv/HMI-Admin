@@ -3,7 +3,8 @@ include 'session.php';
 extract($_REQUEST);
 $act = $action;
 
-error_reporting(E_ALL);
+// error_reporting(E_ALL);
+$chkstatus = isset($chkstatus) ? $chkstatus : null;
 
 if ($chkstatus != null)
 	$status = 1;
@@ -102,26 +103,35 @@ switch ($act) {
 
 			$newsdate = $currentDateTime->format('Y-m-d H:i:s');
 
-			$sql = "INSERT INTO " . tbl_newscategory . " (name, urlslug, types, subcategory, cat_image, short_desc, description,meta_title,meta_desc, ishome, isactive, userid, createddate) 
-				VALUES ('" . getRealescape($titlename) . "','" . getRealescape($urlslug) . "','" . getRealescape($types) . "','" . getRealescape($subcategory) . "','" . getRealescape($filename) . "','" . getRealescape($short_desc) . "','" . getRealescape($newscatdesc) . "','" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','" . getRealescape($ishome) . "','$chkstatus', '1','$newsdate')";
+			$checkSql = "SELECT COUNT(*) FROM " . tbl_newscategory . " WHERE urlslug = '" . getRealescape($urlslug) . "'";
+			$reslt = $db->get_a_line($checkSql);
 
-			$status = $db->insert($sql);
+			if ($reslt[0] > 0) {
+				echo json_encode(array("rslt" => "8", 'msg' => 'Name already exists.'));  //no values
 
-			if ($status === TRUE) {
-
-				if ($status == 1) {
-
-					echo json_encode(array("rslt" => "1"));
-
-				} else {
-
-					echo json_encode(array("rslt" => "3"));
-
-				}
 			} else {
 
-				echo json_encode(array("rslt" => "8", 'msg' => 'Category Name Required.'));  //no values
+				$sql = "INSERT INTO " . tbl_newscategory . " (name, urlslug, types, subcategory, cat_image, short_desc, description,meta_title,meta_desc, ishome, isactive, userid, createddate) 
+				VALUES ('" . getRealescape($titlename) . "','" . getRealescape($urlslug) . "','" . getRealescape($types) . "','" . getRealescape($subcategory) . "','" . getRealescape($filename) . "','" . getRealescape($short_desc) . "','" . getRealescape($newscatdesc) . "','" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','" . getRealescape($ishome) . "','$chkstatus', '1','$newsdate')";
 
+				$status = $db->insert($sql);
+
+				if ($status === TRUE) {
+
+					if ($status == 1) {
+
+						echo json_encode(array("rslt" => "1"));
+
+					} else {
+
+						echo json_encode(array("rslt" => "3"));
+
+					}
+				} else {
+
+					echo json_encode(array("rslt" => "8", 'msg' => 'Category Name Required.'));  //no values
+
+				}
 			}
 
 		} else {

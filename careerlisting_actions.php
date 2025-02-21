@@ -51,23 +51,32 @@ switch ($act) {
 
 
 		$slug = slugify($job_title);
-		$str = "insert into " . tbl_careerlisting . "(title,slug,job_type,qualifications,school_id,no_of_openings,ishome,status,sortby)values('" . getRealescape($job_title) . "','" . $slug . "','" . getRealescape($job_type) . "', '" . getRealescape('Test') . "', '" . getRealescape(1) . "', '" . getRealescape(1) . "','" . $ishome . "', '" . getRealescape(1) . "', '" . getRealescape(1) . "')";
 
-		$rslt = $db->insert($str);
+		$checkSql = "SELECT COUNT(*) FROM " . tbl_careerlisting . " WHERE title = '" . getRealescape($job_title) . "'";
+		$reslt = $db->get_a_line($checkSql);
 
-		if (!empty($rslt)) {
+		if ($reslt[0] > 0) {
+			echo json_encode(array("rslt" => "8", 'msg' => 'already exists.'));  //no values
+
+		} else {
+
+			$str = "insert into " . tbl_careerlisting . "(title,slug,job_type,qualifications,school_id,no_of_openings,ishome,status,sortby)values('" . getRealescape($job_title) . "','" . $slug . "','" . getRealescape($job_type) . "', '" . getRealescape('Test') . "', '" . getRealescape(1) . "', '" . getRealescape(1) . "','" . $ishome . "', '" . getRealescape(1) . "', '" . getRealescape(1) . "')";
+
+			$rslt = $db->insert($str);
 
 			if (!empty($rslt)) {
 
-				echo json_encode(array("rslt" => "1")); //success
+				if (!empty($rslt)) {
+
+					echo json_encode(array("rslt" => "1")); //success
+				} else {
+					echo json_encode(array("rslt" => "3")); //same exists
+				}
+
 			} else {
-				echo json_encode(array("rslt" => "3")); //same exists
+				echo json_encode(array("rslt" => "4"));  //no values
 			}
-
-		} else {
-			echo json_encode(array("rslt" => "4"));  //no values
 		}
-
 		break;
 
 

@@ -3,7 +3,7 @@ include 'session.php';
 extract($_REQUEST);
 $act = $action;
 
-error_reporting(1);
+// error_reporting(1);
 
 if ($chkstatus != null)
 	$status = 1;
@@ -109,30 +109,42 @@ switch ($act) {
 			}
 
 
+
+
 			$schools_selected = 1;
 
 			$slug = slugify($titlename);
 
-			$sql = "INSERT INTO " . tbl_newsevents . " (school_id, newstitle, slug, newsimage, newsdate, short_desc, newsdescription, catid,meta_title,meta_desc,ishome, isactive, userid) 
+			$checkSql = "SELECT COUNT(*) FROM " . tbl_newsevents . " WHERE slug = '" . getRealescape($slug) . "'";
+			$reslt = $db->get_a_line($checkSql);
+
+			if ($reslt[0] > 0) {
+				echo json_encode(array("rslt" => "8", 'msg' => ' Title already exists.'));  //no values
+
+			} else {
+
+				$sql = "INSERT INTO " . tbl_newsevents . " (school_id, newstitle, slug, newsimage, newsdate, short_desc, newsdescription, catid,meta_title,meta_desc,ishome, isactive, userid) 
 				VALUES ('$schools_selected', '" . getRealescape($titlename) . "', '$slug', '$filename', '$newsdate', '" . getRealescape($short_desc) . "', '" . getRealescape($newsdesc) . "','$catid','" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','$ishome','$chkstatus', '1')";
 
 
-			$status = $db->insert($sql);
+				$status = $db->insert($sql);
 
-			if ($status === TRUE) {
+				if ($status === TRUE) {
 
-				if ($status == 1) {
+					if ($status == 1) {
 
-					echo json_encode(array("rslt" => "1")); //success
+						echo json_encode(array("rslt" => "1")); //success
 
+					} else {
+
+						echo json_encode(array("rslt" => "3")); //same exists
+
+					}
 				} else {
 
-					echo json_encode(array("rslt" => "3")); //same exists
+					echo json_encode(array("rslt" => "8", 'msg' => 'Image Size should be ' . $imgwidth . ' & ' . $imgheight . ' or Ratio (' . round($imgheight / $imgwidth) . ': ' . round($imgheight % $imgwidth) . ') size not matched'));  //no values
 
 				}
-			} else {
-
-				echo json_encode(array("rslt" => "8", 'msg' => 'Image Size should be ' . $imgwidth . ' & ' . $imgheight . ' or Ratio (' . round($imgheight / $imgwidth) . ': ' . round($imgheight % $imgwidth) . ') size not matched'));  //no values
 
 			}
 

@@ -8,8 +8,8 @@ include_once "includes/pagepermission.php";
 
 $getsize = getimagesize_large($db, 'newscategory', 'thumb');
 $imageval = explode('-', $getsize);
-$imgheight = $imageval[1];
-$imgwidth = $imageval[0];
+$imgheight = 460;
+$imgwidth = 767;
 
 
 //check permission - START
@@ -156,7 +156,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
                         onchange="dimensions()" id="cat_image" name="cat_image" type="file" fi-type="">
                         <span class="help-block"> Allowed Extension ( jpg, png, gif, webp ) <br />
                           Image Size Should be <?php echo $imgwidth . ' * ' . $imgheight; ?></span>
-                          <b id="img_error" style="color:red;display:none;">Image size should be at least 767x460 pixels.</b>
+                          <b id="img_error" style="color:red;display:none;"></b>
                       </div>
                       <div class="col-md-4">
                         <?php if (!empty($res_ed['cat_image']) && ($act == 'update')) { ?>
@@ -262,7 +262,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
   <script>  
       function dimensions() {
     $('#img_error').hide();
-    $("button").attr('disabled', false); // Enable button initially
+    $("button").attr('disabled', false); 
     var fileInput = $('input[name=cat_image]')[0];
     if (!fileInput.files.length) {
         alert("Please select an image.");
@@ -275,15 +275,22 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
     img.onload = function () {
         console.log("Image Loaded: " + img.width + "x" + img.height);
-
         if (img.width < 767 || img.height < 460) {
+            var message = "Image size should be at least 767x460 pixels.";
+            $('#img_error').html(message);
             $('#img_error').show();
-            $("button").attr('disabled', true); // Disable submit button
+            $("button").attr('disabled', true);
         } else {
-            $("button").attr('disabled', false); // Enable submit button
+          if ((img.width === 767 && img.height === 460) || (img.width === 1534 && img.height === 960) || (img.width === 2301 && img.height === 1920)) {
+            $("button").attr('disabled', false);
+          }else{
+            var message = "Image size should be 767x460 perspective size.";
+            $('#img_error').html(message);
+            $('#img_error').show();
+            $("button").attr('disabled', true);
+          }
         }
-
-        URL.revokeObjectURL(objectUrl); // Cleanup memory
+        URL.revokeObjectURL(objectUrl);
     };
 
     img.onerror = function () {
