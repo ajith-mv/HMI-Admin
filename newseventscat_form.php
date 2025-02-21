@@ -281,7 +281,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
             $('#img_error').show();
             $("button").attr('disabled', true);
         } else {
-          if ((img.width === 767 && img.height === 460) || (img.width === 1534 && img.height === 960) || (img.width === 2301 && img.height === 1920)) {
+          if ((img.width === 767 && img.height === 460) || (img.width === 1534 && img.height === 920) || (img.width === 2301 && img.height === 1380)) {
             $("button").attr('disabled', false);
           }else{
             var message = "Image size should be 767x460 perspective size.";
