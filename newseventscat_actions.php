@@ -103,7 +103,7 @@ switch ($act) {
 
 			$newsdate = $currentDateTime->format('Y-m-d H:i:s');
 
-			$checkSql = "SELECT COUNT(*) FROM " . tbl_newscategory . " WHERE urlslug = '" . getRealescape($urlslug) . "'";
+			$checkSql = "SELECT COUNT(*) FROM " . tbl_newscategory . " WHERE urlslug = '" . getRealescape($urlslug) . "' AND isactive = 1";
 			$reslt = $db->get_a_line($checkSql);
 
 			if ($reslt[0] > 0) {

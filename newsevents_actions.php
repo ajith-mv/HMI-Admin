@@ -115,7 +115,7 @@ switch ($act) {
 
 			$slug = slugify($titlename);
 
-			$checkSql = "SELECT COUNT(*) FROM " . tbl_newsevents . " WHERE slug = '" . getRealescape($slug) . "'";
+			$checkSql = "SELECT COUNT(*) FROM " . tbl_newsevents . " WHERE slug = '" . getRealescape($slug) . "' AND isactive = 1";
 			$reslt = $db->get_a_line($checkSql);
 
 			if ($reslt[0] > 0) {
