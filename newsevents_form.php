@@ -280,18 +280,31 @@ include "common/dpselect-functions.php";
       </div>
       <!-- end row -->
       <?php include("includes/footer.php"); ?>
+      <script type="text/javascript">
+        $(document).ready(function () {
+          $(document).on('keyup', '#titlename', function (e) {
+            var newstitle = $(this).val();
+            var url_slug = newstitle.replace(/\s+/g, '-').toLowerCase();
+            $('#url_slug').val(url_slug);
+            $('#metatitle').val(newstitle);
+          })
+
+        });
+      </script>
       <script>
         function dimensions() {
           $('#img_error').hide();
           $("button").attr('disabled', false);
           var fileInput = $('input[name=newsimage]')[0];
           if (!fileInput.files.length) {
-            alert("Please select an image.");
+            // alert("Please select an image.");
             return;
           }
+
           var file = fileInput.files[0];
           var img = new Image();
           var objectUrl = URL.createObjectURL(file);
+
           img.onload = function () {
             console.log("Image Loaded: " + img.width + "x" + img.height);
             if (img.width < 1000 || img.height < 465) {
@@ -308,29 +321,18 @@ include "common/dpselect-functions.php";
                 $('#img_error').show();
                 $("button").attr('disabled', true);
               }
-              URL.revokeObjectURL(objectUrl);
-            };
+            }
 
-            img.onerror = function () {
-              alert("Invalid image file.");
-              $("button").attr('disabled', true);
-            };
+            URL.revokeObjectURL(objectUrl);
+          };
 
-            img.src = objectUrl;
-          }
+          img.onerror = function () {
+            alert("Invalid image file.");
+            $("button").attr('disabled', true);
+          };
 
+          img.src = objectUrl;
         }
-      </script>
-      <script type="text/javascript">
-        $(document).ready(function () {
-          $(document).on('keyup', '#titlename', function (e) {
-            var newstitle = $(this).val();
-            var url_slug = newstitle.replace(/\s+/g, '-').toLowerCase();
-            $('#url_slug').val(url_slug);
-            $('#metatitle').val(newstitle);
-          })
-
-        });
       </script>
     </div>
     <!-- end container -->
