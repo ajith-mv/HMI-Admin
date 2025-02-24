@@ -151,7 +151,7 @@ $countgetimages = $db->get_rsltset("select count(*) from  " . tbl_moreimg . " wh
                           value="<?php echo $getimg1['moreimgid']; ?>" />
                         <input type="text" name="image1title<?php echo $getimg['moreimgid']; ?>"
                           id="image1title<?php echo $getimg['moreimgid']; ?>" placeholder="Image Sort order"
-                          class="form-control" value="<?= $getimg['imagetitle'] ?>" />
+                          class="form-control" value="<?= $getimg['imagetitle'] ?>" required />
                       </td>
 
 
@@ -162,7 +162,7 @@ $countgetimages = $db->get_rsltset("select count(*) from  " . tbl_moreimg . " wh
                           onkeypress="return CheckNumericKeyInfowithoutDot(event.keyCode, event.which);"
                           name="image1order<?php echo $getimg['moreimgid']; ?>"
                           id="image1order<?php echo $getimg['moreimgid']; ?>" placeholder="Image Sort order"
-                          class="form-control" value="<?= $getimg['imgorder'] ?>" />
+                          class="form-control" value="<?= $getimg['imgorder'] ?>" required />
                       </td>
 
                       <td align="center">
