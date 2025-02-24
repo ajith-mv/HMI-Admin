@@ -307,21 +307,33 @@ include "common/dpselect-functions.php";
 
           img.onload = function () {
             console.log("Image Loaded: " + img.width + "x" + img.height);
-            if (img.width < 1000 || img.height < 465) {
-              var message = "Image size should be at least 1000x465 pixels.";
+            // if (img.width < 1000 || img.height < 465) {
+            //   var message = "Image size should be at least 1000x465 pixels.";
+            //   $('#img_error').html(message);
+            //   $('#img_error').show();
+            //   $("button").attr('disabled', true);
+            // } else {
+            //   if ((img.width === 1000 && img.height === 465) || (img.width === 2000 && img.height === 930) || (img.width === 3000 && img.height === 1395)) {
+            //     $("button").attr('disabled', false);
+            //   } else {
+            //     var message = "Image size should be 1000x465 perspective size.";
+            //     $('#img_error').html(message);
+            //     $('#img_error').show();
+            //     $("button").attr('disabled', true);
+            //   }
+
+            var expectedHeight = (93 / 200) * img.width;
+            var expectedWidth = (200 / 93) * img.height;
+
+            if (Math.abs(img.height - expectedHeight) <= 1 || Math.abs(img.width - expectedWidth) <= 1) {
+              $("button").attr('disabled', false);
+            } else {
+              var message = "Image size should be 1000x465 perspective size.";
               $('#img_error').html(message);
               $('#img_error').show();
               $("button").attr('disabled', true);
-            } else {
-              if ((img.width === 1000 && img.height === 465) || (img.width === 2000 && img.height === 930) || (img.width === 3000 && img.height === 1395)) {
-                $("button").attr('disabled', false);
-              } else {
-                var message = "Image size should be 1000x465 perspective size.";
-                $('#img_error').html(message);
-                $('#img_error').show();
-                $("button").attr('disabled', true);
-              }
             }
+            // }
 
             URL.revokeObjectURL(objectUrl);
           };
@@ -335,7 +347,6 @@ include "common/dpselect-functions.php";
         }
       </script>
     </div>
-    <!-- end container -->
   </div>
 </body>
 

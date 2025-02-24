@@ -17,6 +17,9 @@ function resizeImage($sourcePath, $targetPath, $maxWidth, $maxHeight)
         case IMAGETYPE_GIF:
             $sourceImage = imagecreatefromgif($sourcePath);
             break;
+        case IMAGETYPE_WEBP:
+            $sourceImage = imagecreatefromwebp($sourcePath);
+            break;
         default:
             return false; // Unsupported image type
     }
@@ -41,12 +44,16 @@ function resizeImage($sourcePath, $targetPath, $maxWidth, $maxHeight)
         case IMAGETYPE_GIF:
             imagegif($newImage, $targetPath);
             break;
+        case IMAGETYPE_WEBP:
+            imagewebp($newImage, $targetPath, 90); // 90% quality
+            break;
     }
 
     imagedestroy($sourceImage);
     imagedestroy($newImage);
 
     return basename($targetPath);
+
 }
 
 // if (!empty($_FILES['cat_image']['tmp_name'])) {

@@ -561,7 +561,10 @@
 			$("button").attr('disabled', true);
 
 
+
 			var m_data = new FormData();
+
+			//alert($frm);
 
 			var formdatas = $("#" + $acts).serializeArray();
 
@@ -577,6 +580,7 @@
 				}
 			});
 
+
 			if ($stats == 'user') {
 				m_data.append('user_photo', $('input[name=user_photo]')[0].files[0]);
 			}
@@ -589,7 +593,6 @@
 
 				m_data.append('newsdesc', content);
 				m_data.append('short_desc', shortdescription);
-
 				m_data.append('newsimage', $('input[name=newsimage]')[0].files[0]);
 
 			}
@@ -603,7 +606,22 @@
 				m_data.append('newscatdesc', content);
 
 				m_data.append('short_desc', shortdescription);
+
+				// var _URL = window.URL || window.webkitURL;
+				// var file, img;
+				// var image = $('input[name=cat_image]')[0].files[0];
+				// img = new Image();
+				// var objectUrl = _URL.createObjectURL(image);
+				// img.onload = function () {
+				// 	if (this.width != 767 || this.height != 300) {
+				// 		alert('Image dimension should be 300x300');
+				// 		return false;
+				// 	}
+				// 	else {
 				m_data.append('cat_image', $('input[name=cat_image]')[0].files[0]);
+				// 	}
+				// };
+				// img.src = objectUrl;
 			}
 
 			if ($frm == 'frmgallerycategories') {
@@ -728,6 +746,17 @@
 							$( "div" ).remove( ".jFiler-row" );
 							}*/
 					}
+
+					else if (response.rslt == "9") {
+						swal("Failure!", $stats + ' ' + response.msg, "red", "btn-red");
+						/*if($stats == 'product'){
+								$("#product_images").val("");
+							$('.jFiler-items jFiler-row').html('');
+							$( "div" ).remove( ".jFiler-row" );
+							}*/
+					}
+
+
 					else {
 						swal("Failure!", othmsg, "orange", "btn-orange");
 					}

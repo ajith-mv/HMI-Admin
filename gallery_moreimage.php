@@ -99,6 +99,7 @@ $countgetimages = $db->get_rsltset("select count(*) from  " . tbl_gallery_moreim
       </form>
 
 
+
       <legend></legend>
       <form class="form-horizontal" action="gallery_actions.php" id="jvalidate1" name="noimg" method="post">
         <input type="hidden" value="moreimageupdate" name="action" id="action">

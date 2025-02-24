@@ -336,7 +336,7 @@ include "common/dpselect-functions.php";
 
           img.onload = function () {
             console.log("Image Loaded: " + img.width + "x" + img.height);
-            if ((img.width < 700 || img.height < 600) || (img.width < 1000 || img.height < 1500)) {
+            if ((img.width < 700 || img.height < 600) && (img.width < 1000 || img.height < 1500)) {
               var message = "Image size should be at least 700x600 or 1000x1500  pixels.";
               $('#img_error').html(message);
               $('#img_error').show();

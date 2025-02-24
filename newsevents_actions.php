@@ -97,15 +97,9 @@ switch ($act) {
 
 			$image_info = $_FILES["newsimage"]["tmp_name"];
 
-			echo 'Hellow';
-			print_r($image_info);
-			die();
-
-
-
-
-
-
+			// echo 'Hellow';
+			// print_r($image_info);
+			// die();
 
 			if (isset($_FILES['newsimage']) && (file_exists($_FILES['newsimage']['tmp_name']) || is_uploaded_file($_FILES['newsimage']['tmp_name']))) {
 				$uploadDir = '../uploads/newsevents/';
@@ -205,30 +199,28 @@ switch ($act) {
 				// 	}
 				// }
 
+				// $image_info = $_FILES["newsimage"]["tmp_name"];
 
-
-
-				$image_info = $_FILES["newsimage"]["tmp_name"];
-
-				echo 'Hwl';
+				// echo 'Hwl';
 
 
 				// 			list($width, $height) = getimagesize($image_info);
 				// 			print_r($image_info);
-				die();
-
-
-
+				// die();
 
 
 				if (isset($_FILES['newsimage']) && (file_exists($_FILES['newsimage']['tmp_name']) || is_uploaded_file($_FILES['newsimage']['tmp_name']))) {
+
+
+
 					$uploadDir = '../uploads/newsevents/';
 					$originalPath = $uploadDir . basename($_FILES['newsimage']['name']);
 					$resizedPath = $uploadDir . 'resized-' . basename($_FILES['newsimage']['name']);
 
 					if (move_uploaded_file($_FILES['newsimage']['tmp_name'], $originalPath)) {
-						$maxWidth = 450;
-						$maxHeight = 350;
+
+						$maxWidth = 1000;
+						$maxHeight = 465;
 						$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
 
 						$strph = " ,newsimage='" . $filename . "'";
@@ -261,15 +253,8 @@ switch ($act) {
 
 	case 'moreimage':
 
-		//echo count($_FILES["gallerymoreimage"]["name"]);
-		//echo 'asdasd';
-		//exit;
-
-
-
 
 		$file = $_FILES["gallerymoreimage"]["tmp_name"];
-
 
 		$i = 0;
 		foreach ($file as $single_file) {
@@ -287,56 +272,42 @@ switch ($act) {
 			$width = $imageinfo[$x][0];
 			$height = $imageinfo[$x][1];
 
-			if ('450' < $width && '350' < $height) {
-				$imagenum = $x;
-				echo json_encode(array("rslt" => "9", "msg" => 'Image size should be 450x350 perspective size ' . $imagenum));
-				die();
-			} else if (
-				($imageinfo[$x][0] == 450 && $imageinfo[$x][1] == 350) ||
-				($imageinfo[$x][0] == 900 && $imageinfo[$x][1] == 700) ||
-				($imageinfo[$x][0] == 1350 && $imageinfo[$x][1] == 1050) ||
-				($imageinfo[$x][0] == 1800 && $imageinfo[$x][1] == 1400)
-			) {
-				$imagenum = $x;
+			$allowWidth = array("450", "900", "1350", "1800", "2250");
+			$allowHeight = array("350", "700", "1050", "1400", "1750");
 
+			if (in_array($width, $allowWidth) && in_array($height, $allowHeight)) {
+
+				$a = 1;
+
+				for ($i = 0; $i < count($_FILES["gallerymoreimage"]["name"]); $i++) {
+					if ($_FILES["gallerymoreimage"]["name"][$i] != '') {
+						$_FILES["gallerymoreimage"]["name"][$i] . "<br>";
+						$extension = $_FILES["gallerymoreimage"]["type"][$i];
+
+
+
+						$obj = new Gthumb();
+						$path = $obj->resize_image_bulk($sizes, 'newsevents', $extension, $_FILES['gallerymoreimage'], $i);
+
+						if ($path != '') {
+							$str = "INSERT INTO  " . tbl_moreimg . "(newsid,imgname,imgorder,isactive,userid) values
+										('" . $edit_id . "','" . $path . "','" . $a . "',1,'" . $_SESSION["UserId"] . "') ";
+
+
+							$rslt = $db->insert($str);
+							$log = $db->insert_log("insert", "" . tbl_moreimg . "", "", "News Image Added Newly", "news", $str);
+						}
+					}
+				}
+				echo json_encode(array("rslt" => "1")); //success
+
+				die();
 			} else {
 				echo json_encode(array("rslt" => "9", "msg" => 'Image size should be 450x350 perspective size  ' . $imagenum));
 				die();
 			}
+
 		}
-		// print_r(count($file));
-
-		// print_r($imageinfo[1][0]);
-
-		//  print_r($imageinfo[1][1]);           			
-
-		$a = 1;
-
-		for ($i = 0; $i < count($_FILES["gallerymoreimage"]["name"]); $i++) {
-			if ($_FILES["gallerymoreimage"]["name"][$i] != '') {
-				$_FILES["gallerymoreimage"]["name"][$i] . "<br>";
-				$extension = $_FILES["gallerymoreimage"]["type"][$i];
-
-
-
-				$obj = new Gthumb();
-				$path = $obj->resize_image_bulk($sizes, 'newsevents', $extension, $_FILES['gallerymoreimage'], $i);
-
-				if ($path != '') {
-					$str = "INSERT INTO  " . tbl_moreimg . "(newsid,imgname,imgorder,isactive,userid) values
-								('" . $edit_id . "','" . $path . "','" . $a . "',1,'" . $_SESSION["UserId"] . "') ";
-
-
-					$rslt = $db->insert($str);
-					$log = $db->insert_log("insert", "" . tbl_moreimg . "", "", "News Image Added Newly", "news", $str);
-				}
-			}
-		}
-		echo json_encode(array("rslt" => "1")); //success
-
-		break;
-
-
 
 	case "moreimageupdate":
 
