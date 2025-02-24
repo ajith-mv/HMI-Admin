@@ -206,8 +206,7 @@ $countgetimages = $db->get_rsltset("select count(*) from  " . tbl_gallery_moreim
                 onClick="javascript:funCancel('noimg','jvalidate1','moreimageupdate','gallery_mng.php');">Cancel</button>
               <!-- <input type="submit" class="btn bg-maroon margin pull-right" value="Update" />-->
               <button class="btn btn-success waves-effect waves-light " type="button"
-                onClick="javascript:funSubmt('noimg','gallery_actions.php','jvalidate1','moreimageupdate','gallery_moreimage.php?id=<?php echo $view; ?>');">
-
+                onClick="javascript:funSubmt('noimg','gallery_actions.php','jvalidate1','moreimageupdate','gallerycategories_mng.php');">
                 <span id="spSubmit"><i class="fa fa-save"></i> Update</span></button>
 
 
