@@ -1,4 +1,5 @@
 <?php
+
 include 'session.php';
 extract($_REQUEST);
 $act = $action;
@@ -92,6 +93,19 @@ switch ($act) {
 
 			// 	move_uploaded_file($_FILES['newsimage']['tmp_name'], $location);
 			// }
+
+
+			$image_info = $_FILES["newsimage"]["tmp_name"];
+
+			echo 'Hellow';
+			print_r($image_info);
+			die();
+
+
+
+
+
+
 
 			if (isset($_FILES['newsimage']) && (file_exists($_FILES['newsimage']['tmp_name']) || is_uploaded_file($_FILES['newsimage']['tmp_name']))) {
 				$uploadDir = '../uploads/newsevents/';
@@ -191,6 +205,22 @@ switch ($act) {
 				// 	}
 				// }
 
+
+
+
+				$image_info = $_FILES["newsimage"]["tmp_name"];
+
+				echo 'Hwl';
+
+
+				// 			list($width, $height) = getimagesize($image_info);
+				// 			print_r($image_info);
+				die();
+
+
+
+
+
 				if (isset($_FILES['newsimage']) && (file_exists($_FILES['newsimage']['tmp_name']) || is_uploaded_file($_FILES['newsimage']['tmp_name']))) {
 					$uploadDir = '../uploads/newsevents/';
 					$originalPath = $uploadDir . basename($_FILES['newsimage']['name']);
@@ -234,6 +264,51 @@ switch ($act) {
 		//echo count($_FILES["gallerymoreimage"]["name"]);
 		//echo 'asdasd';
 		//exit;
+
+
+
+
+		$file = $_FILES["gallerymoreimage"]["tmp_name"];
+
+
+		$i = 0;
+		foreach ($file as $single_file) {
+			if (!empty($single_file)) {
+				$imageinfo[$i] = getimagesize($single_file);
+			}
+
+			$i++;
+		}
+
+		$total_files_uploaded = count($file);
+
+		for ($x = 0; $x <= $total_files_uploaded; $x++) {
+
+			$width = $imageinfo[$x][0];
+			$height = $imageinfo[$x][1];
+
+			if ('450' < $width && '350' < $height) {
+				$imagenum = $x;
+				echo json_encode(array("rslt" => "9", "msg" => 'Image size should be 450x350 perspective size ' . $imagenum));
+				die();
+			} else if (
+				($imageinfo[$x][0] == 450 && $imageinfo[$x][1] == 350) ||
+				($imageinfo[$x][0] == 900 && $imageinfo[$x][1] == 700) ||
+				($imageinfo[$x][0] == 1350 && $imageinfo[$x][1] == 1050) ||
+				($imageinfo[$x][0] == 1800 && $imageinfo[$x][1] == 1400)
+			) {
+				$imagenum = $x;
+
+			} else {
+				echo json_encode(array("rslt" => "9", "msg" => 'Image size should be 450x350 perspective size  ' . $imagenum));
+				die();
+			}
+		}
+		// print_r(count($file));
+
+		// print_r($imageinfo[1][0]);
+
+		//  print_r($imageinfo[1][1]);           			
 
 		$a = 1;
 
