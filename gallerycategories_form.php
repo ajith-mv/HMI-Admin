@@ -351,7 +351,7 @@ include "common/dpselect-functions.php";
                 (img.width === 3000 && img.height === 4500)) {
                 $("button").attr('disabled', false);
               } else {
-                var message = "Image size should be 700x600 or 1000x1500 perspective size.";
+                var message = "Image size should be 700x600 or 1000x1500 actual size.";
                 $('#img_error').html(message);
                 $('#img_error').show();
                 $("button").attr('disabled', true);
