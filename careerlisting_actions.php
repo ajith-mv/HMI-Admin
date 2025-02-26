@@ -108,6 +108,16 @@ switch ($act) {
 		$edit_id = base64_decode($Id);
 
 		$today = date("Y-m-d");
+
+		$checkSql = "SELECT COUNT(*) FROM " . tbl_careerlisting . " WHERE title = '" . getRealescape($job_title) . "' AND isactive = 1";
+		$reslt = $db->get_a_line($checkSql);
+
+		if ($reslt[0] > 0) {
+			echo json_encode(array("rslt" => "8", 'msg' => 'already exists.'));  //no values
+
+		} else {
+
+
 		$str = "update " . tbl_careerlisting . " set isactive = '2' where id = '" . $edit_id . "'";
 		//echo $str;
 		//exit();
@@ -116,7 +126,7 @@ switch ($act) {
 		$db->insert($str);
 		echo json_encode(array("rslt" => "5")); //deletion
 
-
+		}
 		break;
 
 	case 'changestatus':

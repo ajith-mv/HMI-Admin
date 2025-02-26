@@ -205,13 +205,20 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
                   <div class="form-group" id="home">
                     <label class="col-md-3 control-label">Show on Home</label>
-                    <div class="col-md-9">
+                    <div class="col-md-1">
                       <div class="pad-tb-7">
                         <input type="checkbox" data-plugin="switchery" value="1" name="ishome" id="ishome" 
                         <?php echo $ishome; ?> 
-                        data-color="#00b19d" data-size="small"/>
+                        data-color="#00b19d" data-size="small" checked/>
                       </div>
                     </div>
+                    <div class="form-group">
+                    <label class="col-md-3 control-label">Show on Home Sort Order </label>
+                    <div class="col-md-3">
+                      <input type="number" class="form-control" name="homeorder" id="homeorder"
+                        value="<?php echo $res_ed['homeorder']; ?>" />
+                    </div>
+                  </div>
                   </div>
 
                   <?php } ?>

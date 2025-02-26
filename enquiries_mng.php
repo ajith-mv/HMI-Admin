@@ -36,6 +36,7 @@ if (!($res_modm_prm)) {
           <table id="tblresult" class="table table-striped table-bordered">
             <thead>
               <tr>
+                <th>Sl.No</th>
                 <th>Date</th>
                 <th>Full Name</th>
                 <th>Email</th>

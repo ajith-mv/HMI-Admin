@@ -93,7 +93,7 @@ switch ($act) {
 				}
 			}
 
-			$urlslug = slugify($url_slug);
+			// $urlslug = slugify($url_slug);
 
 			$subcategory = $subcategory ?? 0;
 
@@ -112,7 +112,7 @@ switch ($act) {
 			} else {
 
 				$sql = "INSERT INTO " . tbl_newscategory . " (name, urlslug, types, subcategory, cat_image, short_desc, description,meta_title,meta_desc, ishome, isactive, userid, createddate) 
-				VALUES ('" . getRealescape($titlename) . "','" . getRealescape($urlslug) . "','" . getRealescape($types) . "','" . getRealescape($subcategory) . "','" . getRealescape($filename) . "','" . getRealescape($short_desc) . "','" . getRealescape($newscatdesc) . "','" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','" . getRealescape($ishome) . "','$chkstatus', '1','$newsdate')";
+				VALUES ('" . getRealescape($titlename) . "','" . getRealescape($url_slug) . "','" . getRealescape($types) . "','" . getRealescape($subcategory) . "','" . getRealescape($filename) . "','" . getRealescape($short_desc) . "','" . getRealescape($newscatdesc) . "','" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','" . getRealescape($ishome) . "','$chkstatus', '1','$newsdate')";
 
 				$status = $db->insert($sql);
 
@@ -181,10 +181,12 @@ switch ($act) {
 				// }
 				// }
 
-				$urlslug = slugify($url_slug);
+				// $urlslug = slugify($url_slug);
 
-				$str .= "types='" . getRealescape($types) . "', urlslug='" . getRealescape($urlslug) . "',subcategory='" . getRealescape($subcategory) . "',short_desc='" . getRealescape($short_desc) . "',meta_title='" . getRealescape($meta_title) . "',meta_desc='" . getRealescape($meta_desc) . "',ishome='" . getRealescape($ishome) . "',
-						description='" . getRealescape($newscatdesc) . "', modifydate='" . $today . "',isactive = '" . $status . "' $strph,userid='" . $_SESSION["UserId"] . "' where catid = '" . $edit_id . "'";
+				$str .= "types='" . getRealescape($types) . "', urlslug='" . getRealescape($url_slug) . "',subcategory='" . getRealescape($subcategory) . "'
+				,short_desc='" . getRealescape($short_desc) . "',meta_title='" . getRealescape($meta_title) . "',meta_desc='" . getRealescape($meta_desc) . "',
+				ishome='" . getRealescape($ishome) . "',homeorder='" . (empty($homeorder) ? 'NULL' : getRealescape($homeorder)) . "',description='" . getRealescape($newscatdesc) . "',
+				modifydate='" . $today . "',isactive = '" . $status . "' $strph,userid='" . $_SESSION["UserId"] . "' where catid = '" . $edit_id . "'";
 
 				$db->insert_log("update", "" . tbl_newscategory . "", $edit_id, "news cat updated", "newseventscat", $str);
 				$db->insert($str);
@@ -208,15 +210,25 @@ switch ($act) {
 
 		$today = date("Y-m-d");
 
-		$str = "update " . tbl_newscategory . " set isactive = '2',userid='" . $_SESSION["UserId"] . "' , modifydate='" . $today . "' where catid = '" . $edit_id . "'";
+		$checkSql = "SELECT COUNT(*) FROM " . tbl_newscategory . " where subcategory = '" . $edit_id . "'";
+		$reslt = $db->get_a_line($checkSql);
 
+		$checksSql = "SELECT COUNT(*) FROM " . tbl_gallerycategory . " where category = '" . $edit_id . "'";
+		$reslts = $db->get_a_line($checksSql);
 
-		$db->insert($str);
-		echo json_encode(array("rslt" => "5")); //deletion
+		if ($reslt[0] > 0) {
+			echo json_encode(array("rslt" => "9", 'msg' => 'Reference exists with other data. Cannot be deleted.'));
+		} else if ($reslts[0] > 0) {
+			echo json_encode(array("rslt" => "9", 'msg' => 'Reference exists with other data. Cannot be deleted.'));
+		} else {
 
+			$str = "update " . tbl_newscategory . " set isactive = '2',userid='" . $_SESSION["UserId"] . "' , modifydate='" . $today . "' where catid = '" . $edit_id . "'";
+
+			$db->insert($str);
+			echo json_encode(array("rslt" => "5"));
+		}
 
 		break;
-
 	case 'changestatus':
 		$edit_id = base64_decode($Id);
 		$today = date("Y-m-d");

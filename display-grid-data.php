@@ -114,11 +114,8 @@ switch ($_REQUEST['finaltab']) {
 
 		$order_clmn = $requestData['order'][0]['column'];
 		$order_oper = $requestData['order'][0]['dir'];
-		$ordr = " order by $dispFields[$order_clmn] $order_oper ";
+		$ordr = " order by serial_number $order_oper ";
 
-
-		// print_r($wrcon);
-		// die();
 
 
 
@@ -237,7 +234,6 @@ switch ($_REQUEST['finaltab']) {
 
 		$totalData = getCareerlistingArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
 		$res = getCareerlistingArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
-
 		break;
 
 	case "announcement":
@@ -286,6 +282,9 @@ switch ($_REQUEST['finaltab']) {
 
 
 		$res = getEnquiriesArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
+
+
+
 
 
 		break;
@@ -419,11 +418,14 @@ switch ($_REQUEST['finaltab']) {
 $totalFiltered = $totalData;
 $data = array();
 
+$slno = 1;
 
 foreach ($res as $r) {
-	// var_dump($r);
-	// die();
+	// 	var_dump($r);
+// 	die();
 	$nestedData = array();
+
+	$nestedData[] = $r['serial_number'];
 
 	$editid = base64_encode($r[$disporder_ID]);
 	$stats = $r['isactive'];
@@ -760,6 +762,8 @@ foreach ($res as $r) {
 
 
 	$data[] = $nestedData;
+
+	// $slno++;
 
 
 }

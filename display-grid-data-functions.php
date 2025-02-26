@@ -241,7 +241,12 @@ function getUserArray_tot($db, $act = null, $whrcon = null, $ordr = null, $stt =
 
 function getUserArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt = null, $len = null)
 {
-	$str_all = "select u.* from " . tbl_users . "  u LEFT JOIN  " . tbl_roles . "  r on u.RoleId = r.RoleId LEFT JOIN " . tbl_schoolsname . " s on u.shlid = s.school_id where  u.isactive <> 2  " . $constr;
+	$str_all = "select ROW_NUMBER() OVER (ORDER BY u.userid DESC) AS serial_number ,u.userid, u.user_firstname, u.user_lastname, u.user_name, u.user_email, u.isactive, u.createdby, u.createddate, u.modifieddate, u.sroleid, u.shlid
+ from " . tbl_users . "  u LEFT JOIN  " . tbl_roles . "  r on u.RoleId = r.RoleId LEFT JOIN " . tbl_schoolsname . " s on u.shlid = s.school_id where  u.isactive <> 2  " . $constr;
+
+
+
+
 
 	if ($whrcon != "")
 		$str_all .= $whrcon;
@@ -289,16 +294,15 @@ function getnewseventsArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, 
 	$cond_school = '';
 
 	if ($_SESSION["shlid"] != 1) {
-
 		$cond_school = " and " . tbl_newsevents . ".shlid='" . $_SESSION["shlid"] . "' ";
-
 	}
 
+	// $str_all = "select * from " . tbl_newsevents . "  where isactive <> 2 " . $cond_school . " ";
+	// $str_all = "select " . tbl_newsevents . ".*," . tbl_schoolsname . ".shlname,DATE_FORMAT(newsdate,'%d-%m-%Y') as date from " . tbl_newsevents . "," . tbl_schoolsname . "  where " . tbl_newsevents . ".school_id=" . tbl_schoolsname . ".school_id and " . tbl_newsevents . ".isactive <> 2 " . $cond_school . " ";
 
-	// 	$str_all = "select * from ".tbl_newsevents."  where isactive <> 2 ".$cond_school." "; 
-	$str_all = "select " . tbl_newsevents . ".*," . tbl_schoolsname . ".shlname,DATE_FORMAT(newsdate,'%d-%m-%Y') as date from " . tbl_newsevents . "," . tbl_schoolsname . "  where " . tbl_newsevents . ".school_id=" . tbl_schoolsname . ".school_id and " . tbl_newsevents . ".isactive <> 2 " . $cond_school . " ";
-
-
+	$str_all = "SELECT ROW_NUMBER() OVER (ORDER BY " . tbl_newsevents . ".newsid DESC) AS serial_number," . tbl_newsevents . ".*," . tbl_schoolsname . ".shlname,
+    DATE_FORMAT(" . tbl_newsevents . ".newsdate, '%d-%m-%Y') AS date FROM " . tbl_newsevents . " INNER JOIN " . tbl_schoolsname . " ON " . tbl_newsevents . ".school_id = " . tbl_schoolsname . ".school_id 
+	WHERE " . tbl_newsevents . ".isactive <> 2 " . $cond_school;
 
 	$rescntchk = $db->get_rsltset($str_all);
 
@@ -343,11 +347,13 @@ function getnewscategoryArray_Ajx($db, $act = null, $whrcon = null, $ordr = null
 {
 
 
-	$str_all = "select * from " . tbl_newscategory . "  where isactive <> 2 ";
+	// $str_all = "select * from " . tbl_newscategory . "  where isactive <> 2 ";
 
-
+	$str_all = "select ROW_NUMBER() OVER (ORDER BY catid DESC) AS serial_number, catid, name, urlslug, types, isactive, subcategory from " . tbl_newscategory . "  where isactive <> 2 ";
 
 	$rescntchk = $db->get_rsltset($str_all);
+
+
 
 	if ($whrcon != "")
 		$str_all .= $whrcon;
@@ -388,9 +394,7 @@ function getgallerycategoriesArray_Ajx($db, $act = null, $whrcon = null, $ordr =
 {
 
 
-	$str_all = "select * from " . tbl_gallerycategory . "  where isactive <> 2 ";
-
-
+	$str_all = "select ROW_NUMBER() OVER (ORDER BY catid DESC) AS serial_number, catid, name, slug, image, category, color, description, body_shape, specfic, hardware_color, meta_title, meta_desc, isactive, userid, createddate, modifydate from " . tbl_gallerycategory . "  where isactive <> 2 ";
 
 	$rescntchk = $db->get_rsltset($str_all);
 
@@ -502,8 +506,8 @@ function getNoticeArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt
 
 
 	/*
-																																																																																							   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																																							   */
+																																																																																																																																																								 $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																																																																																								 */
 
 
 
@@ -559,8 +563,8 @@ function getStaffArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt 
 	//echo $str_all;		exit;
 
 	/*
-																																																																																							   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																																							   */
+																																																																																																																																																								 $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																																																																																								 */
 
 	$rescntchk = $db->get_rsltset($str_all);
 
@@ -626,8 +630,8 @@ function getAnnouncementArray_Ajx($db, $act = null, $whrcon = null, $ordr = null
 
 
 	/*
-																																																																																							   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																																							   */
+																																																																																																																																																								 $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																																																																																								 */
 
 	$rescntchk = $db->get_rsltset($str_all);
 
@@ -700,7 +704,7 @@ function getEnquiriesArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $
 		// $cond_school = " AND " . tbl_contact . ".shlid='" . $_SESSION["shlid"] . "' ";
 	}
 	// Start query with SELECT
-	$str_all = "SELECT DATE_FORMAT(" . tbl_contact . ".createdate, '%d-%m-%Y') as date,
+	$str_all = "SELECT ROW_NUMBER() OVER (ORDER BY cid DESC) AS serial_number, DATE_FORMAT(" . tbl_contact . ".createdate, '%d-%m-%Y') as date,
 					" . tbl_contact . ".cid, 
 					" . tbl_contact . ".name, 
 					" . tbl_contact . ".email, 
@@ -988,7 +992,23 @@ function getCareerlistingArray_Ajx($db, $act = null, $whrcon = null, $ordr = nul
 
 	$cond_school = '';
 
-	$str_all = "select * from " . tbl_careerlisting . " where isactive <> 2 ";
+	// $str_all = "select * from " . tbl_careerlisting . " where isactive <> 2 ";
+
+	$str_all = "SELECT 
+    ROW_NUMBER() OVER (ORDER BY id DESC) AS serial_number,
+    " . tbl_careerlisting . ".id,
+    " . tbl_careerlisting . ".title,
+    " . tbl_careerlisting . ".slug,
+    " . tbl_careerlisting . ".job_type,
+    " . tbl_careerlisting . ".school_id,
+    " . tbl_careerlisting . ".no_of_openings,
+    " . tbl_careerlisting . ".qualifications,
+    " . tbl_careerlisting . ".ishome,
+    " . tbl_careerlisting . ".status,
+    " . tbl_careerlisting . ".created_on,
+    " . tbl_careerlisting . ".sortby,
+    " . tbl_careerlisting . ".isactive
+	FROM " . tbl_careerlisting . " WHERE isactive <> 2";
 
 	$rescntchk = $db->get_rsltset($str_all);
 

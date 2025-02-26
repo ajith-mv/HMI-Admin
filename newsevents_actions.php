@@ -132,7 +132,9 @@ switch ($act) {
 			} else {
 
 				$sql = "INSERT INTO " . tbl_newsevents . " (school_id, newstitle, slug, newsimage, newsdate, short_desc, newsdescription, catid,meta_title,meta_desc,ishome, isactive, userid) 
-				VALUES ('$schools_selected', '" . getRealescape($titlename) . "', '$slug', '$filename', '$newsdate', '" . getRealescape($short_desc) . "', '" . getRealescape($newsdesc) . "','$catid','" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','$ishome','$chkstatus', '1')";
+				VALUES ('$schools_selected', '" . getRealescape($titlename) . "', '$slug', '$filename', '$newsdate', '" . getRealescape($short_desc) . "', '" . getRealescape($newsdesc) . "','$catid',
+				'" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','$ishome',
+				'" . (empty($homeorder) ? 'NULL' : getRealescape($homeorder)) . "','$chkstatus', '1')";
 
 
 				$status = $db->insert($sql);
@@ -236,7 +238,10 @@ switch ($act) {
 
 				$slug = slugify($titlename);
 
-				$str .= " slug = '" . $slug . "',school_id = '" . $schools_selected . "', newsdescription='" . getRealescape($newsdesc) . "', short_desc='" . getRealescape($short_desc) . "',meta_title='" . getRealescape($meta_title) . "',meta_desc='" . getRealescape($meta_desc) . "',catid='" . $catid . "',ishome='" . $ishome . "', newsdate='" . $newsdate . "',isactive = '" . $status . "' $strph,userid='" . $_SESSION["UserId"] . "' where newsid = '" . $edit_id . "'";
+				$str .= " slug = '" . $slug . "',school_id = '" . $schools_selected . "',
+				 newsdescription='" . getRealescape($newsdesc) . "', short_desc='" . getRealescape($short_desc) . "',
+				 meta_title='" . getRealescape($meta_title) . "',meta_desc='" . getRealescape($meta_desc) . "',catid='" . $catid . "',
+				 ishome='" . $ishome . "',homeorder='" . (empty($homeorder) ? 'NULL' : getRealescape($homeorder)) . "', newsdate='" . $newsdate . "',isactive = '" . $status . "' $strph,userid='" . $_SESSION["UserId"] . "' where newsid = '" . $edit_id . "'";
 
 				$db->insert_log("update", "" . tbl_newsevents . "", $edit_id, "news updated", "newsevents", $str);
 				$db->insert($str);
@@ -256,58 +261,60 @@ switch ($act) {
 
 		$file = $_FILES["gallerymoreimage"]["tmp_name"];
 
-		$i = 0;
-		foreach ($file as $single_file) {
-			if (!empty($single_file)) {
-				$imageinfo[$i] = getimagesize($single_file);
-			}
+		// $i = 0;
+		// foreach ($file as $single_file) {
+		// 	if (!empty($single_file)) {
+		// 		$imageinfo[$i] = getimagesize($single_file);
+		// 	}
 
-			$i++;
-		}
+		// 	$i++;
+		// }
 
-		$total_files_uploaded = count($file);
+		// $total_files_uploaded = count($file);
 
-		for ($x = 0; $x <= $total_files_uploaded; $x++) {
+		// for ($x = 0; $x <= $total_files_uploaded; $x++) {
 
-			$width = $imageinfo[$x][0];
-			$height = $imageinfo[$x][1];
+		// $width = $imageinfo[$x][0];
+		// $height = $imageinfo[$x][1];
 
-			$allowWidth = array("450", "900", "1350", "1800", "2250");
-			$allowHeight = array("350", "700", "1050", "1400", "1750");
+		// $allowWidth = array("450", "900", "1350", "1800", "2250");
+		// $allowHeight = array("350", "700", "1050", "1400", "1750");
 
-			if (in_array($width, $allowWidth) && in_array($height, $allowHeight)) {
+		// if (in_array($width, $allowWidth) && in_array($height, $allowHeight)) {
 
-				$a = 1;
+		$a = 1;
 
-				for ($i = 0; $i < count($_FILES["gallerymoreimage"]["name"]); $i++) {
-					if ($_FILES["gallerymoreimage"]["name"][$i] != '') {
-						$_FILES["gallerymoreimage"]["name"][$i] . "<br>";
-						$extension = $_FILES["gallerymoreimage"]["type"][$i];
+		for ($i = 0; $i < count($_FILES["gallerymoreimage"]["name"]); $i++) {
+			if ($_FILES["gallerymoreimage"]["name"][$i] != '') {
+				$_FILES["gallerymoreimage"]["name"][$i] . "<br>";
+				$extension = $_FILES["gallerymoreimage"]["type"][$i];
 
 
 
-						$obj = new Gthumb();
-						$path = $obj->resize_image_bulk($sizes, 'newsevents', $extension, $_FILES['gallerymoreimage'], $i);
+				$obj = new Gthumb();
+				$path = $obj->resize_image_bulk($sizes, 'newsevents', $extension, $_FILES['gallerymoreimage'], $i);
 
-						if ($path != '') {
-							$str = "INSERT INTO  " . tbl_moreimg . "(newsid,imgname,imgorder,isactive,userid) values
+				if ($path != '') {
+					$str = "INSERT INTO  " . tbl_moreimg . "(newsid,imgname,imgorder,isactive,userid) values
 										('" . $edit_id . "','" . $path . "','" . $a . "',1,'" . $_SESSION["UserId"] . "') ";
 
 
-							$rslt = $db->insert($str);
-							$log = $db->insert_log("insert", "" . tbl_moreimg . "", "", "News Image Added Newly", "news", $str);
-						}
-					}
+					$rslt = $db->insert($str);
+					$log = $db->insert_log("insert", "" . tbl_moreimg . "", "", "News Image Added Newly", "news", $str);
 				}
-				echo json_encode(array("rslt" => "1")); //success
-
-				die();
-			} else {
-				echo json_encode(array("rslt" => "9", "msg" => 'Image size should be 450x350 perspective size  ' . $imagenum));
-				die();
 			}
-
 		}
+
+		echo json_encode(array("rslt" => "1")); //success
+		break;
+
+	// 	die();
+	// } else {
+	// 	echo json_encode(array("rslt" => "9", "msg" => 'Image size should be 450x350 perspective size  ' . $imagenum));
+	// 	die();
+	// }
+
+	// }
 
 	case "moreimageupdate":
 

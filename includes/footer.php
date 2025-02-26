@@ -115,7 +115,6 @@
 	$(document).ready(function () {
 
 		/*		product_name*/
-
 		$("#ptitle").keypress(function () {
 			var $this = $(this);
 			window.setTimeout(function () {
@@ -139,7 +138,6 @@
 				$("#pstitle_url").val($this.val().toLowerCase().replace(/[^A-Z0-9]/ig, "-"));
 			}, 0);
 		});
-
 		/*		product_name*/
 		if ($("#elm1").length > 0) {
 			tinymce.init({
@@ -428,6 +426,9 @@
 					}
 					else if (response.rslt == "4") {
 						swal("Failure!", $stats + ' ' + reqmsg, "orange", "btn-orange");
+					}
+					else if (response.rslt == "9") {
+						swal("Failure!", $stats + ' ' + exsmsg_reference, "orange", "btn-orange");
 					}
 					else {
 						swal("Failure!", othmsg, "orange", "btn-orange");
