@@ -110,7 +110,8 @@ switch ($_REQUEST['finaltab']) {
 		$disporder_ID = "userid";
 		$mdme = getMdmeUser($db, '');
 
-		$wrcon = " and (user_name like '%" . $requestData['search']['value'] . "%' or user_firstname like '%" . $requestData['search']['value'] . "%' or user_lastname like '%" . $requestData['search']['value'] . "%' or r.rolename like '%" . $requestData['search']['value'] . "%')";
+		// $wrcon = " and (user_name like '%" . $requestData['search']['value'] . "%' or user_firstname like '%" . $requestData['search']['value'] . "%' or user_lastname like '%" . $requestData['search']['value'] . "%' or r.rolename like '%" . $requestData['search']['value'] . "%')";
+		$wrcon = " and (user_name like '%" . $requestData['search']['value'] . "%' or user_firstname like '%" . $requestData['search']['value'] . "%' or user_lastname like '%" . $requestData['search']['value'] . "%' )";
 
 		$order_clmn = $requestData['order'][0]['column'];
 		$order_oper = $requestData['order'][0]['dir'];
@@ -151,7 +152,7 @@ switch ($_REQUEST['finaltab']) {
 
 	case "newseventscat":
 
-		$dispFields = array("name");
+		$dispFields = array("name", "homeorder");
 
 		$disporder_ID = "catid";
 
@@ -628,6 +629,25 @@ foreach ($res as $r) {
 			$categories = getAllnewscat($db, $r['subcategory']);
 		}
 
+		// if ($r['isactive'] == '1') {
+
+		// 	$statusurl = "'" . $_REQUEST['finaltab'] . "_actions.php','Id=$editid&action=changestatus&actval=0'";
+		// 	$incstat = '<div class="btn-group" data-toggle="btn-toggle">		   
+		// 					<button class="btn btn-success btn-xs active" type="button"><i class="fa fa-square text-red"></i> Active</button>
+		// 					<button class="btn btn-default btn-xs" type="button" onclick="funchangestatus(this,' . $statusurl . ');"><i class="fa fa-square text-red"></i> &nbsp;</button>
+		// 			   </div>';
+
+		// } else {
+
+		// 	$statusurl = "'" . $_REQUEST['finaltab'] . "_actions.php','Id=$editid&action=changestatus&actval=1'";	//echo 	$_REQUEST['finaltab']."_actions.php"; exit;	
+		// 	$incstat = '<div class="btn-group" data-toggle="btn-toggle" >		
+		// 					<button class="btn btn-default btn-xs" type="button" onclick="funchangestatus(this,' . $statusurl . ');"><i class="fa fa-square text-green"></i> &nbsp;</button>
+		// 					<button class="btn btn-danger btn-xs active" type="button"><i class="fa fa-square text-green"></i> InActive</button>
+
+		// 				</div>';
+		// }
+
+
 		$nestedData[] = $categories['name'];
 
 	}
@@ -748,12 +768,36 @@ foreach ($res as $r) {
 
 	}
 
+	if ($_REQUEST['finaltab'] == 'newseventscat') {
 
+		if ($r['ishome'] == '1') {
+
+
+			$statusurl = "'" . $_REQUEST['finaltab'] . "_actions.php','Id=$editid&action=changehome&actval=0'";
+
+			$nestedData[] = '<div class="btn-group" data-toggle="btn-toggle">		   
+							<button class="btn btn-success btn-xs active" type="button"><i class="fa fa-square text-red"></i> Yes</button>
+							<button class="btn btn-default btn-xs" type="button" onclick="funchangestatus(this,' . $statusurl . ');"><i class="fa fa-square text-red"></i> &nbsp;</button>
+
+					   </div>';
+
+		} else {
+
+			$statusurl = "'" . $_REQUEST['finaltab'] . "_actions.php','Id=$editid&action=changehome&actval=1'";
+			$nestedData[] = '<div class="btn-group" data-toggle="btn-toggle" >		
+										<button class="btn btn-default btn-xs" type="button" onclick="funchangestatus(this,' . $statusurl . ');"><i class="fa fa-square text-green"></i> &nbsp;</button>
+										<button class="btn btn-danger btn-xs active" type="button"><i class="fa fa-square text-green"></i> No</button>			 
+									</div>';
+		}
+
+	}
 
 
 	// 		  				var_dump($nestedData);
 // 			die();	
 	if ($_REQUEST['finaltab'] != 'enquiries' && $_REQUEST['finaltab'] != 'career' && $_REQUEST['finaltab'] != 'alumnus' && $_REQUEST['finaltab'] != 'alumni' && $_REQUEST['finaltab'] != 'admission' && $_REQUEST['finaltab'] != 'book_a_tour') {
+
+
 		$nestedData[] = $incstat;
 
 

@@ -142,17 +142,16 @@ include "common/dpselect-functions.php";
 
                           $subcategory_list = $db->get_rsltset($subcategory);
                           ?>
-                          <option value="<?php echo $categorys['catid']; ?>" <?php if ($categorys['catid'] == $res_ed['category']) {
+                          <option id="basecat" value="<?php echo $categorys['catid']; ?>" <?php if ($categorys['catid'] == $res_ed['category']) {
                                echo "selected";
                              } ?>>
                             <?php echo $categorys['name']; ?>
                           </option>
                           <?php
 
-
                           foreach ($subcategory_list as $subcategorys) {
                             ?>
-                            <option value="<?php echo $subcategorys['catid']; ?>" <?php if ($subcategorys['catid'] == $res_ed['category']) {
+                            <option id="basesub" value="<?php echo $subcategorys['catid']; ?>" <?php if ($subcategorys['catid'] == $res_ed['category']) {
                                  echo "selected";
                                } ?>>
                               ├─<?php echo $subcategorys['name']; ?>
@@ -163,7 +162,7 @@ include "common/dpselect-functions.php";
                     </div>
                   </div>
 
-                  <div class="form-group">
+                  <div class="form-group" id="gift">
                     <label class="col-md-3 control-label">Image *</label>
                     <div class="col-md-9 nopad">
 
@@ -318,6 +317,16 @@ include "common/dpselect-functions.php";
             $('#metatitle').val(newstitle);
           })
 
+          $(document).on('change', '#category', function (e) {
+
+            var selectedOption = $(this).find('option:selected');
+            var selectedId = selectedOption.attr('id');
+
+
+
+          })
+
+
         });
       </script>
       <script>
@@ -330,33 +339,62 @@ include "common/dpselect-functions.php";
             return;
           }
 
+          var category = $('#category').find('option:selected');
+
+          var selectedId = category.attr('id');
+
           var file = fileInput.files[0];
           var img = new Image();
           var objectUrl = URL.createObjectURL(file);
 
           img.onload = function () {
             console.log("Image Loaded: " + img.width + "x" + img.height);
-            if ((img.width < 700 || img.height < 600) && (img.width < 1000 || img.height < 1500)) {
-              var message = "Image size should be at least 700x600 or 1000x1500  pixels.";
-              $('#img_error').html(message);
-              $('#img_error').show();
 
-              $("button").attr('disabled', true);
-            } else {
-              if ((img.width === 700 && img.height === 600) ||
-                (img.width === 1000 && img.height === 1500) ||
-                (img.width === 1400 && img.height === 1200) ||
-                (img.width === 2000 && img.height === 3000) ||
-                (img.width === 2100 && img.height === 1800) ||
-                (img.width === 3000 && img.height === 4500)) {
-                $("button").attr('disabled', false);
-              } else {
-                var message = "Image size should be 700x600 or 1000x1500 actual size.";
+            if (selectedId == 'basecat') {
+
+              if ((img.width < 700 || img.height < 600)) {
+                var message = "Image size should be at least 700x600  pixels.";
                 $('#img_error').html(message);
                 $('#img_error').show();
+
                 $("button").attr('disabled', true);
+              } else {
+                if ((img.width === 700 && img.height === 600) ||
+                  (img.width === 1400 && img.height === 1200) ||
+                  (img.width === 2100 && img.height === 1800) ||
+                  (img.width === 2800 && img.height === 2400)) {
+                  $("button").attr('disabled', false);
+                } else {
+                  var message = "Image size should be 700x600 actual size.";
+                  $('#img_error').html(message);
+                  $('#img_error').show();
+                  $("button").attr('disabled', true);
+                }
+              }
+            } else {
+              if ((img.width < 1000 || img.height < 1500)) {
+                var message = "Image size should be at least 1000x1500  pixels.";
+                $('#img_error').html(message);
+                $('#img_error').show();
+
+                $("button").attr('disabled', true);
+              } else {
+                if ((img.width === 1000 && img.height === 1500) ||
+                  (img.width === 2000 && img.height === 3000) ||
+                  (img.width === 3000 && img.height === 4500) ||
+                  (img.width === 4000 && img.height === 6000)) {
+                  $("button").attr('disabled', false);
+                } else {
+                  var message = "Image size should be 1000x1500 actual size.";
+                  $('#img_error').html(message);
+                  $('#img_error').show();
+                  $("button").attr('disabled', true);
+                }
               }
             }
+
+
+
 
             URL.revokeObjectURL(objectUrl);
           };

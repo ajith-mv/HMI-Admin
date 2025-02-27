@@ -103,7 +103,7 @@ switch ($act) {
 
 			$newsdate = $currentDateTime->format('Y-m-d H:i:s');
 
-			$checkSql = "SELECT COUNT(*) FROM " . tbl_newscategory . " WHERE urlslug = '" . getRealescape($urlslug) . "' AND isactive = 1";
+			$checkSql = "SELECT COUNT(*) FROM " . tbl_newscategory . " WHERE urlslug = '" . getRealescape($url_slug) . "' AND isactive = 1";
 			$reslt = $db->get_a_line($checkSql);
 
 			if ($reslt[0] > 0) {
@@ -111,8 +111,9 @@ switch ($act) {
 
 			} else {
 
-				$sql = "INSERT INTO " . tbl_newscategory . " (name, urlslug, types, subcategory, cat_image, short_desc, description,meta_title,meta_desc, ishome, isactive, userid, createddate) 
-				VALUES ('" . getRealescape($titlename) . "','" . getRealescape($url_slug) . "','" . getRealescape($types) . "','" . getRealescape($subcategory) . "','" . getRealescape($filename) . "','" . getRealescape($short_desc) . "','" . getRealescape($newscatdesc) . "','" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','" . getRealescape($ishome) . "','$chkstatus', '1','$newsdate')";
+				$sql = "INSERT INTO " . tbl_newscategory . " (name, urlslug, types, subcategory, cat_image, short_desc, description, meta_title, meta_desc, ishome, homeorder, isactive, userid, createddate) 
+				VALUES ('" . getRealescape($titlename) . "','" . getRealescape($url_slug) . "','" . getRealescape($types) . "','" . getRealescape($subcategory) . "','" . getRealescape($filename) . "','" . getRealescape($short_desc) . "','" . getRealescape($newscatdesc) . "','" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "',
+				'" . getRealescape($ishome) . "'," . (empty($homeorder) ? 'NULL' : "'" . getRealescape($homeorder) . "'") . ",'$chkstatus', '" . $_SESSION["UserId"] . "','$newsdate')";
 
 				$status = $db->insert($sql);
 
@@ -242,6 +243,27 @@ switch ($act) {
 		echo json_encode(array("rslt" => "6")); //status update success
 
 		break;
+
+	case 'changehome':
+		$edit_id = base64_decode($Id);
+		$today = date("Y-m-d");
+		$status = $actval;
+
+		$strChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1'";
+		$reslt = $db->get_a_line($strChk);
+		if ($reslt[0] == 4) {
+			echo json_encode(array("rslt" => "9", 'msg' => 'Reference exists with other data. Cannot be deleted.'));
+		} else {
+			$str = "update " . tbl_newscategory . " set ishome = '" . $status . "',userid='" . $_SESSION["UserId"] . "', modifydate='" . $today . "' where catid = '" . $edit_id . "'";
+			//echo $str; exit;
+			$db->insert_log("status", "" . tbl_newscategory . "", $edit_id, "news Status", "newseventscat", $str);
+			$db->insert($str);
+
+			echo json_encode(array("rslt" => "6")); //status update success
+
+			break;
+		}
+
 
 }
 

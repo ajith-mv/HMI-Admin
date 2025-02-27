@@ -40,7 +40,9 @@ if (!($res_modm_prm)) {
               <tr>
                 <th>Sl.No</th>
                 <th>Category Name</th>
+                <th>Sortorder</th>
                 <th>Parent Category</th>
+                <th>ShowinHome</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>

@@ -225,7 +225,9 @@ function getUserArray_tot($db, $act = null, $whrcon = null, $ordr = null, $stt =
 	//$str_all = "select u.*,r.RoleName from " . tbl_users . "  u inner JOIN  " . tbl_roles . "  r on u.RoleId = r.RoleId  where  u.isactive <> 2 and u.userid <> 1   and u.userid <> " . $_SESSION["UserId"] . "   " . $constr;
 
 
-	$str_all = "select * from " . tbl_users . "  u inner JOIN  " . tbl_roles . "  r on u.RoleId = r.RoleId  where  u.isactive <> 2   ";
+	// $str_all = "select * from " . tbl_users . "  u inner JOIN  " . tbl_roles . "  r on u.RoleId = r.RoleId  where  u.isactive <> 2   ";
+
+	$str_all = "select * from " . tbl_users . " where isactive <> 2   ";
 
 	if ($whrcon != "")
 		$str_all .= $whrcon;
@@ -346,14 +348,11 @@ function getnewscategoryArray_tot($db, $act = null, $whrcon = null, $ordr = null
 function getnewscategoryArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt = null, $len = null)
 {
 
-
 	// $str_all = "select * from " . tbl_newscategory . "  where isactive <> 2 ";
 
-	$str_all = "select ROW_NUMBER() OVER (ORDER BY catid DESC) AS serial_number, catid, name, urlslug, types, isactive, subcategory from " . tbl_newscategory . "  where isactive <> 2 ";
+	$str_all = "select ROW_NUMBER() OVER (ORDER BY catid DESC) AS serial_number, catid, name, urlslug, types, isactive, ishome, homeorder, subcategory from " . tbl_newscategory . "  where isactive <> 2 ";
 
 	$rescntchk = $db->get_rsltset($str_all);
-
-
 
 	if ($whrcon != "")
 		$str_all .= $whrcon;
@@ -506,8 +505,8 @@ function getNoticeArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt
 
 
 	/*
-																																																																																																																																																								 $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																																																																																																								 */
+																																																																																																																																																									   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																																																																																									   */
 
 
 
@@ -563,8 +562,8 @@ function getStaffArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt 
 	//echo $str_all;		exit;
 
 	/*
-																																																																																																																																																								 $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																																																																																																								 */
+																																																																																																																																																									   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																																																																																									   */
 
 	$rescntchk = $db->get_rsltset($str_all);
 
@@ -630,8 +629,8 @@ function getAnnouncementArray_Ajx($db, $act = null, $whrcon = null, $ordr = null
 
 
 	/*
-																																																																																																																																																								 $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																																																																																																								 */
+																																																																																																																																																									   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																																																																																									   */
 
 	$rescntchk = $db->get_rsltset($str_all);
 
