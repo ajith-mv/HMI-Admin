@@ -64,6 +64,7 @@ $parent_category = "select * from " . tbl_newscategory . "  where isactive != '2
 $parent_category_list = $db->get_rsltset($parent_category);
 
 ?>
+
 <body>
   <!-- Navigation Bar-->
 
@@ -125,18 +126,18 @@ $parent_category_list = $db->get_rsltset($parent_category);
                     <div class="col-md-9">
                       <select class="form-control typebase" name="subcategory" id="subcategory">
                         <option>Select parent Category</option>
-                        <?php foreach ($parent_category_list as $parentcategory) { 
+                        <?php foreach ($parent_category_list as $parentcategory) {
                           if ($res_ed['catid'] != $parentcategory['catid']) { ?>
 
-                          <option class="categorys" value="<?php echo $parentcategory['catid']; ?>" <?php if ($parentcategory['catid'] == $res_ed['subcategory']) {
-                               echo "selected";
-                             } ?>>
-                            <?php echo $parentcategory['name']; ?>
-                          </option>
-                          <?php  
+                            <option class="categorys" value="<?php echo $parentcategory['catid']; ?>" <?php if ($parentcategory['catid'] == $res_ed['subcategory']) {
+                                 echo "selected";
+                               } ?>>
+                              <?php echo $parentcategory['name']; ?>
+                            </option>
+                          <?php
                           }
-                          }
-                          ?>
+                        }
+                        ?>
                       </select>
                     </div>
                   </div>
@@ -155,10 +156,10 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
                       <div class="col-md-8">
                         <input class="form-control product_images <?php if ($act != 'update') { ?>required<?php } ?>"
-                        onchange="dimensions()" id="cat_image" name="cat_image" type="file" fi-type="">
+                          onchange="dimensions()" id="cat_image" name="cat_image" type="file" fi-type="">
                         <span class="help-block"> Allowed Extension ( jpg, png, gif, webp ) <br />
                           Image Size Should be <?php echo $imgwidth . ' * ' . $imgheight; ?></span>
-                          <b id="img_error" style="color:red;display:none;"></b>
+                        <b id="img_error" style="color:red;display:none;"></b>
                       </div>
                       <div class="col-md-4">
                         <?php if (!empty($res_ed['cat_image']) && ($act == 'update')) { ?>
@@ -201,25 +202,25 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
                   </div>
 
-                  <?php if($res_ed['subcategory'] == 0) { ?>
+                  <?php if ($res_ed['subcategory'] == 0) { ?>
 
-                  <div class="form-group" id="home">
-                    <label class="col-md-3 control-label">Show on Home</label>
-                    <div class="col-md-1">
-                      <div class="pad-tb-7">
-                        <input type="checkbox" data-plugin="switchery" value="1" name="ishome" id="ishome" 
-                        <?php echo $ishome; ?> 
-                        data-color="#00b19d" data-size="small" checked/>
+                    <div class="form-group" id="home">
+                      <label class="col-md-3 control-label">Show on Home</label>
+                      <div class="col-md-1">
+                        <div class="pad-tb-7">
+                          <input type="checkbox" data-plugin="switchery" name="ishome" id="ishome"
+                            value="<?php echo ($ishome == '1') ? '1' : '0'; ?>" <?php echo ($ishome == 1) ? 'checked' : ''; ?>
+                            data-color="#00b19d" data-size="small" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-md-3 control-label">Show on Home Sort Order </label>
+                        <div class="col-md-2">
+                          <input type="number" min="1" max="4" class="form-control" name="homeorder" id="homeorder"
+                            value="<?php echo $res_ed['homeorder']; ?>" />
+                        </div>
                       </div>
                     </div>
-                    <div class="form-group">
-                    <label class="col-md-3 control-label">Show on Home Sort Order </label>
-                    <div class="col-md-3">
-                      <input type="number" class="form-control" name="homeorder" id="homeorder"
-                        value="<?php echo $res_ed['homeorder']; ?>" />
-                    </div>
-                  </div>
-                  </div>
 
                   <?php } ?>
 
@@ -258,64 +259,96 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
       <?php include("includes/footer.php"); ?>
       <?php if ($res_ed['types'] == 1): ?>
-    <script>
-        $('#subcategory').show();
-        $('#parent_category').show();
-      </script>
-  <?php else: ?>
-      <script>
+        <script>
+          $('#subcategory').show();
+          $('#parent_category').show();
+        </script>
+      <?php else: ?>
+        <script>
           $('#subcategory').hide();
           $('#parent_category').hide();
-      </script>
-  <?php endif; ?>
-  <script>  
-      function dimensions() {
-    $('#img_error').hide();
-    $("button").attr('disabled', false); 
-    var fileInput = $('input[name=cat_image]')[0];
-    if (!fileInput.files.length) {
-        alert("Please select an image.");
-        return;
-    }
-
-    var file = fileInput.files[0];
-    var img = new Image();
-    var objectUrl = URL.createObjectURL(file);
-
-    img.onload = function () {
-        console.log("Image Loaded: " + img.width + "x" + img.height);
-        if ((img.width < 655 && img.height < 1080) || (img.width < 767 && img.height < 460)) {
-            var message = "Image size should be at least Category 767x460 Subcategory 655x1080 pixels.";
-            $('#img_error').html(message);
-            $('#img_error').show();
-            $("button").attr('disabled', true);
-        } else {
-          if ((img.width === 655 && img.height === 1080) || 
-              (img.width === 767 && img.height === 460) || 
-              (img.width === 1310 && img.height === 2160) || 
-              (img.width === 1534 && img.height === 920) || 
-              (img.width === 1965 && img.height === 3240) || 
-              (img.width === 2301 && img.height === 1380)) {
-            $("button").attr('disabled', false);
-          }else{
-            var message = "Image size should be Category 767x460 Subcategory 655x1080 perspective size.";
-            $('#img_error').html(message);
-            $('#img_error').show();
-            $("button").attr('disabled', true);
+        </script>
+      <?php endif; ?>
+      <script>
+        function dimensions() {
+          $('#img_error').hide();
+          $("button").attr('disabled', false);
+          var fileInput = $('input[name=cat_image]')[0];
+          if (!fileInput.files.length) {
+            alert("Please select an image.");
+            return;
           }
+
+          var parentcategory = $('#subcategory').val();
+
+
+          if ($.isNumeric(parentcategory) && Math.floor(parentcategory) == parentcategory) {
+            alert('Yes, it\'s an int!');
+
+          } else {
+            
+            alert('No, it\'s not an int.');
+          }
+                   
+          var file = fileInput.files[0];
+          var img = new Image();
+          var objectUrl = URL.createObjectURL(file);
+
+          img.onload = function () {
+            console.log("Image Loaded: " + img.width + "x" + img.height);
+
+            if ($.isNumeric(parentcategory) && Math.floor(parentcategory) == parentcategory) {
+              if ((img.width < 655 && img.height < 1080)) {
+              var message = "Image size should be at least Subcategory 655x1080 pixels.";
+              $('#img_error').html(message);
+              $('#img_error').show();
+              $("button").attr('disabled', true);
+            } else {
+              if ((img.width === 655 && img.height === 1080) ||
+                (img.width === 1310 && img.height === 2160) ||
+                (img.width === 1965 && img.height === 3240) ||
+                (img.width === 2620 && img.height === 4320)) {
+                $("button").attr('disabled', false);
+              } else {
+                var message = "Image size should be Subcategory 655x1080 perspective size.";
+                $('#img_error').html(message);
+                $('#img_error').show();
+                $("button").attr('disabled', true);
+              }
+            }
+            } else {
+              if ((img.width < 767 && img.height < 460)) {
+              var message = "Image size should be at least Category 767x460 pixels.";
+              $('#img_error').html(message);
+              $('#img_error').show();
+              $("button").attr('disabled', true);
+            } else {
+              if ((img.width === 767 && img.height === 460) ||
+                (img.width === 1534 && img.height === 920) ||
+                (img.width === 2301 && img.height === 1380) ||
+                (img.width === 3068 && img.height === 1840)) {
+                $("button").attr('disabled', false);
+              } else {
+                var message = "Image size should be Category 767x460 perspective size.";
+                $('#img_error').html(message);
+                $('#img_error').show();
+                $("button").attr('disabled', true);
+              }
+            }
+            }
+
+            URL.revokeObjectURL(objectUrl);
+          };
+
+          img.onerror = function () {
+            alert("Invalid image file.");
+            $("button").attr('disabled', true);
+          };
+
+          img.src = objectUrl; // Set the image source
         }
-        URL.revokeObjectURL(objectUrl);
-    };
 
-    img.onerror = function () {
-        alert("Invalid image file.");
-        $("button").attr('disabled', true);
-    };
-
-    img.src = objectUrl; // Set the image source
-}
-
-  </script>
+      </script>
       <script type="text/javascript">
         $(document).ready(function () {
           $('#cat_image').parsley();
@@ -330,28 +363,33 @@ $parent_category_list = $db->get_rsltset($parent_category);
           $(document).on('change', '#types', function (e) {
 
             var types = $(this).val();
-              if(types == 2){
-                $('#subcategory').hide();
-                $('#parent_category').hide();
-                $('#home').hide();
-              }else{
-                $('#subcategory').show();
-                $('#parent_category').show();
-                $('#home').show();
+            if (types == 2) {
+              $('#subcategory').hide();
+              $('#parent_category').val('');
+              $('#parent_category').hide();
+              $('#home').hide();
+            } else {
+              $('#subcategory').show();
+              $('#parent_category').show();
+              $('#home').show();
 
-              }
+            }
           })
 
           $(document).on('change', '#subcategory', function (e) {
 
-              var types = $(this).val();
-              if(types == 0){
-                $('#home').show();
-              }else{
-                $('#home').hide();
-              }
+            var types = $(this).val();
+            if (types == 0) {
+              $('#home').show();
+            } else {
+              $('#home').hide();
+            }
 
           })
+
+          $('#homeorder').on('input', function () {
+            this.value = this.value.replace(/[^1-4]/g, '');
+          });
         });
       </script>
     </div>

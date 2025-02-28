@@ -41,8 +41,8 @@ if (!($res_modm_prm)) {
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <!-- <th>Subject</th> -->
                 <th>Requirments</th>
+                <th>Type</th>
                 <th>Actions</th>
               </tr>
             </thead>

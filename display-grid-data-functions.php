@@ -505,8 +505,8 @@ function getNoticeArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt
 
 
 	/*
-																																																																																																																																																									   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																																																																																																									   */
+																																																																																																																																																													  $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																																																																																													  */
 
 
 
@@ -562,8 +562,8 @@ function getStaffArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt 
 	//echo $str_all;		exit;
 
 	/*
-																																																																																																																																																									   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																																																																																																									   */
+																																																																																																																																																													  $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																																																																																													  */
 
 	$rescntchk = $db->get_rsltset($str_all);
 
@@ -629,8 +629,8 @@ function getAnnouncementArray_Ajx($db, $act = null, $whrcon = null, $ordr = null
 
 
 	/*
-																																																																																																																																																									   $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																																																																																																									   */
+																																																																																																																																																													  $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																																																																																													  */
 
 	$rescntchk = $db->get_rsltset($str_all);
 
@@ -668,7 +668,8 @@ function getEnquiriesArray_tot($db, $act = null, $whrcon = null, $ordr = null, $
 		" . tbl_contact . ".name, 
 		" . tbl_contact . ".email, 
 		" . tbl_contact . ".phone, 
-		" . tbl_contact . ".message 
+		" . tbl_contact . ".message,
+		" . tbl_contact . ".types
 		FROM " . tbl_contact;
 
 	if (!empty($whrcon)) {
@@ -708,7 +709,8 @@ function getEnquiriesArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $
 					" . tbl_contact . ".name, 
 					" . tbl_contact . ".email, 
 					" . tbl_contact . ".phone, 
-					" . tbl_contact . ".message 
+					" . tbl_contact . ".message,
+					" . tbl_contact . ".types 
 					FROM " . tbl_contact;
 
 	if (!empty($whrcon)) {

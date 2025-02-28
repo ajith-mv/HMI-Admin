@@ -4,7 +4,7 @@ include 'session.php';
 extract($_REQUEST);
 $act = $action;
 
-// error_reporting(1);
+// error_reporting(E_ALL);
 
 if ($chkstatus != null)
 	$status = 1;
@@ -60,9 +60,7 @@ if ($status == '') {
 	$status = 0;
 }
 
-if ($ishome == '') {
-	$ishome = 0;
-}
+$catid = 0;
 
 if ($newsdate == '') {
 	$newsdate = '0000-00-00';
@@ -116,9 +114,6 @@ switch ($act) {
 				}
 			}
 
-
-
-
 			$schools_selected = 1;
 
 			$slug = slugify($titlename);
@@ -131,11 +126,9 @@ switch ($act) {
 
 			} else {
 
-				$sql = "INSERT INTO " . tbl_newsevents . " (school_id, newstitle, slug, newsimage, newsdate, short_desc, newsdescription, catid,meta_title,meta_desc,ishome, isactive, userid) 
+				$sql = "INSERT INTO " . tbl_newsevents . " (school_id, newstitle, slug, newsimage, newsdate, short_desc, newsdescription, catid, meta_title, meta_desc, isactive, userid) 
 				VALUES ('$schools_selected', '" . getRealescape($titlename) . "', '$slug', '$filename', '$newsdate', '" . getRealescape($short_desc) . "', '" . getRealescape($newsdesc) . "','$catid',
-				'" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','$ishome',
-				'" . (empty($homeorder) ? 'NULL' : getRealescape($homeorder)) . "','$chkstatus', '1')";
-
+				'" . getRealescape($meta_title) . "','" . getRealescape($meta_desc) . "','$chkstatus', '1')";
 
 				$status = $db->insert($sql);
 
@@ -241,7 +234,7 @@ switch ($act) {
 				$str .= " slug = '" . $slug . "',school_id = '" . $schools_selected . "',
 				 newsdescription='" . getRealescape($newsdesc) . "', short_desc='" . getRealescape($short_desc) . "',
 				 meta_title='" . getRealescape($meta_title) . "',meta_desc='" . getRealescape($meta_desc) . "',catid='" . $catid . "',
-				 ishome='" . $ishome . "',homeorder='" . (empty($homeorder) ? 'NULL' : getRealescape($homeorder)) . "', newsdate='" . $newsdate . "',isactive = '" . $status . "' $strph,userid='" . $_SESSION["UserId"] . "' where newsid = '" . $edit_id . "'";
+				 newsdate='" . $newsdate . "',isactive = '" . $status . "' $strph,userid='" . $_SESSION["UserId"] . "' where newsid = '" . $edit_id . "'";
 
 				$db->insert_log("update", "" . tbl_newsevents . "", $edit_id, "news updated", "newsevents", $str);
 				$db->insert($str);

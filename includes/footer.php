@@ -515,6 +515,9 @@
 									datatblCal(dataGridHdn);
 								}
 								else if (response.rslt == '7') {
+									swal("Failure!", exsmsg_reference, "orange", "btn-orange");
+								}
+								else if (response.rslt == '7') {
 									swal("Failure!", exsmsg_refstats, "orange", "btn-orange");
 								}
 							}

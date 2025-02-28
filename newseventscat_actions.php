@@ -108,7 +108,6 @@ switch ($act) {
 
 			if ($reslt[0] > 0) {
 				echo json_encode(array("rslt" => "8", 'msg' => 'Name already exists.'));  //no values
-
 			} else {
 
 				$sql = "INSERT INTO " . tbl_newscategory . " (name, urlslug, types, subcategory, cat_image, short_desc, description, meta_title, meta_desc, ishome, homeorder, isactive, userid, createddate) 
@@ -218,11 +217,12 @@ switch ($act) {
 		$reslts = $db->get_a_line($checksSql);
 
 		if ($reslt[0] > 0) {
-			echo json_encode(array("rslt" => "9", 'msg' => 'Reference exists with other data. Cannot be deleted.'));
-		} else if ($reslts[0] > 0) {
-			echo json_encode(array("rslt" => "9", 'msg' => 'Reference exists with other data. Cannot be deleted.'));
-		} else {
+			echo json_encode(array("rslt" => "7"));
 
+		} else if ($reslts[0] > 0) {
+			echo json_encode(array("rslt" => "7"));
+
+		} else {
 			$str = "update " . tbl_newscategory . " set isactive = '2',userid='" . $_SESSION["UserId"] . "' , modifydate='" . $today . "' where catid = '" . $edit_id . "'";
 
 			$db->insert($str);
@@ -252,7 +252,7 @@ switch ($act) {
 		$strChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1'";
 		$reslt = $db->get_a_line($strChk);
 		if ($reslt[0] == 4) {
-			echo json_encode(array("rslt" => "9", 'msg' => 'Reference exists with other data. Cannot be deleted.'));
+			echo json_encode(array("rslt" => "7"));
 		} else {
 			$str = "update " . tbl_newscategory . " set ishome = '" . $status . "',userid='" . $_SESSION["UserId"] . "', modifydate='" . $today . "' where catid = '" . $edit_id . "'";
 			//echo $str; exit;

@@ -260,7 +260,7 @@ switch ($_REQUEST['finaltab']) {
 		break;
 
 	case "enquiries":
-		$dispFields = array("date", "name", "email", "phone", "message");
+		$dispFields = array("date", "name", "email", "phone", "message", "types");
 		$disporder_ID = "cid";
 		$mdme = getMdmeEnquiries($db, '');
 		$wrcon = " WHERE " . tbl_contact . ".isactive <> 2 ";
