@@ -43,6 +43,11 @@ if ($id != "") {
     $chk = 'checked';
   }
 
+  $chks = '';
+  if ($res_ed['ishome'] == '1') {
+    $chks = 'checked';
+  }
+
 } else {
   //check edit permission - START	
   if (trim($res_modm_prm['addprm']) == "0") {
@@ -208,9 +213,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
                       <label class="col-md-3 control-label">Show on Home</label>
                       <div class="col-md-1">
                         <div class="pad-tb-7">
-                          <input type="checkbox" data-plugin="switchery" name="ishome" id="ishome"
-                            value="<?php echo ($res_ed['ishome'] == 1) ? '1' : '0'; ?>" <?php echo ($res_ed['ishome'] == 1) ? 'checked' : ''; ?>
-                            data-color="#00b19d" data-size="small" checked/>
+                          <input type="checkbox" data-plugin="switchery" value="1" name="ishome" id="ishome" <?php echo $chks; ?> data-color="#00b19d" data-size="small" checked />
                         </div>
                       </div>
                       <div class="form-group">
@@ -312,15 +315,15 @@ $parent_category_list = $db->get_rsltset($parent_category);
               var expectedWidth = (131 / 216) * img.height;
 
               if (Math.abs(img.height - expectedHeight) <= 1 || Math.abs(img.width - expectedWidth) <= 1) {
-              $("button").attr('disabled', false);
-            } else {
-              var message = "Image size should be Subcategory 655x1080 perspective size.";
-              $('#img_error').html(message);
-              $('#img_error').show();
-              $("button").attr('disabled', true);
-            }
+                $("button").attr('disabled', false);
+              } else {
+                var message = "Image size should be Subcategory 655x1080 perspective size.";
+                $('#img_error').html(message);
+                $('#img_error').show();
+                $("button").attr('disabled', true);
+              }
 
-              
+
             } else {
               // if ((img.width < 767 && img.height < 460)) {
               //   var message = "Image size should be at least Category 767x460 pixels.";
@@ -342,16 +345,16 @@ $parent_category_list = $db->get_rsltset($parent_category);
               // }
 
               var expectedHeight = (460 / 767) * img.width;
-              var expectedWidth = (767/ 460) * img.height;
+              var expectedWidth = (767 / 460) * img.height;
 
-            if (Math.abs(img.height - expectedHeight) <= 1 || Math.abs(img.width - expectedWidth) <= 1) {
-              $("button").attr('disabled', false);
-            } else {
-              var message = "Image size should be Category 767x460 perspective size.";
-              $('#img_error').html(message);
-              $('#img_error').show();
-              $("button").attr('disabled', true);
-            }
+              if (Math.abs(img.height - expectedHeight) <= 1 || Math.abs(img.width - expectedWidth) <= 1) {
+                $("button").attr('disabled', false);
+              } else {
+                var message = "Image size should be Category 767x460 perspective size.";
+                $('#img_error').html(message);
+                $('#img_error').show();
+                $("button").attr('disabled', true);
+              }
 
             }
 
