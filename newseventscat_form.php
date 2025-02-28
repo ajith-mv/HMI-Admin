@@ -107,7 +107,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
                   <div class="form-group">
                     <label class="col-md-3 control-label">Select Type *</label>
                     <div class="col-md-9">
-                      <select class="form-control" name="types" id="types">
+                      <select class="form-control" name="types" id="types" required>
                         <option value="">Select Type</option>
                         <option value="1" <?php if ($res_ed['types'] == 1) {
                           echo "selected";
@@ -134,7 +134,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
                                } ?>>
                               <?php echo $parentcategory['name']; ?>
                             </option>
-                          <?php
+                            <?php
                           }
                         }
                         ?>
@@ -209,8 +209,8 @@ $parent_category_list = $db->get_rsltset($parent_category);
                       <div class="col-md-1">
                         <div class="pad-tb-7">
                           <input type="checkbox" data-plugin="switchery" name="ishome" id="ishome"
-                            value="<?php echo ($ishome == '1') ? '1' : '0'; ?>" <?php echo ($ishome == 1) ? 'checked' : ''; ?>
-                            data-color="#00b19d" data-size="small" />
+                            value="<?php echo ($res_ed['ishome'] == 1) ? '1' : '0'; ?>" <?php echo ($res_ed['ishome'] == 1) ? 'checked' : ''; ?>
+                            data-color="#00b19d" data-size="small" checked/>
                         </div>
                       </div>
                       <div class="form-group">
@@ -281,15 +281,6 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
           var parentcategory = $('#subcategory').val();
 
-
-          if ($.isNumeric(parentcategory) && Math.floor(parentcategory) == parentcategory) {
-            alert('Yes, it\'s an int!');
-
-          } else {
-            
-            alert('No, it\'s not an int.');
-          }
-                   
           var file = fileInput.files[0];
           var img = new Image();
           var objectUrl = URL.createObjectURL(file);
@@ -298,43 +289,70 @@ $parent_category_list = $db->get_rsltset($parent_category);
             console.log("Image Loaded: " + img.width + "x" + img.height);
 
             if ($.isNumeric(parentcategory) && Math.floor(parentcategory) == parentcategory) {
-              if ((img.width < 655 && img.height < 1080)) {
-              var message = "Image size should be at least Subcategory 655x1080 pixels.";
+              // if ((img.width < 655 && img.height < 1080)) {
+              //   var message = "Image size should be at least Subcategory 655x1080 pixels.";
+              //   $('#img_error').html(message);
+              //   $('#img_error').show();
+              //   $("button").attr('disabled', true);
+              // } else {
+              //   if ((img.width === 655 && img.height === 1080) ||
+              //     (img.width === 1310 && img.height === 2160) ||
+              //     (img.width === 1965 && img.height === 3240) ||
+              //     (img.width === 2620 && img.height === 4320)) {
+              //     $("button").attr('disabled', false);
+              //   } else {
+              //     var message = "Image size should be Subcategory 655x1080 perspective size.";
+              //     $('#img_error').html(message);
+              //     $('#img_error').show();
+              //     $("button").attr('disabled', true);
+              //   }
+              // }
+
+              var expectedHeight = (216 / 131) * img.width;
+              var expectedWidth = (131 / 216) * img.height;
+
+              if (Math.abs(img.height - expectedHeight) <= 1 || Math.abs(img.width - expectedWidth) <= 1) {
+              $("button").attr('disabled', false);
+            } else {
+              var message = "Image size should be Subcategory 655x1080 perspective size.";
               $('#img_error').html(message);
               $('#img_error').show();
               $("button").attr('disabled', true);
-            } else {
-              if ((img.width === 655 && img.height === 1080) ||
-                (img.width === 1310 && img.height === 2160) ||
-                (img.width === 1965 && img.height === 3240) ||
-                (img.width === 2620 && img.height === 4320)) {
-                $("button").attr('disabled', false);
-              } else {
-                var message = "Image size should be Subcategory 655x1080 perspective size.";
-                $('#img_error').html(message);
-                $('#img_error').show();
-                $("button").attr('disabled', true);
-              }
             }
+
+              
             } else {
-              if ((img.width < 767 && img.height < 460)) {
-              var message = "Image size should be at least Category 767x460 pixels.";
+              // if ((img.width < 767 && img.height < 460)) {
+              //   var message = "Image size should be at least Category 767x460 pixels.";
+              //   $('#img_error').html(message);
+              //   $('#img_error').show();
+              //   $("button").attr('disabled', true);
+              // } else {
+              //   if ((img.width === 767 && img.height === 460) ||
+              //     (img.width === 1534 && img.height === 920) ||
+              //     (img.width === 2301 && img.height === 1380) ||
+              //     (img.width === 3068 && img.height === 1840)) {
+              //     $("button").attr('disabled', false);
+              //   } else {
+              //     var message = "Image size should be Category 767x460 perspective size.";
+              //     $('#img_error').html(message);
+              //     $('#img_error').show();
+              //     $("button").attr('disabled', true);
+              //   }
+              // }
+
+              var expectedHeight = (460 / 767) * img.width;
+              var expectedWidth = (767/ 460) * img.height;
+
+            if (Math.abs(img.height - expectedHeight) <= 1 || Math.abs(img.width - expectedWidth) <= 1) {
+              $("button").attr('disabled', false);
+            } else {
+              var message = "Image size should be Category 767x460 perspective size.";
               $('#img_error').html(message);
               $('#img_error').show();
               $("button").attr('disabled', true);
-            } else {
-              if ((img.width === 767 && img.height === 460) ||
-                (img.width === 1534 && img.height === 920) ||
-                (img.width === 2301 && img.height === 1380) ||
-                (img.width === 3068 && img.height === 1840)) {
-                $("button").attr('disabled', false);
-              } else {
-                var message = "Image size should be Category 767x460 perspective size.";
-                $('#img_error').html(message);
-                $('#img_error').show();
-                $("button").attr('disabled', true);
-              }
             }
+
             }
 
             URL.revokeObjectURL(objectUrl);

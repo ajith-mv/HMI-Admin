@@ -109,22 +109,23 @@ switch ($act) {
 
 		$today = date("Y-m-d");
 
-		$checkSql = "SELECT COUNT(*) FROM " . tbl_careerlisting . " WHERE title = '" . getRealescape($job_title) . "' AND isactive = 1";
+		$checkSql = "SELECT COUNT(*) FROM " . tbl_gallerycategory . " WHERE hardware_color = '" . $edit_id . "' AND isactive = 1";
 		$reslt = $db->get_a_line($checkSql);
 
-		if ($reslt[0] > 0) {
-			echo json_encode(array("rslt" => "8", 'msg' => 'already exists.'));  //no values
+		$checksSql = "SELECT COUNT(*) FROM " . tbl_gallerycategory . " WHERE FIND_IN_SET('$edit_id', color) > 0 AND isactive = 1";
+		$reslts = $db->get_a_line($checksSql);
 
+		if ($reslt[0] > 0) {
+			echo json_encode(array("rslt" => "7"));
+		} else if ($reslts[0] > 0) {
+			echo json_encode(array("rslt" => "7"));
 		} else {
 
+			$str = "update " . tbl_careerlisting . " set isactive = '2' where id = '" . $edit_id . "'";
 
-		$str = "update " . tbl_careerlisting . " set isactive = '2' where id = '" . $edit_id . "'";
-		//echo $str;
-		//exit();
-
-		$db->insert_log("delete", "" . tbl_careerlisting . "", $edit_id, "stafflisting deleted", "stafflisting", $str);
-		$db->insert($str);
-		echo json_encode(array("rslt" => "5")); //deletion
+			$db->insert_log("delete", "" . tbl_careerlisting . "", $edit_id, "stafflisting deleted", "stafflisting", $str);
+			$db->insert($str);
+			echo json_encode(array("rslt" => "5")); //deletion
 
 		}
 		break;

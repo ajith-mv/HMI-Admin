@@ -252,14 +252,39 @@ switch ($act) {
 		$strChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1'";
 		$reslt = $db->get_a_line($strChk);
 		if ($reslt[0] == 4) {
-			echo json_encode(array("rslt" => "7"));
-		} else {
-			$str = "update " . tbl_newscategory . " set ishome = '" . $status . "',userid='" . $_SESSION["UserId"] . "', modifydate='" . $today . "' where catid = '" . $edit_id . "'";
-			//echo $str; exit;
-			$db->insert_log("status", "" . tbl_newscategory . "", $edit_id, "news Status", "newseventscat", $str);
-			$db->insert($str);
+			$strsChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1' and catid = '" . $edit_id . "'";
+			$result = $db->get_a_line($strsChk);
 
-			echo json_encode(array("rslt" => "6")); //status update success
+			if ($result[0] == 1) {
+
+				if ($status == 0) {
+					$str = "update " . tbl_newscategory . " set ishome = '" . $status . "',homeorder = NULL,userid='" . $_SESSION["UserId"] . "', modifydate='" . $today . "' where catid = '" . $edit_id . "'";
+					$db->insert_log("status", "" . tbl_newscategory . "", $edit_id, "news Status", "newseventscat", $str);
+					$db->insert($str);
+					echo json_encode(array("rslt" => "6")); //status update success
+				} else {
+					$str = "update " . tbl_newscategory . " set ishome = '" . $status . "',userid='" . $_SESSION["UserId"] . "', modifydate='" . $today . "' where catid = '" . $edit_id . "'";
+					$db->insert_log("status", "" . tbl_newscategory . "", $edit_id, "news Status", "newseventscat", $str);
+					$db->insert($str);
+					echo json_encode(array("rslt" => "6")); //status update success
+				}
+
+
+			} else {
+				echo json_encode(array("rslt" => "7"));
+			}
+		} else {
+			if ($status == 0) {
+				$str = "update " . tbl_newscategory . " set ishome = '" . $status . "',homeorder = NULL,userid='" . $_SESSION["UserId"] . "', modifydate='" . $today . "' where catid = '" . $edit_id . "'";
+				$db->insert_log("status", "" . tbl_newscategory . "", $edit_id, "news Status", "newseventscat", $str);
+				$db->insert($str);
+				echo json_encode(array("rslt" => "6")); //status update success
+			} else {
+				$str = "update " . tbl_newscategory . " set ishome = '" . $status . "',userid='" . $_SESSION["UserId"] . "', modifydate='" . $today . "' where catid = '" . $edit_id . "'";
+				$db->insert_log("status", "" . tbl_newscategory . "", $edit_id, "news Status", "newseventscat", $str);
+				$db->insert($str);
+				echo json_encode(array("rslt" => "6")); //status update success
+			}
 
 			break;
 		}
