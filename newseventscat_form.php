@@ -213,7 +213,8 @@ $parent_category_list = $db->get_rsltset($parent_category);
                       <label class="col-md-3 control-label">Show on Home</label>
                       <div class="col-md-1">
                         <div class="pad-tb-7">
-                          <input type="checkbox" data-plugin="switchery" value="1" name="ishome" id="ishome" <?php echo $chks; ?> data-color="#00b19d" data-size="small" checked />
+                          <input type="checkbox" data-plugin="switchery" value=<?php echo ($res_ed['ishome'] == 1) ? '1' : '0'; ?>
+                            name="ishome" id="ishome" data-color="#00b19d" data-size="small" <?php echo $chks; ?> />
                         </div>
                       </div>
                       <div class="form-group">
