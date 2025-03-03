@@ -45,8 +45,8 @@ if (!($res_modm_prm)) {
                 <th>User Email</th>
                 <!-- <th>Role</th> -->
                 <!-- <th>School Name</th> -->
-                <th>Status</th>
-                <th>Actions</th>
+                <!-- <th>Status</th>
+                <th>Actions</th> -->
               </tr>
             </thead>
           </table>

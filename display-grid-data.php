@@ -440,7 +440,7 @@ foreach ($res as $r) {
 
 
 	///////////from here, newly added for act status	
-	if ($_REQUEST['finaltab'] != 'enquiries' && $_REQUEST['finaltab'] != 'career' && $_REQUEST['finaltab'] != 'alumnus' && $_REQUEST['finaltab'] != 'alumni' && $_REQUEST['finaltab'] != 'admission' && $_REQUEST['finaltab'] != 'book_a_tour') {
+	if ($_REQUEST['finaltab'] != 'enquiries' && $_REQUEST['finaltab'] != 'career' && $_REQUEST['finaltab'] != 'alumnus' && $_REQUEST['finaltab'] != 'alumni' && $_REQUEST['finaltab'] != 'admission' && $_REQUEST['finaltab'] != 'book_a_tour' && $_REQUEST['finaltab'] != 'userinfo') {
 
 		if ($r['isactive'] == '1') {
 

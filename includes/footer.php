@@ -308,7 +308,7 @@
 			frmid = "&frmpara=" + $('#frmpara').val();
 		}
 		var i = 0;
-		if (($('#disptblname').val() == 'enquiries') || ($('#disptblname').val() == 'excursion') || ($('#disptblname').val() == 'career') || ($('#disptblname').val() == 'alumni') || ($('#disptblname').val() == 'admission')) {
+		if (($('#disptblname').val() == 'enquiries')) {
 			var dataTable = $('#tblresult').dataTable({
 				initComplete: function () {
 					if (typeof hdnFld != 'undefined') {
@@ -316,7 +316,7 @@
 					unloading();
 				},
 
-				"pageLength": 10,
+				"pageLength": 50,
 				"dom": 'lBfrtip',
 				"buttons": [
 					'copy', 'csv', 'excel', 'pdf'
