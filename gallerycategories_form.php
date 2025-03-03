@@ -132,8 +132,8 @@ include "common/dpselect-functions.php";
                   <div class="form-group">
                     <label class="col-md-3 control-label">Parent Category *</label>
                     <div class="col-md-9">
-                      <select class="form-control" name="category" id="category">
-                        <option>Select parent Category</option>
+                      <select class="form-control" name="category" id="category" required>
+                        <option value="">Select parent Category</option>
                         <?php foreach ($category_list as $categorys) {
 
                           $parentcatid = $categorys['catid'];

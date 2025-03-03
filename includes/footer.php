@@ -672,7 +672,7 @@
 
 			}
 
-			if ($stats == 'gallerymoretimage') {
+			if ($stats == 'gallerymoreimage') {
 				var fileInput = document.getElementById("gallerymoreimage");
 				var message = "";
 				if ('files' in fileInput) {
