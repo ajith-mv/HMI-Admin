@@ -249,10 +249,10 @@ switch ($act) {
 		$today = date("Y-m-d");
 		$status = $actval;
 
-		$strChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1'";
+		$strChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1' and types = '1' and (subcategory is NULL or subcategory = 0) and isactive != '2'";
 		$reslt = $db->get_a_line($strChk);
 		if ($reslt[0] == 4) {
-			$strsChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1' and isactive != '2' and catid = '" . $edit_id . "'";
+			$strsChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1' and types = '1' and (subcategory is NULL or subcategory = 0) and catid = '" . $edit_id . "'";
 			$result = $db->get_a_line($strsChk);
 
 			if ($result[0] == 1) {
@@ -268,7 +268,6 @@ switch ($act) {
 					$db->insert($str);
 					echo json_encode(array("rslt" => "6")); //status update success
 				}
-
 
 			} else {
 				echo json_encode(array("rslt" => "7"));
