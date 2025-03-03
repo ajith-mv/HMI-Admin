@@ -55,7 +55,13 @@ switch ($act) {
 		$checkSql = "SELECT COUNT(*) FROM " . tbl_careerlisting . " WHERE title = '" . getRealescape($job_title) . "' AND isactive = 1";
 		$reslt = $db->get_a_line($checkSql);
 
+		$checksSql = "SELECT COUNT(*) FROM " . tbl_careerlisting . " WHERE job_type = '" . getRealescape($job_type) . "' AND isactive = 1";
+		$reslts = $db->get_a_line($checksSql);
+
 		if ($reslt[0] > 0) {
+			echo json_encode(array("rslt" => "8", 'msg' => 'already exists.'));  //no values
+
+		} else if ($reslts[0] > 0) {
 			echo json_encode(array("rslt" => "8", 'msg' => 'already exists.'));  //no values
 
 		} else {
