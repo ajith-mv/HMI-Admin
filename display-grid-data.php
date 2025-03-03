@@ -143,7 +143,9 @@ switch ($_REQUEST['finaltab']) {
 
 		$order_clmn = $requestData['order'][0]['column'];
 		$order_oper = $requestData['order'][0]['dir'];
-		$ordr = " order by newsid desc ";
+		// $ordr = " order by newsid desc ";
+		$ordr = " order by serial_number $order_oper ";
+
 
 		$totalData = getnewseventsArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
 		$res = getnewseventsArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
@@ -160,9 +162,11 @@ switch ($_REQUEST['finaltab']) {
 
 		$wrcon .= " and (name like '%" . $requestData['search']['value'] . "%' )";
 
-		//$order_clmn = $requestData['order'][0]['column'];
-		//$order_oper = $requestData['order'][0]['dir'];			
-		$ordr = " order by catid desc ";
+		// $order_clmn = $requestData['order'][0]['column'];
+		$order_oper = $requestData['order'][0]['dir'];
+		// $ordr = " order by catid desc ";
+		$ordr = " order by serial_number $order_oper ";
+
 
 		$totalData = getnewscategoryArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
 		$res = getnewscategoryArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
@@ -230,8 +234,10 @@ switch ($_REQUEST['finaltab']) {
 
 		$wrcon .= " and ( job_type like '%" . $requestData['search']['value'] . "%' or title like '%" . $requestData['search']['value'] . "%')";
 
-
+		$order_clmn = $requestData['order'][0]['column'];
+		$order_oper = $requestData['order'][0]['dir'];
 		$ordr = " order by id desc ";
+		// $ordr = " order by id $order_oper ";
 
 		$totalData = getCareerlistingArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
 		$res = getCareerlistingArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
