@@ -249,14 +249,12 @@ switch ($act) {
 		$today = date("Y-m-d");
 		$status = $actval;
 
-		$strChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1' and types = '1' and (subcategory is NULL or subcategory = 0) and isactive != '2'";
+		$strChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1' and types = '1' and (subcategory is NULL or subcategory = 0) and isactive = '1'";
 		$reslt = $db->get_a_line($strChk);
 		if ($reslt[0] == 4) {
-			$strsChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1' and types = '1' and (subcategory is NULL or subcategory = 0) and catid = '" . $edit_id . "'";
+			$strsChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1' and types = '1' and (subcategory is NULL or subcategory = 0) and isactive = '1' and catid = '" . $edit_id . "'";
 			$result = $db->get_a_line($strsChk);
-
 			if ($result[0] == 1) {
-
 				if ($status == 0) {
 					$str = "update " . tbl_newscategory . " set ishome = '" . $status . "',homeorder = NULL,userid='" . $_SESSION["UserId"] . "', modifydate='" . $today . "' where catid = '" . $edit_id . "'";
 					$db->insert_log("status", "" . tbl_newscategory . "", $edit_id, "news Status", "newseventscat", $str);
@@ -273,18 +271,25 @@ switch ($act) {
 				echo json_encode(array("rslt" => "7"));
 			}
 		} else {
-			if ($status == 0) {
-				$str = "update " . tbl_newscategory . " set ishome = '" . $status . "',homeorder = NULL,userid='" . $_SESSION["UserId"] . "', modifydate='" . $today . "' where catid = '" . $edit_id . "'";
-				$db->insert_log("status", "" . tbl_newscategory . "", $edit_id, "news Status", "newseventscat", $str);
-				$db->insert($str);
-				echo json_encode(array("rslt" => "6")); //status update success
-			} else {
-				$str = "update " . tbl_newscategory . " set ishome = '" . $status . "',userid='" . $_SESSION["UserId"] . "', modifydate='" . $today . "' where catid = '" . $edit_id . "'";
-				$db->insert_log("status", "" . tbl_newscategory . "", $edit_id, "news Status", "newseventscat", $str);
-				$db->insert($str);
-				echo json_encode(array("rslt" => "6")); //status update success
-			}
 
+			$strsChks = "select count(catid) from " . tbl_newscategory . " where types = '1' and (subcategory is NULL or subcategory = 0) and isactive = '1' and catid = '" . $edit_id . "'";
+			$results = $db->get_a_line($strsChks);
+
+			if ($results[0] == 1) {
+				if ($status == 0) {
+					$str = "update " . tbl_newscategory . " set ishome = '" . $status . "',homeorder = NULL,userid='" . $_SESSION["UserId"] . "', modifydate='" . $today . "' where catid = '" . $edit_id . "'";
+					$db->insert_log("status", "" . tbl_newscategory . "", $edit_id, "news Status", "newseventscat", $str);
+					$db->insert($str);
+					echo json_encode(array("rslt" => "6")); //status update success
+				} else {
+					$str = "update " . tbl_newscategory . " set ishome = '" . $status . "',userid='" . $_SESSION["UserId"] . "', modifydate='" . $today . "' where catid = '" . $edit_id . "'";
+					$db->insert_log("status", "" . tbl_newscategory . "", $edit_id, "news Status", "newseventscat", $str);
+					$db->insert($str);
+					echo json_encode(array("rslt" => "6")); //status update success
+				}
+			} else {
+				echo json_encode(array("rslt" => "7"));
+			}
 			break;
 		}
 
