@@ -252,7 +252,7 @@ switch ($act) {
 		$strChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1'";
 		$reslt = $db->get_a_line($strChk);
 		if ($reslt[0] == 4) {
-			$strsChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1' and catid = '" . $edit_id . "'";
+			$strsChk = "select count(ishome) from " . tbl_newscategory . " where ishome = '1' and isactive != '2' and catid = '" . $edit_id . "'";
 			$result = $db->get_a_line($strsChk);
 
 			if ($result[0] == 1) {
