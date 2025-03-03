@@ -251,7 +251,8 @@ include "common/dpselect-functions.php";
                     <label class="col-md-3 control-label">Status</label>
                     <div class="col-md-9">
                       <div class="pad-tb-7">
-                        <input type="checkbox" data-plugin="switchery" value="1" name="chkstatus" id="chkstatus" <?php echo $chk; ?> data-color="#00b19d" data-size="small" checked />
+                        <input type="checkbox" data-plugin="switchery" value=<?php echo ($res_ed['isactive'] == 0) ? '0' : '1'; ?>
+                         name="chkstatus" id="chkstatus" data-color="#00b19d" data-size="small" <?php echo $chk; ?> />
                       </div>
                     </div>
                   </div>
