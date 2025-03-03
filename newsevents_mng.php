@@ -25,7 +25,7 @@ if (!($res_modm_prm)) {
       <div class="col-sm-12">
         <?php if (trim($res_modm_prm['addprm']) == "1") { ?>
           <div class="btn-group pull-right m-t-15"> <a href="newsevents_form.php"
-              class="btn btn-custom dropdown-toggle waves-effect waves-light">Add NewsEvents <span class="m-l-5"><i
+              class="btn btn-custom dropdown-toggle waves-effect waves-light">Add News Events <span class="m-l-5"><i
                   class="fa fa-plus"></i></span></a> </div>
         <?php } ?>
         <h4 class="page-title">News Events</h4>
