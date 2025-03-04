@@ -106,7 +106,7 @@ switch ($_REQUEST['finaltab']) {
 		break;
 
 	case "userinfo":
-		$dispFields = array("user_firstname", "user_lastname", "user_email");
+		$dispFields = array("serial_number", "user_firstname", "user_lastname", "user_email");
 		$disporder_ID = "userid";
 		$mdme = getMdmeUser($db, '');
 
@@ -115,10 +115,9 @@ switch ($_REQUEST['finaltab']) {
 
 		$order_clmn = $requestData['order'][0]['column'];
 		$order_oper = $requestData['order'][0]['dir'];
-		$ordr = " order by serial_number $order_oper ";
+		// $ordr = " order by serial_number $order_oper ";
 
-
-
+		$ordr = " order by $dispFields[$order_clmn] $order_oper ";
 
 		$totalData = getUserArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
 		$res = getUserArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
@@ -133,7 +132,7 @@ switch ($_REQUEST['finaltab']) {
 
 	case "newsevents":
 
-		$dispFields = array("newsdate", "newstitle");
+		$dispFields = array("serial_number", "newsdate", "newstitle");
 
 		$disporder_ID = "newsid";
 
@@ -143,8 +142,9 @@ switch ($_REQUEST['finaltab']) {
 
 		$order_clmn = $requestData['order'][0]['column'];
 		$order_oper = $requestData['order'][0]['dir'];
-		// $ordr = " order by newsid desc ";
-		$ordr = " order by serial_number $order_oper ";
+		// $ordr = " order by serial_number $order_oper ";
+		$ordr = " order by $dispFields[$order_clmn] $order_oper ";
+
 
 
 		$totalData = getnewseventsArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
@@ -154,7 +154,7 @@ switch ($_REQUEST['finaltab']) {
 
 	case "newseventscat":
 
-		$dispFields = array("name", "homeorder");
+		$dispFields = array("serial_number", "name", "homeorder");
 
 		$disporder_ID = "catid";
 
@@ -162,11 +162,10 @@ switch ($_REQUEST['finaltab']) {
 
 		$wrcon .= " and (name like '%" . $requestData['search']['value'] . "%' )";
 
-		// $order_clmn = $requestData['order'][0]['column'];
+		$order_clmn = $requestData['order'][0]['column'];
 		$order_oper = $requestData['order'][0]['dir'];
 		// $ordr = " order by catid desc ";
-		$ordr = " order by serial_number $order_oper ";
-
+		$ordr = " order by $dispFields[$order_clmn] $order_oper ";
 
 		$totalData = getnewscategoryArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
 		$res = getnewscategoryArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
@@ -175,7 +174,7 @@ switch ($_REQUEST['finaltab']) {
 
 	case "gallerycategories":
 
-		$dispFields = array("name");
+		$dispFields = array("serial_number", "name");
 
 		$disporder_ID = "catid";
 
@@ -183,9 +182,11 @@ switch ($_REQUEST['finaltab']) {
 
 		$wrcon .= " and (name like '%" . $requestData['search']['value'] . "%' )";
 
-		//$order_clmn = $requestData['order'][0]['column'];
-		//$order_oper = $requestData['order'][0]['dir'];			
-		$ordr = " order by catid desc ";
+		$order_clmn = $requestData['order'][0]['column'];
+		$order_oper = $requestData['order'][0]['dir'];
+		// $ordr = " order by catid desc ";
+		$ordr = " order by $dispFields[$order_clmn] $order_oper ";
+
 
 		$totalData = getgallerycategoriesArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
 		$res = getgallerycategoriesArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
@@ -228,7 +229,10 @@ switch ($_REQUEST['finaltab']) {
 		break;
 
 	case "careerlisting":
-		$dispFields = array("title", "job_type");
+
+		$dispFields = array("serial_number", "title", "job_type");
+
+
 		$disporder_ID = "id";
 		// $mdme = getMdmecareerListing($db, '');
 
@@ -236,7 +240,10 @@ switch ($_REQUEST['finaltab']) {
 
 		$order_clmn = $requestData['order'][0]['column'];
 		$order_oper = $requestData['order'][0]['dir'];
-		$ordr = " order by id desc ";
+		// $ordr = " order by id desc ";
+
+		$ordr = " order by $dispFields[$order_clmn] $order_oper ";
+
 		// $ordr = " order by id $order_oper ";
 
 		$totalData = getCareerlistingArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
@@ -266,7 +273,7 @@ switch ($_REQUEST['finaltab']) {
 		break;
 
 	case "enquiries":
-		$dispFields = array("date", "name", "email", "phone", "message", "types");
+		$dispFields = array("serial_number", "date", "name", "email", "phone", "message", "types");
 		$disporder_ID = "cid";
 		$mdme = getMdmeEnquiries($db, '');
 		$wrcon = " WHERE " . tbl_contact . ".isactive <> 2 ";
@@ -432,7 +439,7 @@ foreach ($res as $r) {
 // 	die();
 	$nestedData = array();
 
-	$nestedData[] = $r['serial_number'];
+	//$nestedData[] = $r['serial_number'];
 
 	$editid = base64_encode($r[$disporder_ID]);
 	$stats = $r['isactive'];

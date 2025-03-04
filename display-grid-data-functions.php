@@ -505,8 +505,8 @@ function getNoticeArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt
 
 
 	/*
-																																																																																																																																																													  $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																																																																																																													  */
+																																																																																																																																																																  $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																																																																																																  */
 
 
 
@@ -562,8 +562,8 @@ function getStaffArray_Ajx($db, $act = null, $whrcon = null, $ordr = null, $stt 
 	//echo $str_all;		exit;
 
 	/*
-																																																																																																																																																													  $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																																																																																																													  */
+																																																																																																																																																																  $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																																																																																																  */
 
 	$rescntchk = $db->get_rsltset($str_all);
 
@@ -629,8 +629,8 @@ function getAnnouncementArray_Ajx($db, $act = null, $whrcon = null, $ordr = null
 
 
 	/*
-																																																																																																																																																													  $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
-																																																																																																																																																													  */
+																																																																																																																																																																  $str_all = "select *,DATE_FORMAT(newsdate,'%d-%m-%Y') as newsdate from ".tbl_newsevents." where isactive <> 2 ";
+																																																																																																																																																																  */
 
 	$rescntchk = $db->get_rsltset($str_all);
 
@@ -971,9 +971,9 @@ function getCareerlistingArray_tot($db, $act = null, $whrcon = null, $ordr = nul
 		$str_all .= " " . $whrcon; // Ensure proper spacing
 	}
 
-	if (!empty($ordr)) {
-		$str_all .= " " . $ordr; // Ensure spacing
-	}
+	// if (!empty($ordr)) {
+	// 	$str_all .= " " . $ordr; // Ensure spacing
+	// }
 
 	if ($stt != "")
 		//$str_all .= "limit " . $stt . "," . $len;
@@ -995,21 +995,9 @@ function getCareerlistingArray_Ajx($db, $act = null, $whrcon = null, $ordr = nul
 
 	// $str_all = "select * from " . tbl_careerlisting . " where isactive <> 2 ";
 
-	$str_all = "SELECT 
-    ROW_NUMBER() OVER (ORDER BY id DESC) AS serial_number,
-    " . tbl_careerlisting . ".id,
-    " . tbl_careerlisting . ".title,
-    " . tbl_careerlisting . ".slug,
-    " . tbl_careerlisting . ".job_type,
-    " . tbl_careerlisting . ".school_id,
-    " . tbl_careerlisting . ".no_of_openings,
-    " . tbl_careerlisting . ".qualifications,
-    " . tbl_careerlisting . ".ishome,
-    " . tbl_careerlisting . ".status,
-    " . tbl_careerlisting . ".created_on,
-    " . tbl_careerlisting . ".sortby,
-    " . tbl_careerlisting . ".isactive
-	FROM " . tbl_careerlisting . " WHERE isactive <> 2";
+	$str_all = "SELECT ROW_NUMBER() OVER (ORDER BY id DESC) AS serial_number, id, title, slug, job_type, 
+				school_id, no_of_openings, qualifications, ishome, status, created_on, sortby, isactive
+            	FROM " . tbl_careerlisting . " WHERE isactive <> 2";
 
 	$rescntchk = $db->get_rsltset($str_all);
 

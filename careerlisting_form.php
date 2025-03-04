@@ -100,7 +100,7 @@ include "common/dpselect-functions.php"; ?>
                     <label class="col-md-3 control-label">Color Name *</label>
                     <div class="col-md-6">
                       <input type="text" class="form-control" required name="job_title" id="job_title"
-                        value="<?php echo $res_ed['title']; ?>" min="3" max="15" />
+                        oninput="validateInput()" value="<?php echo $res_ed['title']; ?>" min="3" max="15" />
                     </div>
                   </div>
 
@@ -212,6 +212,15 @@ include "common/dpselect-functions.php"; ?>
           });
 
         });
+      </script>
+      <script type="text/javascript">
+        function validateInput() {
+          const inputField = document.getElementById('job_title');
+          const inputValue = inputField.value;
+          const regex = /[^a-zA-Z]/g;
+
+          inputField.value = inputValue.replace(regex, '');
+        }
       </script>
     </div>
     <!-- end container -->
