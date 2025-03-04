@@ -249,19 +249,16 @@
 		var sortrmvcloumn2 = parseInt(iColumns - 1); // sorting remove to status column
 		var sortrmvcloumn3 = parseInt(iColumns - 3);
 
-		if ($('#disptblname').val() == 'newsevents') {
-			var targ = [0, 1, 2, 3, 4, 5, 6];
-		}
-
-		if ($('#disptblname').val() == 'newseventscat') {
-			var targ = [0, 1, 2];
-		}
 		if ($('#disptblname').val() == 'testimonial') {
 			var targ = [0, 1, 2, 3];
 		}
 
-		if ($('#disptblname').val() == 'gallerycategories') {
-			var targ = [0, 1, 2];
+		else if ($('#disptblname').val() == 'gallerycategories') {
+			var targ = [2, 3, 4, 5];
+		}
+
+		else if ($('#disptblname').val() == 'newsevents') {
+			var targ = [3, 4, 5, 6];
 		}
 
 		else if ($('#disptblname').val() == 'gallery') {
@@ -281,7 +278,7 @@
 		}
 
 		else if ($('#disptblname').val() == 'enquiries') {
-			var targ = [0, 1, 2, 3, 4, 5];
+			var targ = [0, 1, 2, 3, 4, 5, 6, 7];
 		}
 
 		else if ($('#disptblname').val() == 'career') {
@@ -294,6 +291,10 @@
 
 		else if ($('#disptblname').val() == 'admission') {
 			var targ = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+		}
+
+		else if ($('#disptblname').val() == 'newseventscat') {
+			var targ = [3, 4, 5, 6];
 		}
 
 		else {
