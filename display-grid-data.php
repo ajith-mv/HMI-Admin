@@ -290,16 +290,7 @@ switch ($_REQUEST['finaltab']) {
 
 		$totalData = getEnquiriesArray_tot($db, $act, $wrcon, $ordr, $stt, $len);
 
-
-		// 		print_r($totalData);
-// 		die();
-
-
 		$res = getEnquiriesArray_Ajx($db, $act, $wrcon, $ordr, $stt, $len);
-
-
-
-
 
 		break;
 	case "career":
