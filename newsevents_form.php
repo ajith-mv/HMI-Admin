@@ -188,7 +188,8 @@ include "common/dpselect-functions.php";
 
                       <div class="col-md-8">
                         <input class="form-control product_images <?php if ($act != 'update') { ?>required<?php } ?>"
-                          onchange="dimensions()" id="newsimage" name="newsimage" type="file" fi-type="">
+                          onchange="dimensions(event, 'selectedImage')" id="newsimage" name="newsimage" type="file"
+                          fi-type="">
                         <span class="help-block"> Allowed Extension ( jpg, png, gif, webp ) <br />
                           Image Size Should be <?php echo $imgwidth . ' * ' . $imgheight; ?></span>
                         <b id="img_error" style="color:red;display:none;"></b>
@@ -196,7 +197,7 @@ include "common/dpselect-functions.php";
                       <div class="col-md-4">
                         <?php if (!empty($res_ed['newsimage']) && ($act == 'update')) { ?>
                           <img src="../uploads/newsevents/<?php echo $res_ed['newsimage']; ?>" width="50px"
-                            align="absmiddle" />
+                            align="absmiddle" id="selectedImage" />
                         <?php } ?>
                       </div>
                     </div>
@@ -294,7 +295,24 @@ include "common/dpselect-functions.php";
         });
       </script>
       <script>
-        function dimensions() {
+        function dimensions(event, elementId) {
+
+          const selectedImage = document.getElementById(elementId);
+          const fileInputs = event.target;
+
+          if (fileInputs.files && fileInputs.files[0] && fileInputs.files[0].type.match('image.*')) {
+
+            if (fileInputs.files && fileInputs.files[0]) {
+              const reader = new FileReader();
+
+              reader.onload = function (e) {
+                selectedImage.src = e.target.result;
+              };
+
+              reader.readAsDataURL(fileInputs.files[0]);
+            }
+          }
+
           $('#img_error').hide();
           $("button").attr('disabled', false);
           var fileInput = $('input[name=newsimage]')[0];

@@ -163,7 +163,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
 
                       <div class="col-md-8">
                         <input class="form-control product_images <?php if ($act != 'update') { ?>required<?php } ?>"
-                          onchange="dimensions()" id="cat_image" name="cat_image" type="file" fi-type="">
+                          onchange="dimensions(event, 'selectedImage')" id="cat_image" name="cat_image" type="file" fi-type="">
                         <span class="help-block"> Allowed Extension ( jpg, png, gif, webp ) <br />
                           Image Size Should be <?php echo $imgwidth . ' * ' . $imgheight; ?></span>
                         <b id="img_error" style="color:red;display:none;"></b>
@@ -171,7 +171,7 @@ $parent_category_list = $db->get_rsltset($parent_category);
                       <div class="col-md-4">
                         <?php if (!empty($res_ed['cat_image']) && ($act == 'update')) { ?>
                           <img src="../uploads/category/<?php echo $res_ed['cat_image']; ?>" width="50px"
-                            align="absmiddle" />
+                            align="absmiddle" id="selectedImage"/>
                         <?php } ?>
                       </div>
                     </div>
@@ -277,7 +277,24 @@ $parent_category_list = $db->get_rsltset($parent_category);
         </script>
       <?php endif; ?>
       <script>
-        function dimensions() {
+        function dimensions(event, elementId) {
+
+          const selectedImage = document.getElementById(elementId);
+          const fileInputs = event.target;          
+
+          if (fileInputs.files && fileInputs.files[0] && fileInputs.files[0].type.match('image.*')) {
+
+            if (fileInputs.files && fileInputs.files[0]) {
+              const reader = new FileReader();
+
+              reader.onload = function(e) {
+                selectedImage.src = e.target.result;
+              };
+
+              reader.readAsDataURL(fileInputs.files[0]);
+            }
+          }
+
           $('#img_error').hide();
           $("button").attr('disabled', false);
           var fileInput = $('input[name=cat_image]')[0];

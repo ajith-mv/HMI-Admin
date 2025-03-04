@@ -168,14 +168,15 @@ include "common/dpselect-functions.php";
 
                       <div class="col-md-8">
                         <input class="form-control product_images <?php if ($act != 'update') { ?>required<?php } ?>"
-                          id="image" name="image" onchange="dimensions()" type="file" fi-type="">
+                          id="image" name="image" onchange="dimensions(event, 'selectedImage')" type="file" fi-type="">
                         <span class="help-block"> Allowed Extension ( jpg, png, gif, webp ) <br />
                           Image Size Should be <?php echo $imgwidth . ' * ' . $imgheight; ?></span>
                         <b id="img_error" style="color:red;display:none;"></b>
                       </div>
                       <div class="col-md-4">
                         <?php if (!empty($res_ed['image']) && ($act == 'update')) { ?>
-                          <img src="../uploads/gallery/<?php echo $res_ed['image']; ?>" width="50px" align="absmiddle" />
+                          <img src="../uploads/gallery/<?php echo $res_ed['image']; ?>" width="50px" align="absmiddle"
+                            id="selectedImage" />
                         <?php } ?>
                       </div>
                     </div>
@@ -238,7 +239,6 @@ include "common/dpselect-functions.php";
                       </select>
                     </div>
                   </div>
-
 
                   <div class="form-group">
                     <label class="col-md-3 control-label">Description</label>
@@ -332,7 +332,24 @@ include "common/dpselect-functions.php";
         });
       </script>
       <script>
-        function dimensions() {
+        function dimensions(event, elementId) {
+
+          const selectedImage = document.getElementById(elementId);
+          const fileInputs = event.target;
+
+          if (fileInputs.files && fileInputs.files[0] && fileInputs.files[0].type.match('image.*')) {
+
+            if (fileInputs.files && fileInputs.files[0]) {
+              const reader = new FileReader();
+
+              reader.onload = function (e) {
+                selectedImage.src = e.target.result;
+              };
+
+              reader.readAsDataURL(fileInputs.files[0]);
+            }
+          }
+
           $('#img_error').hide();
           $("button").attr('disabled', false);
           var fileInput = $('input[name=image]')[0];
