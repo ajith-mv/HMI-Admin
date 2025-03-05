@@ -4,6 +4,14 @@ extract($_REQUEST);
 $act = $action;
 
 error_reporting(1);
+
+$chkstatus = isset($chkstatus) ? $chkstatus : 0;
+
+if ($chkstatus == 1)
+	$status = 1;
+else
+	$status = 0;
+
 function slugify($text)
 {
 	// replace non letter or digits by -
@@ -66,7 +74,7 @@ switch ($act) {
 
 		} else {
 
-			$str = "insert into " . tbl_careerlisting . "(title,slug,job_type,qualifications,school_id,no_of_openings,ishome,status,sortby)values('" . getRealescape($job_title) . "','" . $slug . "','" . getRealescape($job_type) . "', '" . getRealescape('Test') . "', '" . getRealescape(1) . "', '" . getRealescape(1) . "','" . $ishome . "', '" . getRealescape(1) . "', '" . getRealescape(1) . "')";
+			$str = "insert into " . tbl_careerlisting . "(title,slug,job_type,qualifications,school_id,no_of_openings,ishome,status,sortby,isactive)values('" . getRealescape($job_title) . "','" . $slug . "','" . getRealescape($job_type) . "', '" . getRealescape('Test') . "', '" . getRealescape(1) . "', '" . getRealescape(1) . "','" . $ishome . "', '" . $status . "', '" . getRealescape(1) . "', '" . $status . "')";
 
 			$rslt = $db->insert($str);
 
@@ -89,6 +97,7 @@ switch ($act) {
 	case 'update':
 		//echo $edit_id;
 		//exit();
+
 		$today = date("Y-m-d");
 		if (!empty($job_title)) {
 			$strChk = "select count(id) as cnt from " . tbl_careerlisting . "  where title = '" . getRealescape($job_title) . "' and isactive != '2' and id != '" . $edit_id . "' ";
@@ -97,7 +106,7 @@ switch ($act) {
 
 			$str = "update " . tbl_careerlisting . " set title = '" . getRealescape($job_title) . "', slug = '" . getRealescape($slug) . "',";
 
-			$str .= " job_type = '" . getRealescape($job_type) . "', qualifications = '" . getRealescape('Test') . "',school_id='" . getRealescape(1) . "',no_of_openings='" . getRealescape(1) . "',ishome='" . $ishome . "', status='" . getRealescape(1) . "',sortby= " . getRealescape(1) . ",isactive = '" . 1 . "' where id = '" . $edit_id . "'";
+			$str .= " job_type = '" . getRealescape($job_type) . "', qualifications = '" . getRealescape('Test') . "',school_id='" . getRealescape(1) . "',no_of_openings='" . getRealescape(1) . "',ishome='" . $ishome . "', status='" . $status . "',sortby= " . getRealescape(1) . ",isactive = '" . $status . "' where id = '" . $edit_id . "'";
 
 			$db->insert_log("update", "" . tbl_careerlisting . "", $edit_id, "stafflisting updated", "stafflisting", $str);
 			$db->insert($str);
