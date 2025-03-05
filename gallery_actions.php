@@ -39,12 +39,12 @@ if ($glydate == '') {
 switch ($act) {
 	case 'insert':
 		/*
-																																								 echo "W : ".$width;
-																																								 echo "H : ".$height;
-																																								 echo "IW : ".$imgwidth;
-																																								 echo "IH : ".$imgheight;
-																																								 exit;
-																																								 */
+																																																								   echo "W : ".$width;
+																																																								   echo "H : ".$height;
+																																																								   echo "IW : ".$imgwidth;
+																																																								   echo "IH : ".$imgheight;
+																																																								   exit;
+																																																								   */
 		if (!empty($titlename)) {
 			// if(($width >= $imgwidth && $height >= $imgheight) && $height == round($width * $imgheight / $imgwidth)){
 			$strChk = "select count(glyid) from " . tbl_gallery . " where glytitle = '" . getRealescape($titlename) . "' and isactive != '2'";
@@ -137,8 +137,6 @@ switch ($act) {
 				}
 			}
 
-
-
 			$str .= " school_id = " . $schools_selected . ",  glydate='" . $glydate . "', catid='" . $catid . "', ishome='" . $ishome . "',isactive = '" . $status . "' $strph,userid='" . $_SESSION["UserId"] . "' where glyid = '" . $edit_id . "'";
 
 			$db->insert_log("update", "" . tbl_gallery . "", $edit_id, "Gallery updated", "Gallery", $str);
@@ -190,10 +188,24 @@ switch ($act) {
 			$width = $imageinfo[$x][0];
 			$height = $imageinfo[$x][1];
 
-			$allowWidth = array("700", "800", "1400", "1600", "2100", "2400", "2800", "3000", "3500");
-			$allowHeight = array("600", "1200 ", "1200", "2400", "1800", "3600", "2400", "4800", "3000");
+			// $allowWidth = array("700", "800", "1400", "1600", "2100", "2400", "2800", "3000", "3500");
+			// $allowHeight = array("600", "1200 ", "1200", "2400", "1800", "3600", "2400", "4800", "3000");
 
-			if (in_array($width, $allowWidth) && in_array($height, $allowHeight)) {
+			// $expectedWidth = (7 / 6) * $height;
+			// $expectedHeight = (6 / 7) * $width;
+
+			$aspectsRatio = $width / $height;
+
+			// $productWidth = (3 / 2) * $height;
+			// $productHeight = (2 / 3) * $width;
+			$aspectRatio = $width / $height;
+
+			if (
+				(abs($aspectRatio - (7 / 6)) < 0.01) ||
+				(abs($aspectRatio - (2 / 3)) < 0.01)
+			) {
+
+				// if (in_array($width, $allowWidth) && in_array($height, $allowHeight)) {
 
 				$a = 1;
 

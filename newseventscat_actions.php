@@ -210,10 +210,10 @@ switch ($act) {
 
 		$today = date("Y-m-d");
 
-		$checkSql = "SELECT COUNT(*) FROM " . tbl_newscategory . " where subcategory = '" . $edit_id . "'";
+		$checkSql = "SELECT COUNT(*) FROM " . tbl_newscategory . " where subcategory = '" . $edit_id . "' AND isactive = 1";
 		$reslt = $db->get_a_line($checkSql);
 
-		$checksSql = "SELECT COUNT(*) FROM " . tbl_gallerycategory . " where category = '" . $edit_id . "'";
+		$checksSql = "SELECT COUNT(*) FROM " . tbl_gallerycategory . " where category = '" . $edit_id . "' AND isactive = 1";
 		$reslts = $db->get_a_line($checksSql);
 
 		if ($reslt[0] > 0) {

@@ -320,7 +320,22 @@
 				"pageLength": 50,
 				"dom": 'lBfrtip',
 				"buttons": [
-					'copy', 'csv', 'excel', 'pdf'
+					{
+						extend: 'copy',
+						title: 'Contact_enquiry'
+					},
+					{
+						extend: 'csv',
+						title: 'Contact_enquiry'
+					},
+					{
+						extend: 'excel',
+						title: 'Contact_enquiry'
+					},
+					{
+						extend: 'pdf',
+						title: 'Contact_enquiry'
+					}
 				],
 				"processing": true,
 				"columnDefs": [{ "targets": targ, "orderable": false }],

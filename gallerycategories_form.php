@@ -371,50 +371,71 @@ include "common/dpselect-functions.php";
 
             if (selectedId == 'basecat') {
 
-              if ((img.width < 700 || img.height < 600)) {
-                var message = "Image size should be at least 700x600  pixels.";
+              // if ((img.width < 700 || img.height < 600)) {
+              //   var message = "Image size should be at least 700x600  pixels.";
+              //   $('#img_error').html(message);
+              //   $('#img_error').show();
+
+              //   $("button").attr('disabled', true);
+              // } else {
+              //   if ((img.width === 700 && img.height === 600) ||
+              //     (img.width === 1400 && img.height === 1200) ||
+              //     (img.width === 2100 && img.height === 1800) ||
+              //     (img.width === 2800 && img.height === 2400)) {
+              //     $("button").attr('disabled', false);
+              //   } else {
+              //     var message = "Image size should be 700x600 actual size.";
+              //     $('#img_error').html(message);
+              //     $('#img_error').show();
+              //     $("button").attr('disabled', true);
+              //   }
+              // }
+
+              var expectedHeight = (6 / 7) * img.width;
+              var expectedWidth = (7 / 6) * img.height;
+
+              if (Math.abs(img.height - expectedHeight) <= 1 || Math.abs(img.width - expectedWidth) <= 1) {
+                $("button").attr('disabled', false);
+              } else {
+                var message = "Image size should be 700x600 actual size.";
                 $('#img_error').html(message);
                 $('#img_error').show();
-
                 $("button").attr('disabled', true);
-              } else {
-                if ((img.width === 700 && img.height === 600) ||
-                  (img.width === 1400 && img.height === 1200) ||
-                  (img.width === 2100 && img.height === 1800) ||
-                  (img.width === 2800 && img.height === 2400)) {
-                  $("button").attr('disabled', false);
-                } else {
-                  var message = "Image size should be 700x600 actual size.";
-                  $('#img_error').html(message);
-                  $('#img_error').show();
-                  $("button").attr('disabled', true);
-                }
               }
             } else {
-              if ((img.width < 1000 || img.height < 1500)) {
-                var message = "Image size should be at least 1000x1500  pixels.";
+              // if ((img.width < 1000 || img.height < 1500)) {
+              //   var message = "Image size should be at least 1000x1500  pixels.";
+              //   $('#img_error').html(message);
+              //   $('#img_error').show();
+
+              //   $("button").attr('disabled', true);
+              // } else {
+              //   if ((img.width === 1000 && img.height === 1500) ||
+              //     (img.width === 2000 && img.height === 3000) ||
+              //     (img.width === 3000 && img.height === 4500) ||
+              //     (img.width === 4000 && img.height === 6000)) {
+              //     $("button").attr('disabled', false);
+              //   } else {
+              //     var message = "Image size should be 1000x1500 actual size.";
+              //     $('#img_error').html(message);
+              //     $('#img_error').show();
+              //     $("button").attr('disabled', true);
+              //   }
+              // }
+
+              var expectedHeight = (3 / 2) * img.width;
+              var expectedWidth = (2 / 3) * img.height;
+
+              if (Math.abs(img.height - expectedHeight) <= 1 || Math.abs(img.width - expectedWidth) <= 1) {
+                $("button").attr('disabled', false);
+              } else {
+                var message = "Image size should be 1000x1500 actual size.";
                 $('#img_error').html(message);
                 $('#img_error').show();
-
                 $("button").attr('disabled', true);
-              } else {
-                if ((img.width === 1000 && img.height === 1500) ||
-                  (img.width === 2000 && img.height === 3000) ||
-                  (img.width === 3000 && img.height === 4500) ||
-                  (img.width === 4000 && img.height === 6000)) {
-                  $("button").attr('disabled', false);
-                } else {
-                  var message = "Image size should be 1000x1500 actual size.";
-                  $('#img_error').html(message);
-                  $('#img_error').show();
-                  $("button").attr('disabled', true);
-                }
               }
+
             }
-
-
-
-
             URL.revokeObjectURL(objectUrl);
           };
 
