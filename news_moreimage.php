@@ -93,7 +93,7 @@ $countgetimages = $db->get_rsltset("select count(*) from  " . tbl_moreimg . " wh
           <button class="btn btn-default waves-effect " type="reset"
             onClick="javascript:funCancel('frmGallery','jvalidate','gallerymoreimage','newsevents_mng.php');">Cancel</button>
           <button class="btn btn-primary waves-effect waves-light m-l-5" id="submit-form" type="button"
-            onClick="javascript:funSubmtWithImg('frmGallery','newsevents_actions.php','jvalidate','gallerymoreimage','news_moreimage.php?id=<?php echo $view; ?>');"><span
+            onClick="javascript:funSubmtWithImg('frmGallery','newsevents_actions.php','jvalidate','gallerymoreimage','news_moreimage.php?id=<?php echo $view; ?>','News More Image ');"><span
               id="spSubmit"><i class="fa fa-save"></i> save <?php echo $btn; ?></span></button>
         </div><!-- /.box-footer -->
       </form>
@@ -205,7 +205,7 @@ $countgetimages = $db->get_rsltset("select count(*) from  " . tbl_moreimg . " wh
                 onClick="javascript:funCancel('noimg','jvalidate1','moreimageupdate','newsevents_mng.php');">Cancel</button>
               <!-- <input type="submit" class="btn bg-maroon margin pull-right" value="Update" />-->
               <button class="btn btn-success waves-effect waves-light " type="button"
-                onClick="javascript:funSubmt('noimg','newsevents_actions.php','jvalidate1','moreimageupdate','newsevents_mng.php');">
+                onClick="javascript:funSubmt('noimg','newsevents_actions.php','jvalidate1','moreimageupdate','newsevents_mng.php', 'Gallery More Image ');">
                 <span id="spSubmit"><i class="fa fa-save"></i> Update</span></button>
             </div>
           </div>

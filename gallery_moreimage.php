@@ -93,7 +93,7 @@ $countgetimages = $db->get_rsltset("select count(*) from  " . tbl_gallery_moreim
           <button class="btn btn-default waves-effect " type="reset"
             onClick="javascript:funCancel('frmGallery','jvalidate','gallerymoreimage','gallerycategories_mng.php');">Cancel</button>
           <button class="btn btn-primary waves-effect waves-light m-l-5" id="submit-form" type="button"
-            onClick="javascript:funSubmtWithImg('frmGallery','gallery_actions.php','jvalidate','gallerymoreimage','gallery_moreimage.php?id=<?php echo $view; ?>');"><span
+            onClick="javascript:funSubmtWithImg('frmGallery','gallery_actions.php','jvalidate','gallerymoreimage','gallery_moreimage.php?id=<?php echo $view; ?>','Gallery More Image ');"><span
               id="spSubmit"><i class="fa fa-save"></i> save <?php echo $btn; ?></span></button>
         </div><!-- /.box-footer -->
       </form>

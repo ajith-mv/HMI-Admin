@@ -389,7 +389,7 @@
 
 	/**************************** Form Validation ****************************/
 	//Save data to db all page common function - START		
-	function funSubmt($frm, $urll, $acts, $stats, $lodlnk) {
+	function funSubmt($frm, $urll, $acts, $stats, $lodlnk, $title) {
 
 		//alert($('#elm1').html()); 
 		/*$('#txtEditor').val($('.Editor-editor').text());*/
@@ -413,23 +413,23 @@
 				},
 				success: function (response) {
 					if (response.rslt == "1") {
-						swal("Success!", $stats + ' ' + sucmsg, "green", "btn-green");
+						swal("Success!", $title + ' ' + sucmsg, "green", "btn-green");
 						$("#" + $acts)[0].reset();
 						$(location).attr('href', $lodlnk);
 					}
 					else if (response.rslt == "2") {
-						swal("Update!", $stats + ' ' + upmsg, "green", "btn-green");
+						swal("Update!", $title + ' ' + upmsg, "green", "btn-green");
 						$("#" + $acts)[0].reset();
 						$(location).attr('href', $lodlnk);
 					}
 					else if (response.rslt == "3") {
-						swal("Failure!", $stats + ' ' + exsmsg, "orange", "btn-orange");
+						swal("Failure!", $title + ' ' + exsmsg, "orange", "btn-orange");
 					}
 					else if (response.rslt == "4") {
-						swal("Failure!", $stats + ' ' + reqmsg, "orange", "btn-orange");
+						swal("Failure!", $title + ' ' + reqmsg, "orange", "btn-orange");
 					}
 					else if (response.rslt == "9") {
-						swal("Failure!", $stats + ' ' + exsmsg_reference, "orange", "btn-orange");
+						swal("Failure!", $title + ' ' + exsmsg_reference, "orange", "btn-orange");
 					}
 					else {
 						swal("Failure!", othmsg, "orange", "btn-orange");
@@ -558,7 +558,7 @@
 	}
 
 	//Save data to db all page common function - START		
-	function funSubmtWithImg($frm, $urll, $acts, $stats, $lodlnk) {
+	function funSubmtWithImg($frm, $urll, $acts, $stats, $lodlnk, $title) {
 		var acounts = '';
 		var acounts1 = '';
 		$('#' + $acts).parsley().validate();
@@ -728,23 +728,23 @@
 				success: function (response) {
 					unloading();
 					if (response.rslt == "1") {
-						swal("Success!", $stats + ' ' + sucmsg, "green", "btn-green");
+						swal("Success!", $title + ' ' + sucmsg, "green", "btn-green");
 						$("#" + $acts)[0].reset();
 						$(location).attr('href', $lodlnk);
 					}
 					else if (response.rslt == "2") {
-						swal("Update!", $stats + ' ' + upmsg, "green", "btn-green");
+						swal("Update!", $title + ' ' + upmsg, "green", "btn-green");
 						$("#" + $acts)[0].reset();
 						$(location).attr('href', $lodlnk);
 					}
 					else if (response.rslt == "3") {
-						swal("Failure!", $stats + ' ' + exsmsg, "orange", "btn-orange");
+						swal("Failure!", $title + ' ' + exsmsg, "orange", "btn-orange");
 					}
 					else if (response.rslt == "4") {
-						swal("Failure!", $stats + ' ' + reqmsg, "orange", "btn-orange");
+						swal("Failure!", $title + ' ' + reqmsg, "orange", "btn-orange");
 					}
 					else if (response.rslt == "8") {
-						swal("Failure!", $stats + ' ' + response.msg, "orange", "btn-orange");
+						swal("Failure!", $title + ' ' + response.msg, "orange", "btn-orange");
 						/*if($stats == 'product'){
 								$("#product_images").val("");
 							$('.jFiler-items jFiler-row').html('');
@@ -753,7 +753,7 @@
 					}
 
 					else if (response.rslt == "9") {
-						swal("Failure!", $stats + ' ' + response.msg, "red", "btn-red");
+						swal("Failure!", $title + ' ' + response.msg, "red", "btn-red");
 						/*if($stats == 'product'){
 								$("#product_images").val("");
 							$('.jFiler-items jFiler-row').html('');

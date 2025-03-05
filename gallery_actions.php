@@ -39,12 +39,12 @@ if ($glydate == '') {
 switch ($act) {
 	case 'insert':
 		/*
-																			 echo "W : ".$width;
-																			 echo "H : ".$height;
-																			 echo "IW : ".$imgwidth;
-																			 echo "IH : ".$imgheight;
-																			 exit;
-																			 */
+																																								 echo "W : ".$width;
+																																								 echo "H : ".$height;
+																																								 echo "IW : ".$imgwidth;
+																																								 echo "IH : ".$imgheight;
+																																								 exit;
+																																								 */
 		if (!empty($titlename)) {
 			// if(($width >= $imgwidth && $height >= $imgheight) && $height == round($width * $imgheight / $imgwidth)){
 			$strChk = "select count(glyid) from " . tbl_gallery . " where glytitle = '" . getRealescape($titlename) . "' and isactive != '2'";
@@ -161,6 +161,16 @@ switch ($act) {
 		//echo 'asdasd';
 		//exit;
 
+		$checkSql = "SELECT * FROM " . tbl_gallerycategory . " WHERE catid = '" . $edit_id . "'";
+		$reslt = $db->get_a_line($checkSql);
+
+		$subid = $reslt[4];
+
+		$checksSql = "SELECT COUNT(*) FROM " . tbl_newscategory . " WHERE catid = '" . $subid . "' AND types = 2 AND isactive = 1";
+		$reslts = $db->get_a_line($checksSql);
+
+
+
 		$file = $_FILES["gallerymoreimage"]["tmp_name"];
 
 
@@ -209,7 +219,14 @@ switch ($act) {
 
 				die();
 			} else {
-				echo json_encode(array("rslt" => "9", "msg" => 'Image size should be 700x600 and 800x1200  perspective size  ' . $imagenum));
+
+				if ($reslts[0] > 0) {
+					echo json_encode(array("rslt" => "9", "msg" => 'Image size should be 700x600 perspective size  ' . $imagenum));
+				} else {
+					echo json_encode(array("rslt" => "9", "msg" => 'Image size should be 800x1200  perspective size  ' . $imagenum));
+
+				}
+
 				die();
 			}
 		}

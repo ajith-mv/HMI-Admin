@@ -131,7 +131,7 @@ switch ($act) {
 			'" . (empty($hardware_color) ? 'NULL' : getRealescape($hardware_color)) . "',
 			'" . getRealescape($meta_title) . "',
 			'" . getRealescape($meta_desc) . "',
-			'$chkstatus', 
+			'$status', 
 			'1', 
 			NOW())";
 
