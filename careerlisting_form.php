@@ -217,8 +217,8 @@ include "common/dpselect-functions.php"; ?>
         function validateInput() {
           const inputField = document.getElementById('job_title');
           const inputValue = inputField.value;
-          const regex = /[^a-zA-Z]/g;
-
+          // const regex = /[^a-zA-Z]/g;
+          const regex = /[^a-zA-Z]| {2,}/g;
           inputField.value = inputValue.replace(regex, '');
         }
       </script>
