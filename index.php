@@ -15,21 +15,21 @@ $error = "";
 if (isset($_REQUEST['err'])) {
     $err = $_REQUEST['err'];
     if ($err == "invup") {
-        $error = '<div class="alert alert-danger alert-dismissable"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Invalid Username/Password!  </div>';
+        $error = '<div class="alert alert-danger alert-dismissable" style="color:white"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Invalid Username/Password!  </div>';
     } elseif ($err == "invu") {
-        $error = '<div class="alert alert-danger alert-dismissable"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Invalid Username!  </div>';
+        $error = '<div class="alert alert-danger alert-dismissable" style="color:white"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Invalid Username!  </div>';
     } elseif ($err == "lo") {
-        $error = '<div class="alert alert-success alert-dismissable"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> You have Successfully logged out !  </div>';
+        $error = '<div class="alert alert-success alert-dismissable" style="color:white"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> You have Successfully logged out !  </div>';
     } elseif ($err == "invp") {
-        $error = '<div class="alert alert-danger alert-dismissable"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Invalid Password!  </div>';
+        $error = '<div class="alert alert-danger alert-dismissable" style="color:white"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Invalid Password!  </div>';
     } elseif ($err == "ac") {
-        $error = '<div class="alert alert-info alert-dismissable"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Not Activated Your account!  </div>';
+        $error = '<div class="alert alert-info alert-dismissable" style="color:white"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Not Activated Your account!  </div>';
     } elseif ($err == "ses") {
-        $error = '<div class="alert alert-info alert-dismissable"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Session Time Out! Please ReLogin. </div>';
+        $error = '<div class="alert alert-info alert-dismissable" style="color:white"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Session Time Out! Please ReLogin. </div>';
     } elseif ($err == "rstpwdsucc") {
-        $error = '<div class="alert alert-success alert-dismissable"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Your Password Reset Successfully!</div>';
+        $error = '<div class="alert alert-success alert-dismissable" style="color:white"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Your Password Reset Successfully!</div>';
     } elseif ($err == "rstpwdfail") {
-        $error = '<div class="alert alert-info alert-dismissable"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Your Password Reset Not to be Done Please Try Again!</div>';
+        $error = '<div class="alert alert-info alert-dismissable" style="color:white"> <button class="close" aria-hidden="true" data-dismiss="alert" type="button">X</button> Your Password Reset Not to be Done Please Try Again!</div>';
     } else {
         $error = "";
     }
