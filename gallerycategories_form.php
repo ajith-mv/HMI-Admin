@@ -324,11 +324,16 @@ include "common/dpselect-functions.php";
             var selectedOption = $(this).find('option:selected');
             var selectedId = selectedOption.attr('id');
 
-
-
+            if (selectedId == 'basecat') {
+              var message = "Changed Category Image size should be 700x600 actual size.";
+              $('#img_error').html(message);
+              $('#img_error').show();
+            } else {
+              var message = "Changed Subcategory Image size should be 1000x1500 actual size.";
+              $('#img_error').html(message);
+              $('#img_error').show();
+            }
           })
-
-
         });
       </script>
       <script>
