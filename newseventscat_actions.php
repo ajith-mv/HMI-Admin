@@ -151,7 +151,9 @@ switch ($act) {
 			if (empty($ishome)) {
 				$ishome = 0;
 			}
-
+			if ((empty($homeorder)) || ($homeorder == 0)) {
+				$homeorder = NULL;
+			}
 			$strChk = "select count(catid) from " . tbl_newscategory . " where name = '" . getRealescape($titlename) . "' and isactive != '2' and catid != '" . $edit_id . "' ";
 			$reslt = $db->get_a_line($strChk);
 			if ($reslt[0] == 0) {
@@ -185,9 +187,8 @@ switch ($act) {
 
 				$str .= "types='" . getRealescape($types) . "', urlslug='" . getRealescape($url_slug) . "',subcategory='" . getRealescape($subcategory) . "'
 				,short_desc='" . getRealescape($short_desc) . "',meta_title='" . getRealescape($meta_title) . "',meta_desc='" . getRealescape($meta_desc) . "',
-				ishome='" . getRealescape($ishome) . "',homeorder='" . (empty($homeorder) ? 'NULL' : getRealescape($homeorder)) . "',description='" . getRealescape($newscatdesc) . "',
+				ishome='" . getRealescape($ishome) . "',homeorder='" . $homeorder . "',description='" . getRealescape($newscatdesc) . "',
 				modifydate='" . $today . "',isactive = '" . $status . "' $strph,userid='" . $_SESSION["UserId"] . "' where catid = '" . $edit_id . "'";
-
 				$db->insert_log("update", "" . tbl_newscategory . "", $edit_id, "news cat updated", "newseventscat", $str);
 				$db->insert($str);
 
