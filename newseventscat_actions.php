@@ -82,11 +82,13 @@ switch ($act) {
 				$uploadDir = '../uploads/category/';
 				$originalPath = $uploadDir . basename($_FILES['cat_image']['name']);
 				$resizedPath = $uploadDir . 'resized-' . basename($_FILES['cat_image']['name']);
+				$imagesname = 'resized-' . basename($_FILES['cat_image']['name']);
 
-				if (move_uploaded_file($_FILES['cat_image']['tmp_name'], $originalPath)) {
-					$maxWidth = 767;
-					$maxHeight = 460;
-					$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+				if (move_uploaded_file($_FILES['cat_image']['tmp_name'], $resizedPath)) {
+					// $maxWidth = 767;
+					// $maxHeight = 460;
+					// $filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+					$filename = $imagesname;
 				} else {
 					echo json_encode(["rslt" => "error", "msg" => "Image upload failed."]);
 					exit;
@@ -152,7 +154,7 @@ switch ($act) {
 				$ishome = 0;
 			}
 			if ((empty($homeorder)) || ($homeorder == 0)) {
-				$homeorder = NULL;
+				$homeorder = 'NULL';
 			}
 			$strChk = "select count(catid) from " . tbl_newscategory . " where name = '" . getRealescape($titlename) . "' and isactive != '2' and catid != '" . $edit_id . "' ";
 			$reslt = $db->get_a_line($strChk);
@@ -167,11 +169,13 @@ switch ($act) {
 					$uploadDir = '../uploads/category/';
 					$originalPath = $uploadDir . basename($_FILES['cat_image']['name']);
 					$resizedPath = $uploadDir . 'resized-' . basename($_FILES['cat_image']['name']);
+					$imagesname = 'resized-' . basename($_FILES['cat_image']['name']);
 
-					if (move_uploaded_file($_FILES['cat_image']['tmp_name'], $originalPath)) {
-						$maxWidth = 767;
-						$maxHeight = 460;
-						$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+					if (move_uploaded_file($_FILES['cat_image']['tmp_name'], $resizedPath)) {
+						// $maxWidth = 767;
+						// $maxHeight = 460;
+						// $filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+						$filename = $imagesname;
 
 						$strph = ",cat_image='" . getRealescape($filename) . "'";
 
@@ -187,9 +191,10 @@ switch ($act) {
 
 				$str .= "types='" . getRealescape($types) . "', urlslug='" . getRealescape($url_slug) . "',subcategory='" . getRealescape($subcategory) . "'
 				,short_desc='" . getRealescape($short_desc) . "',meta_title='" . getRealescape($meta_title) . "',meta_desc='" . getRealescape($meta_desc) . "',
-				ishome='" . getRealescape($ishome) . "',homeorder='" . $homeorder . "',description='" . getRealescape($newscatdesc) . "',
+				ishome='" . getRealescape($ishome) . "',homeorder=$homeorder,description='" . getRealescape($newscatdesc) . "',
 				modifydate='" . $today . "',isactive = '" . $status . "' $strph,userid='" . $_SESSION["UserId"] . "' where catid = '" . $edit_id . "'";
 				$db->insert_log("update", "" . tbl_newscategory . "", $edit_id, "news cat updated", "newseventscat", $str);
+
 				$db->insert($str);
 
 				echo json_encode(array("rslt" => "2"));
@@ -201,9 +206,6 @@ switch ($act) {
 		}
 
 		break;
-
-
-
 
 	case 'del':
 

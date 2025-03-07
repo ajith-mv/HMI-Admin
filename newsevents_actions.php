@@ -103,11 +103,13 @@ switch ($act) {
 				$uploadDir = '../uploads/newsevents/';
 				$originalPath = $uploadDir . basename($_FILES['newsimage']['name']);
 				$resizedPath = $uploadDir . 'resized-' . basename($_FILES['newsimage']['name']);
+				$imagesname = 'resized-' . basename($_FILES['newsimage']['name']);
 
-				if (move_uploaded_file($_FILES['newsimage']['tmp_name'], $originalPath)) {
-					$maxWidth = 450;
-					$maxHeight = 350;
-					$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+				if (move_uploaded_file($_FILES['newsimage']['tmp_name'], $resizedPath)) {
+					// $maxWidth = 450;
+					// $maxHeight = 350;
+					// $filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+					$filename = $imagesname;
 				} else {
 					echo json_encode(["rslt" => "error", "msg" => "Image upload failed."]);
 					exit;
@@ -211,12 +213,15 @@ switch ($act) {
 					$uploadDir = '../uploads/newsevents/';
 					$originalPath = $uploadDir . basename($_FILES['newsimage']['name']);
 					$resizedPath = $uploadDir . 'resized-' . basename($_FILES['newsimage']['name']);
+					$imagesname = 'resized-' . basename($_FILES['newsimage']['name']);
 
-					if (move_uploaded_file($_FILES['newsimage']['tmp_name'], $originalPath)) {
+					if (move_uploaded_file($_FILES['newsimage']['tmp_name'], $resizedPath)) {
 
-						$maxWidth = 1000;
-						$maxHeight = 465;
-						$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+						// $maxWidth = 1000;
+						// $maxHeight = 465;
+						// $filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+
+						$filename = $imagesname;
 
 						$strph = " ,newsimage='" . $filename . "'";
 

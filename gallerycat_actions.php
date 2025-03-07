@@ -94,11 +94,13 @@ switch ($act) {
 				$uploadDir = '../uploads/gallery/';
 				$originalPath = $uploadDir . basename($_FILES['image']['name']);
 				$resizedPath = $uploadDir . 'resized-' . basename($_FILES['image']['name']);
+				$imagesname = 'resized-' . basename($_FILES['image']['name']);
 
-				if (move_uploaded_file($_FILES['image']['tmp_name'], $originalPath)) {
-					$maxWidth = 700;
-					$maxHeight = 600;
-					$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+				if (move_uploaded_file($_FILES['image']['tmp_name'], $resizedPath)) {
+					// $maxWidth = 700;
+					// $maxHeight = 600;
+					// $filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+					$filename = $imagesname;
 				} else {
 					echo json_encode(["rslt" => "error", "msg" => "Image upload failed."]);
 					exit;
@@ -203,12 +205,13 @@ switch ($act) {
 					$uploadDir = '../uploads/gallery/';
 					$originalPath = $uploadDir . basename($_FILES['image']['name']);
 					$resizedPath = $uploadDir . 'resized-' . basename($_FILES['image']['name']);
+					$imagesname = 'resized-' . basename($_FILES['image']['name']);
 
-					if (move_uploaded_file($_FILES['image']['tmp_name'], $originalPath)) {
-						$maxWidth = 450;
-						$maxHeight = 350;
-						$filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
-
+					if (move_uploaded_file($_FILES['image']['tmp_name'], $resizedPath)) {
+						// $maxWidth = 450;
+						// $maxHeight = 350;
+						// $filename = resizeImage($originalPath, $resizedPath, $maxWidth, $maxHeight);
+						$filename = $imagesname;
 						$str .= ",image='" . getRealescape($filename) . "'";
 					} else {
 						echo json_encode(["rslt" => "error", "msg" => "Image upload failed."]);
